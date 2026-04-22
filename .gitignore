@@ -25,3 +25,8 @@ pnpm-debug.log*
 
 #vs code
 .vscode
+
+# Agent
+.claude/
+.gemini/
+
