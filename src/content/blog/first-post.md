@@ -1,23 +1,32 @@
 ---
-title: 'Hello World!'
-description: 'First blog post ever'
-pubDate: 'Jun 01 2025'
-heroImage: '/images/blog/shaft-of-pen.jpg'
-tags: ["musings", "life"]
+title: Hello World!
+description: First blog post ever
+pubDate: Jun 01 2025
+heroImage: /images/blog/shaft-of-pen.jpg
+tags:
+  - musings
+  - life
 ---
+> "Take hold of the shaft of the pen...\
+...Subscribe to the first step taken from a justified line into the margin."\
+<cite>"The First Gloass" - Seamus Heaney</cite>
 
-> "Take hold of the shaft of the pen...  
-> ...Subscribe to the first step taken from a justified line into the margin."  
-> <cite>"The First Gloass" - Seamus Heaney</cite>
+I start my first post with words from Seamus Heaney's poem "The First Gloss", part of his Station Island collection.  Not because I understood them immediately the first time that I read them.  Nor indeed did I understand them the second, third, fourth or fifth time I tried.
 
-I start my first post with words from Seamus Heaney's poem "The First Gloss", part of his Station Island collection.  Not because I understood them immediately the first time that I read them.  Or indeed the second, third, fourth or fifth time.  I include them because it took me so long to understand them and that's the point - learning something is hard.  It takes time.  It requires persistence.  It is not easy.  There will be times when you think you're going backwards.  There will be days when nothing works and, in the worst case, days after days when nothing works when still...nothing works.
+I include them because it took me so long to understand them.  That's the point; learning something is hard.
 
-But, over time, you'll learn.  You'll find yourself understanding more and more.  You'll find yourself not having to look up things because you know them.  
+It takes time.  It requires persistence.  It is not easy.
+
+There will be times when you think you're going backwards.  There will be days when nothing works.  In the worst case, days can follow days&nbsp;when still nothing seems to work.
+
+But, over time, we learn.  We find ourselves understanding more and more.  We find that we no longer have to look things up because we know them!
 
 > And it all comes from picking up the pen and writing the first words.
 
-My Mother wrote her Masters' thesis on Seamus Heaney and she had a picture on which these words from "The First Gloss" sit.  The picture has been ever present for the last 30 years of my life.  
+My Mum wrote her Masters' thesis on Seamus Heaney and she had a framed picture in which these words from "The First Gloss" sit.  The picture has been an ever present for the last 30 years of my life whenever I went home to visit my parents.
 
-I have read the words over and over many time - mainly because, as we have hung now, my Mother and Father left the picture in the loo.  Until, one day (when the internet was useful) I looked them up and came to understand that they had meaning.
+I have read the words over and over many times; mainly because, just as we have hung the picture now, my Mum and Dad left the picture in the downstairs loo.  Until, one day (when the internet was useful) I looked them up and came to understand their full meaning.
 
-For me that meaning is...there is power in the written word (irrsepective of how and where it is written, i.e. in code or on parchment).  And there is also a process, a ceremony even, that should be followed and celebrated each and every time we choose a word to write.  
+And for me that meaning is...there is power in the written word.  Power that rises irrespective of how or where the words are written; they could be written in computer code, inscribed on parchment or chiselled in stone.  There is also a process, sometimes even a ceremony, which we follow each and every time we choose a word to write.
+
+Perhaps some of the words I will write in this blog will have power.  I hope to find the process that works best for me and hopefully well for you too given you are one reader of these Sane Musings.

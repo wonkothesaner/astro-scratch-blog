@@ -2,36 +2,32 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import rehypeExternalLinks from 'rehype-external-links';
+import rehypeExternalLinks from "rehype-external-links";
+import react from "@astrojs/react";
+import keystatic from "@keystatic/astro";
 
-// Keystatic + React are only loaded in development
-// This keeps the /keystatic admin route out of production builds entirely
-const isDev = process.env.NODE_ENV !== "production";
-
-const devIntegrations = [];
-if (isDev) {
-  const react = (await import("@astrojs/react")).default;
-  const keystatic = (await import("@keystatic/astro")).default;
-  devIntegrations.push(react(), keystatic());
-}
+// Keystatic is only needed for local authoring
+const isDev =
+  process.env.NODE_ENV === "development" || process.argv.includes("dev");
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://wts.services",
-  integrations: [
-    mdx(),
-    sitemap(),
-    ...devIntegrations,
-  ],
-  trailingSlash: "always",
+  output: isDev ? "server" : "static",
+  integrations: [mdx(), sitemap(), ...(isDev ? [react(), keystatic()] : [])],
+  trailingSlash: "ignore",
+  server: {
+    host: true,
+    port: 4321,
+  },
   markdown: {
     rehypePlugins: [
       [
         rehypeExternalLinks,
         {
           content: { type: "text", value: " 🔗" },
-		  target: '_blank', 
-		  rel: 'noopener noreferrer' 
+          target: "_blank",
+          rel: "noopener noreferrer",
         },
       ],
     ],

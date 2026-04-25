@@ -1,158 +1,286 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
+@layer reset, tokens, base, components, utilities;
 
-:root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
-}
-@font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-regular.woff') format('woff');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-@font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-bold.woff') format('woff');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-body {
-	font-family: 'Atkinson', sans-serif;
-	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
-}
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
-}
-h1 {
-	font-size: 3.052em;
-}
-h2 {
-	font-size: 2.441em;
-}
-h3 {
-	font-size: 1.953em;
-}
-h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
-}
-strong,
-b {
-	font-weight: 700;
-}
-a {
-	color: var(--accent);
-}
-a:hover {
-	color: var(--accent);
-}
-p {
-	margin-bottom: 1em;
-}
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
-img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
-code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
-}
-pre {
-	padding: 1.5em;
-	border-radius: 8px;
-}
-pre > code {
-	all: unset;
-}
-blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0px;
-	font-size: 1.333em;
-}
-blockquote cite {
-	font-size: 0.5em;
-}
-hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
-}
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
+@layer reset {
+  /* Modern CSS Reset */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
 }
 
-.sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
-	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
-	white-space: nowrap;
+@layer tokens {
+  :root {
+    /* Colors: Basel Swiss (Monochrome Base) */
+    --color-bg: #ffffff;
+    --color-text: #0b0c10;
+    --color-accent: #ff23fb; /* Retained from original, can be swapped to Swiss Red */
+    --color-gray-light: #e5e9f0;
+    --color-gray: #60739f;
+    --color-gray-dark: #222939;
+
+    /* Typography: International Typographic Style */
+    --font-primary: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1.125rem; /* 18px mobile */
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.563rem;
+    --font-size-2xl: 1.953rem;
+    --font-size-3xl: 2.441rem;
+    --font-size-display: 3.052rem;
+
+    --line-height-base: 1.5;
+    --line-height-heading: 1.1;
+    --font-weight-regular: 400;
+    --font-weight-bold: 700;
+
+    /* Spacing: 8px Grid System */
+    --space-1: 0.5rem; /* 8px */
+    --space-2: 1rem; /* 16px */
+    --space-3: 1.5rem; /* 24px */
+    --space-4: 2rem; /* 32px */
+    --space-6: 3rem; /* 48px */
+    --space-8: 4rem; /* 64px */
+
+    /* Layout */
+    --layout-max-width: 1200px; /* for the shell */
+    --measure-max-width: 720px; /* for the measure/prose/text based content */
+
+    /* Borders: Hard edges only */
+    --border-thin: 1px solid var(--color-text);
+  }
+
+  @media (min-width: 720px) {
+    :root {
+      --font-size-base: 1.25rem; /* 20px desktop */
+    }
+  }
+}
+
+@layer base {
+  body {
+    font-family: var(--font-primary);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-text);
+    line-height: var(--line-height-heading);
+    margin-bottom: var(--space-2);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    font-size: var(--font-size-display);
+  }
+  h2 {
+    font-size: var(--font-size-3xl);
+  }
+  h3 {
+    font-size: var(--font-size-2xl);
+  }
+  h4 {
+    font-size: var(--font-size-xl);
+  }
+  h5 {
+    font-size: var(--font-size-lg);
+  }
+
+  strong,
+  b {
+    font-weight: var(--font-weight-bold);
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  a:hover {
+    color: var(--color-text);
+  }
+
+  p {
+    margin-bottom: var(--space-3);
+  }
+
+  /* Hard edges for images */
+  img {
+    border-radius: 0;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px 4px;
+    background-color: var(--color-gray-light);
+  }
+
+  pre {
+    padding: var(--space-3);
+    background-color: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  blockquote {
+    border-left: 4px solid var(--color-text);
+    padding-left: var(--space-3);
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-lg);
+  }
+
+  hr {
+    border: none;
+    border-top: var(--border-thin);
+    margin: var(--space-4) 0;
+  }
+}
+
+@layer components {
+  /* Default: no sidebar, single column */
+  body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header"
+      "main"
+      "footer";
+    min-height: 100dvh;
+  }
+
+  /* When an aside exists, stack it between main and footer on narrow screens */
+  body:has(> aside) {
+    grid-template-areas:
+      "header"
+      "main"
+      "sidebar"
+      "footer";
+  }
+
+  /* Wide screens: sidebar beside main, but only if an aside exists */
+  @media (min-width: 960px) {
+    body:has(> aside) {
+      grid-template-columns: 1fr 3fr;
+      grid-template-areas:
+        "header  header"
+        "sidebar main"
+        "footer  footer";
+    }
+  }
+
+  /* Area assignments always safe — if no aside exists, rule matches nothing */
+  body > header {
+    grid-area: header;
+  }
+  body > main {
+    grid-area: main;
+  }
+  body > footer {
+    grid-area: footer;
+  }
+  body > aside {
+    grid-area: sidebar;
+  }
+
+  /* Sticky header */
+  body > header {
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+  }
+
+  /* Base layouts that are shared globally */
+  main {
+    display: grid;
+    grid-template-columns:
+      [full-start] minmax(var(--space-2), 1fr)
+      [wide-start] minmax(0, var(--space-8))
+      [measure-start] minmax(0, var(--measure-max-width)) [measure-end]
+      minmax(0, var(--space-8)) [wide-end]
+      minmax(var(--space-2), 1fr) [full-end];
+    row-gap: var(--space-3);
+    padding-block: var(--space-4);
+  }
+
+  main > * {
+    grid-column: measure;
+  }
+
+  main > .wide {
+    grid-column: wide;
+  }
+
+  main > .full-bleed {
+    grid-column: full;
+  }
+
+  @media (min-width: 720px) {
+    main {
+      padding-block: var(--space-8);
+    }
+  }
+
+  .prose p {
+    margin-bottom: var(--space-4);
+  }
+}
+
+@layer utilities {
+  .sr-only {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
