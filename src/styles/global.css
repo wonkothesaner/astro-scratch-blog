@@ -45,23 +45,26 @@
 
 @layer tokens {
   :root {
-    /* Colors: Basel Swiss (Monochrome Base) */
+    /* Colors */
     --color-bg: #ffffff;
     --color-text: #0b0c10;
-    --color-accent: #ff23fb; /* Retained from original, can be swapped to Swiss Red */
-    --color-gray-light: #e5e9f0;
-    --color-gray: #60739f;
-    --color-gray-dark: #222939;
+    --color-accent: #ea0845;
+    --color-gray-light: #858585;
+    --color-gray: #606060;
+    --color-gray-dark: #222222;
+    --color-link: var(--color-text);
+    --color-link-hover: #808080;
+    --color-table-highlight: #e0e0e0;
 
-    /* Typography: International Typographic Style */
+    /* Typography */
     --font-primary: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 1.125rem; /* 18px mobile */
-    --font-size-lg: 1.25rem;
-    --font-size-xl: 1.563rem;
-    --font-size-2xl: 1.953rem;
-    --font-size-3xl: 2.441rem;
-    --font-size-display: 3.052rem;
+    --font-size-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
+    --font-size-base: clamp(1rem, 0.95rem + 0.5vw, 1.25rem);
+    --font-size-lg: clamp(1.125rem, 1rem + 0.6vw, 1.25rem);
+    --font-size-xl: clamp(1.25rem, 1rem + 1vw, 1.563rem);
+    --font-size-2xl: clamp(1.5rem, 1rem + 1.5vw, 1.953rem);
+    --font-size-3xl: clamp(1.75rem, 1rem + 2vw, 2.441rem);
+    --font-size-display: clamp(2rem, 1rem + 3vw, 3.052rem);
 
     --line-height-base: 1.5;
     --line-height-heading: 1.1;
@@ -82,12 +85,9 @@
 
     /* Borders: Hard edges only */
     --border-thin: 1px solid var(--color-text);
-  }
 
-  @media (min-width: 720px) {
-    :root {
-      --font-size-base: 1.25rem; /* 20px desktop */
-    }
+    /* Box shadows */
+    --box-shadow: 0 4px 6px var(--color-text);
   }
 }
 
@@ -111,6 +111,7 @@
     margin-bottom: var(--space-2);
     font-weight: var(--font-weight-bold);
     letter-spacing: -0.02em;
+    text-wrap: balance;
   }
 
   h1 {
@@ -135,13 +136,14 @@
   }
 
   a {
-    color: var(--color-accent);
+    color: var(--color-text);
     text-decoration: underline;
     text-underline-offset: 4px;
   }
 
   a:hover {
-    color: var(--color-text);
+    color: var(--color-link-hover);
+    text-decoration: none;
   }
 
   p {
@@ -183,47 +185,54 @@
   /* Default: no sidebar, single column */
   body {
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas:
-      "header"
-      "main"
-      "footer";
+    grid-template-rows: auto 1fr auto; /* header / page / footer */
     min-height: 100dvh;
   }
 
-  /* When an aside exists, stack it between main and footer on narrow screens */
-  body:has(> aside) {
-    grid-template-areas:
-      "header"
-      "main"
-      "sidebar"
-      "footer";
+  .page {
+    display: grid;
+    grid-template-columns: 1fr; /* narrow: stack */
   }
 
-  /* Wide screens: sidebar beside main, but only if an aside exists */
-  @media (min-width: 960px) {
-    body:has(> aside) {
-      grid-template-columns: 1fr 3fr;
-      grid-template-areas:
-        "header  header"
-        "sidebar main"
-        "footer  footer";
+  .page:has(> aside) {
+    grid-template-areas: "main" "sidebar"; /* narrow: main above sidebar */
+    grid-template-columns: 1fr;
+  }
+
+  /* Opt-in: sidebar first on mobiles only */
+  @media (width < 960px) {
+    .page:has(> aside.aside-first) {
+      grid-template-areas: "sidebar" "main";
     }
   }
 
-  /* Area assignments always safe — if no aside exists, rule matches nothing */
-  body > header {
-    grid-area: header;
+  @media (min-width: 960px) {
+    .page:has(> aside) {
+      grid-template-columns: 1fr 3fr;
+      grid-template-areas: "sidebar main";
+    }
   }
-  body > main {
+
+  .page:has(> aside) > main {
     grid-area: main;
   }
-  body > footer {
-    grid-area: footer;
-  }
-  body > aside {
+
+  .page:has(> aside) > aside {
     grid-area: sidebar;
+    scrollbar-width: thin; /* auto | thin | none */
+    scrollbar-color: var(--color-gray) transparent; /* thumb track */
+  }
+
+  /* Scrollbar styling (Firefox reading scrollbar-width and -color in the block above */
+  .page:has(> aside) > aside::-webkit-scrollbar {
+    width: 6px;
+  }
+  .page:has(> aside) > aside::-webkit-scrollbar-thumb {
+    background: var(--color-gray);
+    border-radius: 3px;
+  }
+  .page:has(> aside) > aside::-webkit-scrollbar-track {
+    background: transparent;
   }
 
   /* Sticky header */
@@ -244,6 +253,16 @@
       minmax(var(--space-2), 1fr) [full-end];
     row-gap: var(--space-3);
     padding-block: var(--space-4);
+  }
+
+  @media (max-width: 640px) {
+    main {
+      grid-template-columns:
+        [full-start wide-start measure-start]
+        minmax(0, 1fr)
+        [measure-end wide-end full-end];
+      padding-inline: var(--space-2);
+    }
   }
 
   main > * {
@@ -267,6 +286,85 @@
   .prose p {
     margin-bottom: var(--space-4);
   }
+
+  /* Styling applied to aside */
+  .page > aside {
+    padding: var(--space-4) var(--space-3);
+    border-block-start: var(--border-thin); /* divider above when stacked */
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    container-type: inline-size;
+    container-name: sidebar;
+
+    & h2,
+    & h3 {
+      font-size: var(--font-size-base);
+      margin-block-end: var(--space-2);
+    }
+    & p {
+      margin-block-end: var(--space-2);
+    }
+    & ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    & li {
+      margin-block-end: var(--space-2);
+    }
+    & a {
+      text-decoration-thickness: 1px;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .page:has(> aside) > aside {
+      border-block-start: none; /* drop the top divider */
+      position: sticky;
+      top: 5rem; /* clear the sticky header */
+      align-self: start; /* don't stretch to fill the row */
+      max-height: calc(100dvh - 5rem);
+      overflow-y: auto;
+      padding-block-start: var(--space-8);
+    }
+
+    .page:has(> aside) > main {
+      border-inline-start: var(--border-thin);
+    }
+  }
+
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0px;
+    border-radius: 0px;
+    border: var(--border-thin);
+    overflow: hidden;
+    margin-top: 0;
+    font-size: 1em;
+  }
+  th,
+  td {
+    padding: var(--space-2) var(--space-4);
+    text-align: left;
+  }
+  th {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-weight: var(--font-weight-bold);
+  }
+  tr:nth-child(even) td {
+    background: var(--color-table-highlight);
+  }
+  tr:nth-child(odd) td {
+    background: var(--color-bg);
+  }
+
+  .page-table {
+    max-width: 75rem;
+    margin-inline: auto;
+  }
 }
 
 @layer utilities {
@@ -283,4 +381,19 @@
     clip-path: inset(50%);
     white-space: nowrap;
   }
+}
+
+/* Typograhpy styling */
+.text-warning {
+  color: var(--color-accent);
+}
+
+.text-centered {
+  text-align: center;
+}
+
+.note {
+  font-style: italic;
+  font-size: var(--font-size-sm);
+  font-weight: 300;
 }

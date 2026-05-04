@@ -1,69 +1,81 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h4>Bon Mots I have collected along the way</h4>
-			<table>
-				<tr>
-					<th>Saying</th>
-					<th>Source</th>
-				</tr>
-				<tr>
-					<td>Experience is the thing you get right after you need it.  [More accurately perhaps "Experience is something you don’t get until just after you need it."]</td>
-					<td><a href="https://en.wikipedia.org/wiki/Steven_Wright" target="_blank">Steven Wright</a></td>
-				</tr>
-				<tr>
-					<td>Ever tried.  Ever failed.  No matter.  Try again.  Fail again.  Fail better</td>
-					<td><a href="https://en.wikipedia.org/wiki/Worstward_Ho" target="_blank">Samuel Beckett</a></td>
-				</tr>
-								<tr>
-					<td>Everyone is entitled to his own opinion, but not to his own facts.</td>
-					<td><a href="https://en.wikipedia.org/wiki/Daniel_Patrick_Moynihan" target="_blank">Daniel Patrick Moynihan (among others?)</a></td>
-				</tr>
-			</table>
-		</main>
-		<Footer />
-		<style>
-			main table {
-				width: 100%;
-				border-collapse: collapse;
-				margin: 2em 0;
-				font-size: 1em;
-			}
-			main th, main td {
-				padding: 0.75em 1.25em;
-				text-align: left;
-			}
-			main th {
-				background: #f4f6fa;
-				color: #222939;
-				font-weight: 700;
-			}
-			main tr:nth-child(even) td {
-				background: #f8fafc;
-			}
-			main tr:nth-child(odd) td {
-				background: #fff;
-			}
-			main tr {
-				border-bottom: 1px solid #e2e8f0;
-			}
-			main table {
-				border-radius: 8px;
-				overflow: hidden;
-			}
-		</style>
-	</body>
-</html>
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <aside class="aside-first">
+    <p>
+      A collection of sayings, phrases, thoughts and other snippets of 'wisdom'
+      that I have been exposed to over the years.
+    </p>
+    <br />
+    <p>
+      I realize that 'wisdom' may be a little strong. I also acknowledge that I
+      have largely only been exposed to words in the English language and mostly
+      those written or said in the last half-century as I have never really read
+      the 'classics'.
+    </p>
+    <br />
+    <p>But one has to start somehwere.</p>
+    <br />
+    <p>
+      Many of these inform the way I think, work and play. I will look to add to
+      them over time and, if the list grows long enough, will categorize them to
+      enable sorting as well.
+    </p>
+    <br />
+    <p>
+      I have tried to ensure that the attributation is correct, i.e. I have
+      checked my sources as best I can. However, I continue to be amazed by the
+      number of times that I confidently ascribe a saying in my head to a source
+      only to find that the person never said it or were certainly not the first
+      to say it.
+    </p>
+  </aside>
+  <main>
+    <h2 class="text-centered">Thoughts to work, play and live by?</h2>
+    <table class="full-bleed page-table">
+      <tr>
+        <th>Saying</th>
+        <th>Source</th>
+      </tr>
+      <tr>
+        <td
+          >Experience is the thing you get right after you need it. <br />
+          <span class="note">
+            More accurately perhaps "Experience is something you don’t get until
+            just after you need it."
+          </span>
+        </td>
+        <td
+          ><a href="https://en.wikipedia.org/wiki/Steven_Wright" target="_blank"
+            >Steven Wright</a
+          ></td
+        >
+      </tr>
+      <tr>
+        <td
+          >Ever tried. Ever failed. No matter. Try again. Fail again. Fail
+          better</td
+        >
+        <td
+          ><a href="https://en.wikipedia.org/wiki/Worstward_Ho" target="_blank"
+            >Samuel Beckett</a
+          ></td
+        >
+      </tr>
+      <tr>
+        <td
+          >Everyone is entitled to his own opinion, but not to his own facts.</td
+        >
+        <td
+          ><a
+            href="https://en.wikipedia.org/wiki/Daniel_Patrick_Moynihan"
+            target="_blank">Daniel Patrick Moynihan (among others?)</a
+          ></td
+        >
+      </tr>
+    </table>
+  </main>
+</BaseLayout>

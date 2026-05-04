@@ -1,6 +1,7 @@
 ---
-import Layout from "../layouts/BlogPost.astro";
-import MediaObject from "../components/layoutComponents/MediaObject.astro";
+import BlogPost from "../layouts/BlogPost.astro";
+import petKeyboard from "../assets/images/about/PET_Keyboard_improved.svg";
+import MediaObject from "../components/mediaComponents/MediaObject.astro";
 import profileImage from "../assets/images/about/martin_headshot.png"; // Import the image
 import golfImage from "../assets/images/about/golf_image.jpg";
 import apolloImage from "../assets/images/about/apollo_11_crew.jpg"; // Import the image
@@ -10,191 +11,149 @@ import astroImage from "../assets/images/about/astro-logo-dark.png"; // Import t
 import earthriseImage from "../assets/images/about/earthrise_apollo_8.jpg"; // Import the image
 ---
 
-<Layout
-	title="About Me"
-	description="Martin Driscoll''s about me page."
-	pubDate={new Date("June 08 2025")}
-	heroImage="/images/about/PET_Keyboard_improved.svg"
+<BlogPost
+  title="About Me"
+  description="Martin Driscoll''s about me page."
+  pubDate={new Date("June 08 2025")}
+  heroImage={petKeyboard}
+  heroImageAlt="Commodore PET 2001 Keyboard"
+  heroFit="contain"
 >
-	<MediaObject image={warningImage} alt="Warning">
-		<h3 style="color: red;">Warning</h3>
-		<p>
-			Left to my own devices, writing about myself is the last thing that I
-			choose to do. So please forgive what follows.
-		</p></MediaObject
-	>
-	<MediaObject image={profileImage} alt="Too long did not read">
-		<p>
-			<b>TL;DR</b>...I used to work stupid long hours doing things with
-			other people's software. Not stupid because I was not paid well (I
-			was) but stupid because I was unable to many of the things that I
-			needed and wanted to do. I <b>needed</b> to look after myself and my
-			family and I
-			<b>wanted</b> to write a website like this one.
-		</p>
-	</MediaObject>
-	<hr />
-	<p>
-		BTW please see <a href="/glossary">
-			here for a list of definitions that may help</a
-		> with things like TL;DR (and BTW).
-	</p>
-	<p>
-		I am no longer paid. I am trying, among other things, to write my own
-		code and explain what I learn along the way. There is already a wealth
-		of courses and content out there. All of which is written and presented
-		by many people much more qualified than I. So any content here should be
-		taken as the "Musings of the Sane". Where Sane here is a reference to
-		John Watson, otherwise known as Wonko the Sane. See <a
-			href="https://hitchhikers.fandom.com/wiki/Wonko_the_Sane"
-			target="_blank">Hitchhiker's Fandom here</a
-		> for further explanation.
-	</p>
-	<p>
-		I am happiest at home, when working, talking and learning with family
-		and friends. I am
-		<b><i>curious, impatient, perpetually.</i></b>
-		At least that is what it says on my WhatsApp profile, which is the only Meta
-		product I use.
-	</p>
-	<MediaObject
-		image={apolloImage}
-		alt="Picture of Apollo 11 crew"
-		source="NASA"
-		flip={true}
-	>
-		<p>
-			I was born in London before they landed on the moon. Not that they
-			landed on the moon in London; you know what I meant I hope? If I had
-			a dinner party with 5 people (alive or dead), I would invite Buzz
-			Aldrin for sure. 🌝 Neil Armstrong might kill the atmosphere, sorry
-			Neil. I will leave the other four invitees for a later blog post.
-		</p>
-	</MediaObject>
-	<p>
-		Philip Larkin wrote a poem about parents which I believe he titled <a
-			href="https://www.poetryfoundation.org/poems/48419/this-be-the-verse"
-			target="_blank"
-			rel="noopener noreferrer">This Be The Verse</a
-		>). It may resonate with you. I can relate to some (but not all) of it;
-		most especially because I now have children myself.
-	</p>
-	<p>
-		I grew up south of London. Where exactly? That is not as important as
-		all the chances that I was given by my parents. Chances to do and
-		explore pretty much as I wanted to. Within boundaries, yes, but at least
-		those boundaries were clear (it was easier back then). One day, Dad
-		brought a Commodore Pet back and I remember playing Space Invaders and a
-		game, whose name I cannot remember, where you fought naval battles.
-		Either way, I enjoyed myself and eventually moved up to a BBC Micro and
-		Elite in the 80s. If you want to know what a Commodore Pet is then look
-		at the top of this page for a picture of its keyboard and <a
-			href="https://collection.sciencemuseumgroup.org.uk/objects/co493761/commodore-pet-2001-8-bs-personal-computer-1977"
-			target="_blank">the Science Museum in the London</a
-		> for an example.
-	</p>
-	<p>
-		Once I left home, I went to university and did some Engineering, while
-		being sponsored by Jaguar Motor Cards (back when they were owned by the
-		UK Government and not Ford or Tata or whomever). I was not particularly
-		good at it. And I left University not knowing what I wanted to do.
-	</p>
-	<MediaObject image={golfImage} alt="My Profile" flip={false}>
-		<p>
-			I played golf while working out the next step to take. And then a
-			lady asked for an egg and cress sandwich (I was working in the golf
-			club bar) and mentioned her husband had a job going. I went along
-			for the interview and started working for living.
-		</p>
-	</MediaObject>
-	<MediaObject image={mondeoImage} alt="Ford Mondeo" flip={true}>
-		<p>
-			I worked for a company that made the front seats for the Ford
-			Mondeo. And, within a year, found myself working in Belgium with a
-			wonderful lady called Karin, who quickly became the love of my life.
-			We set off around the world on a series of adventures.
-		</p>
-	</MediaObject>
-	<MediaObject image={earthriseImage} alt="Apollo 8 Earthrise" source="NASA">
-		<p>
-			We lived in the UK and then moved to east coast (Boston) and west
-			coast of the US. Before then moving on to Singapore, Australia
-			before returning to London in the UK. We typically never lived in
-			one place more than two years. Until we got to London in 2006, where
-			we stuck. Two children arrived in 2010 and 2012 before Brexit
-			happened in 2016.
-		</p>
-	</MediaObject>
-	<p>
-		Which brings us to the current chapter in our lives together. As a
-		result of many things, we moved back to live in Belgium at the beginning
-		of 2021. It is here, in place called Hasselt Limburg, that I write these
-		words and say thank you for reading this far.
-	</p>
-	<MediaObject image={astroImage} alt="Astro Logo" flip={false}>
-		<p>
-			And thanks too <a href="https://astro.build" target="_blank"
-				>for Astro</a
-			> which is an amazing project. I have tried to use it properly when building
-			this site but am sure there are multiple things I could (and should)
-			have done differently.
-		</p><p>
-			I look forward to finding out what they are as I continue my journey
-			as an astronaut.
-		</p>
-		<p>
-			<span
-				>For the latest news, read the Astro Blog here:
-				<a
-					href="https://astro.build/blog/astro-5/"
-					id="news"
-					class="box"
-				>
-					<svg
-						width="32"
-						height="32"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-						><path
-							d="M24.667 12c1.333 1.414 2 3.192 2 5.334 0 4.62-4.934 5.7-7.334 12C18.444 28.567 18 27.456 18 26c0-4.642 6.667-7.053 6.667-14Zm-5.334-5.333c1.6 1.65 2.4 3.43 2.4 5.333 0 6.602-8.06 7.59-6.4 17.334C13.111 27.787 12 25.564 12 22.666c0-4.434 7.333-8 7.333-16Zm-6-5.333C15.111 3.555 16 5.556 16 7.333c0 8.333-11.333 10.962-5.333 22-3.488-.774-6-4-6-8 0-8.667 8.666-10 8.666-20Z"
-							fill="#111827"></path></svg
-					>
-				</a>
-				and follow on Mastodon here:
-				<a href="https://m.webtoo.ls/@astro" target="_blank">
-					<span class="sr-only">Follow Astro on Mastodon</span>
-					<svg
-						viewBox="0 0 16 16"
-						aria-hidden="true"
-						width="32"
-						height="32"
-						><path
-							fill="currentColor"
-							d="M11.19 12.195c2.016-.24 3.77-1.475 3.99-2.603.348-1.778.32-4.339.32-4.339 0-3.47-2.286-4.488-2.286-4.488C12.062.238 10.083.017 8.027 0h-.05C5.92.017 3.942.238 2.79.765c0 0-2.285 1.017-2.285 4.488l-.002.662c-.004.64-.007 1.35.011 2.091.083 3.394.626 6.74 3.78 7.57 1.454.383 2.703.463 3.709.408 1.823-.1 2.847-.647 2.847-.647l-.06-1.317s-1.303.41-2.767.36c-1.45-.05-2.98-.156-3.215-1.928a3.614 3.614 0 0 1-.033-.496s1.424.346 3.228.428c1.103.05 2.137-.064 3.188-.189zm1.613-2.47H11.13v-4.08c0-.859-.364-1.295-1.091-1.295-.804 0-1.207.517-1.207 1.541v2.233H7.168V5.89c0-1.024-.403-1.541-1.207-1.541-.727 0-1.091.436-1.091 1.296v4.079H3.197V5.522c0-.859.22-1.541.66-2.046.456-.505 1.052-.764 1.793-.764.856 0 1.504.328 1.933.983L8 4.39l.417-.695c.429-.655 1.077-.983 1.934-.983.74 0 1.336.259 1.791.764.442.505.661 1.187.661 2.046v4.203z"
-						></path></svg
-					>
-				</a>
-			</span>
-		</p>
-	</MediaObject>
-</Layout>
-
-<style>
-	/* Remove link styling from SVG image link in .box */
-	a.box {
-		text-decoration: none;
-		border: none;
-		background: none;
-		box-shadow: none;
-		outline: none;
-		color: inherit;
-		padding: 0;
-		margin: 0;
-		display: inline-flex;
-		align-items: center;
-	}
-
-	:global(#about-hero-image img:first-of-type) {
-		max-width: 80%;
-	}
-</style>
+  <MediaObject image={warningImage} alt="Warning">
+    <h3 class="text-warning">Warning</h3>
+    <p>
+      Left to my own devices, writing about myself is the last thing that I
+      choose to do. So please forgive what follows.
+    </p></MediaObject
+  >
+  <MediaObject image={profileImage} alt="Too long did not read">
+    <p>
+      <b>TL;DR</b>...I used to work stupid long hours doing things with other
+      people's software. Not stupid because I was not paid well (I was) but
+      stupid because I was unable to many of the things that I needed and wanted
+      to do. I <b>needed</b> to look after myself and my family and I
+      <b>wanted</b> to write a website like this one.
+    </p>
+  </MediaObject>
+  <hr />
+  <p>
+    BTW please see <a href="/glossary">
+      here for a list of definitions that may help</a
+    > with things like TL;DR (and BTW).
+  </p>
+  <p>
+    I am no longer paid. I am trying, among other things, to write my own code
+    and explain what I learn along the way. There is already a wealth of courses
+    and content out there. All of which is written and presented by many people
+    much more qualified than I. So any content here should be taken as the
+    "Musings of the Sane". Where Sane here is a reference to John Watson,
+    otherwise known as Wonko the Sane. See <a
+      href="https://hitchhikers.fandom.com/wiki/Wonko_the_Sane"
+      target="_blank">Hitchhiker's Fandom here</a
+    > for further explanation.
+  </p>
+  <p>
+    I am happiest at home, when working, talking and learning with family and
+    friends. I am
+    <b><i>curious, impatient, perpetually.</i></b>
+    At least that is what it says on my WhatsApp profile, which is the only Meta product
+    I use.
+  </p>
+  <MediaObject
+    image={apolloImage}
+    alt="Picture of Apollo 11 crew"
+    source="NASA"
+    flip={true}
+  >
+    <p>
+      I was born in London before they landed on the moon. Not that they landed
+      on the moon in London; you know what I meant I hope? If I had a dinner
+      party with 5 people (alive or dead), I would invite Buzz Aldrin for sure.
+      🌝 Neil Armstrong might kill the atmosphere, sorry Neil. I will leave the
+      other four invitees for a later blog post.
+    </p>
+  </MediaObject>
+  <p>
+    Philip Larkin wrote a poem about parents which I believe he titled <a
+      href="https://www.poetryfoundation.org/poems/48419/this-be-the-verse"
+      target="_blank"
+      rel="noopener noreferrer">This Be The Verse</a
+    >). It may resonate with you. I can relate to some (but not all) of it; most
+    especially because I now have children myself.
+  </p>
+  <p>
+    I grew up south of London. Where exactly? That is not as important as all
+    the chances that I was given by my parents. Chances to do and explore pretty
+    much as I wanted to. Within boundaries, yes, but at least those boundaries
+    were clear (it was easier back then). One day, Dad brought a Commodore Pet
+    back and I remember playing Space Invaders and a game, whose name I cannot
+    remember, where you fought naval battles. Either way, I enjoyed myself and
+    eventually moved up to a BBC Micro and Elite in the 80s. If you want to know
+    what a Commodore Pet is then look at the top of this page for a picture of
+    its keyboard and <a
+      href="https://collection.sciencemuseumgroup.org.uk/objects/co493761/commodore-pet-2001-8-bs-personal-computer-1977"
+      target="_blank">the Science Museum in the London</a
+    > for an example.
+  </p>
+  <p>
+    Once I left home, I went to university and did some Engineering, while being
+    sponsored by Jaguar Motor Cards (back when they were owned by the UK
+    Government and not Ford or Tata or whomever). I was not particularly good at
+    it. And I left University not knowing what I wanted to do.
+  </p>
+  <MediaObject image={golfImage} alt="My Profile" flip={false}>
+    <p>
+      I played golf while working out the next step to take. And then a lady
+      asked for an egg and cress sandwich (I was working in the golf club bar)
+      and mentioned her husband had a job going. I went along for the interview
+      and started working for living.
+    </p>
+  </MediaObject>
+  <MediaObject image={mondeoImage} alt="Ford Mondeo" flip={true}>
+    <p>
+      I worked for a company that made the front seats for the Ford Mondeo. And,
+      within a year, found myself working in Belgium with a wonderful lady
+      called Karin, who quickly became the love of my life. We set off around
+      the world on a series of adventures.
+    </p>
+  </MediaObject>
+  <MediaObject image={earthriseImage} alt="Apollo 8 Earthrise" source="NASA">
+    <p>
+      We lived in the UK and then moved to east coast (Boston) and west coast of
+      the US. Before then moving on to Singapore, Australia before returning to
+      London in the UK. We typically never lived in one place more than two
+      years. Until we got to London in 2006, where we stuck. Two children
+      arrived in 2010 and 2012 before Brexit happened in 2016.
+    </p>
+  </MediaObject>
+  <p>
+    Which brings us to the current chapter in our lives together. As a result of
+    many things, we moved back to live in Belgium at the beginning of 2021. It
+    is here, in place called Hasselt Limburg, that I write these words and say
+    thank you for reading this far.
+  </p>
+  <MediaObject image={astroImage} alt="Astro Logo" flip={false}>
+    <p>
+      And thanks too <a href="https://astro.build" target="_blank">for Astro</a> which
+      is an amazing project. I have tried to use it properly when building this site
+      but am sure there are multiple things I could (and should) have done differently.
+    </p><p>
+      I look forward to finding out what they are as I continue my journey as an
+      astronaut.
+    </p>
+    <p>
+      <span
+        >For the latest news, read the
+        <a href="https://astro.build/blog/" id="news" class="box">
+          <span class="sr-only">read Astro blog</span>
+          Astro blog here</a
+        >
+        and follow them
+        <a href="https://m.webtoo.ls/@astro" target="_blank">
+          <span class="sr-only">follow Astro on Mastodon</span>
+          on Mastodon here</a
+        >.
+      </span>
+    </p>
+  </MediaObject>
+</BlogPost>

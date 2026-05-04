@@ -1,51 +1,10 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h4>Work in Progress</h4>
-		</main>
-		<Footer />
-		<style>
-			main table {
-				width: 100%;
-				border-collapse: collapse;
-				margin: 2em 0;
-				font-size: 1em;
-			}
-			main th, main td {
-				padding: 0.75em 1.25em;
-				text-align: left;
-			}
-			main th {
-				background: #f4f6fa;
-				color: #222939;
-				font-weight: 700;
-			}
-			main tr:nth-child(even) td {
-				background: #f8fafc;
-			}
-			main tr:nth-child(odd) td {
-				background: #fff;
-			}
-			main tr {
-				border-bottom: 1px solid #e2e8f0;
-			}
-			main table {
-				border-radius: 8px;
-				overflow: hidden;
-			}
-		</style>
-	</body>
-</html>
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <main>
+    <h4>Work in Progress</h4>
+  </main>
+</BaseLayout>

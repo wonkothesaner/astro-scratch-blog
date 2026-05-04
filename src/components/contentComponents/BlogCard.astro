@@ -1,0 +1,89 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import FormattedDate from "../utilityComponents/FormattedDate.astro";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+---
+
+<article class="blog-card">
+  <a href={`/blog/${post.id}/`}>
+    {
+      post.data.heroImage && (
+        <Image
+          src={post.data.heroImage}
+          alt=""
+          widths={[200, 400, 600, 800]}
+          sizes="(min-width: 600px) 33vw, 100vw"
+          loading="lazy"
+        />
+      )
+    }
+    <div class="blog-card__body">
+      <h3>{post.data.title}</h3>
+      <FormattedDate date={post.data.pubDate} />
+      {post.data.description && <p>{post.data.description}</p>}
+    </div>
+  </a>
+</article>
+
+<style>
+  .blog-card {
+    container-type: inline-size;
+  }
+
+  .blog-card a {
+    margin: 1em;
+    display: grid;
+    gap: var(--space-2);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .blog-card img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .blog-card h3 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-heading);
+  }
+
+  .blog-card time {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray);
+  }
+
+  .blog-card p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+  }
+
+  .blog-card a:hover h3 {
+    color: var(--color-link-hover);
+  }
+
+  @container (min-width: 420px) {
+    .blog-card a {
+      grid-template-columns: 1fr 2fr;
+      align-items: start;
+      gap: var(--space-3);
+    }
+
+    .blog-card img {
+      aspect-ratio: 4 / 3;
+    }
+
+    .blog-card h3 {
+      font-size: var(--font-size-base);
+    }
+  }
+</style>

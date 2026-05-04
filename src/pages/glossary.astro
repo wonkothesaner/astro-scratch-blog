@@ -1,71 +1,58 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<p>
-				Glossary of some Terms that may (or may not) help you navigate
-			</p>
-			<table>
-				<tr>
-					<th>Term</th>
-					<th>Description</th>
-				</tr>
-				<tr>
-					<td>TL;DR</td>
-					<td
-						>Too long; didn't read. What people say when they think
-						you have a short attention span but want you to read on
-						anyway.</td
-					>
-				</tr>
-				<tr>
-					<td>BTW</td>
-					<td>By the way, it's the Tax you pay in Belgium instead of VAT.</td>
-				</tr>
-			</table>
-		</main>
-		<Footer />
-		<style>
-			main table {
-				width: 100%;
-				border-collapse: collapse;
-				margin: 2em 0;
-				font-size: 1em;
-			}
-			main th,
-			main td {
-				padding: 0.75em 1.25em;
-				text-align: left;
-			}
-			main th {
-				background: #f4f6fa;
-				color: #222939;
-				font-weight: 700;
-			}
-			main tr:nth-child(even) td {
-				background: #f8fafc;
-			}
-			main tr:nth-child(odd) td {
-				background: #fff;
-			}
-			main tr {
-				border-bottom: 1px solid #e2e8f0;
-			}
-			main table {
-				border-radius: 8px;
-				overflow: hidden;
-			}
-		</style>
-	</body>
-</html>
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <aside class="aside-first">
+    <p>An attempt at humour.</p>
+    <br />
+    <p>
+      Glossary of some Terms that may (or may not) help you navigate the musings
+      on this site and/or life in general.
+    </p>
+    <br />
+    <p>
+      Clearly I accept no responsibility for any accidents that may happen as a
+      result of taking any of this seriously
+    </p>
+  </aside>
+  <main>
+    <h2 class="text-centered wide">
+      Some three (or more) letter acronyms (TLAs)
+    </h2>
+    <table class="full-bleed page-table">
+      <tr>
+        <th class="text-centered">TLA</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>HWGA</td>
+        <td
+          ><strong>Here we go again</strong>. A feeling currently most often
+          felt around the dinner table.</td
+        >
+      </tr>
+      <tr>
+        <td>TL;DR</td>
+        <td
+          ><strong>Too long; didn't read</strong>. What people say when they
+          think you have a short attention span but want you to read on anyway.</td
+        >
+      </tr>
+      <tr>
+        <td>BTW</td>
+        <td><strong>By the way</strong>. Or the VAT Tax you pay in Belgium.</td>
+      </tr>
+      <tr>
+        <td>TOB</td>
+        <td
+          ><strong>Taks op beursverrichtingen</strong> (tax on stock exchnage transactions).
+          Another tax, this one a transaction tax placed by the Belgian authorities
+          on any buy or sell stock market transaction one makes. Just don't ask anyone
+          to explain how it works or which TOB tax rate to apply to which transaction.</td
+        >
+      </tr>
+    </table>
+  </main>
+</BaseLayout>
