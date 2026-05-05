@@ -113,3 +113,14 @@ const {
 />
 
 <PostHog />
+<!-- Cloudflare Web Analytics -->
+{
+  import.meta.env.PROD && (
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "3dff1f363e0a4b848a18dc361245f880"}'
+    />
+  )
+}
+<!-- End Cloudflare Web Analytics -->
