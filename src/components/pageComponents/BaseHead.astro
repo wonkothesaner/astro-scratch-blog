@@ -10,6 +10,11 @@ interface Props {
   description: string;
   image?: string;
   twitterImage?: string;
+  pageType?: "website" | "article";
+  pubDate?: Date;
+  updatedDate?: Date;
+  author?: string;
+  tags?: string[];
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -19,6 +24,11 @@ const {
   description,
   image = "/ogimage.png",
   twitterImage = "/martin-headshot.png",
+  pageType = "website",
+  pubDate,
+  updatedDate,
+  author,
+  tags,
 } = Astro.props;
 ---
 
@@ -61,18 +71,41 @@ const {
 <meta name="description" content={description} />
 
 <!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:type" content={pageType} />
+
+{
+  pageType === "article" && (
+    <>
+      {pubDate && (
+        <meta
+          property="article:published_time"
+          content={pubDate.toISOString()}
+        />
+      )}
+      {updatedDate && (
+        <meta
+          property="article:modified_time"
+          content={updatedDate.toISOString()}
+        />
+      )}
+      {author && <meta property="article:author" content={author} />}
+      {tags?.map((tag) => (
+        <meta property="article:tag" content={tag} />
+      ))}
+    </>
+  )
+}
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:image" content={new URL(image, canonicalURL)} />
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(twitterImage, Astro.url)} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(twitterImage, canonicalURL)} />
 
 <meta
   name="google-site-verification"

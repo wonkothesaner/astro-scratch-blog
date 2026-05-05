@@ -3,13 +3,23 @@ import BaseHead from "../components/pageComponents/BaseHead.astro";
 import Header from "../components/pageComponents/Header.astro";
 import Footer from "../components/pageComponents/Footer.astro";
 
-const { title, description } = Astro.props;
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  twitterImage?: string;
+  pageType?: "website" | "article";
+  pubDate?: Date;
+  updatedDate?: Date;
+  author?: string;
+  tags?: string[];
+}
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead {...Astro.props} />
   </head>
   <body>
     <Header />

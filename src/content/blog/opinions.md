@@ -1,9 +1,10 @@
 ---
 title: "Shout out to Syntax.fm"
 description: "There isn't a podcast episode where I don't learn something useful"
-pubDate: "Jul 25 2025"
+pubDate: 2025-07-25
 heroImage: "../../assets/images/blog/syntaxfm.png"
 heroImageAlt: Image of the Syntax.fm podcast logo
+heroFit: "contain"
 tags: ["coding"]
 ---
 

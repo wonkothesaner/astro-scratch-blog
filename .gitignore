@@ -30,4 +30,5 @@ pnpm-debug.log*
 # Agent
 .claude/
 .gemini/
+.geminirules.md
 

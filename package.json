@@ -23,5 +23,12 @@
     "rehype-external-links": "^3.0.0",
     "typescript": "^5.9.3",
     "varlock": "^0.9.1"
-  }
+  },
+  "devDependencies": {
+    "browserslist": "^4.28.2",
+    "lightningcss": "^1.32.0"
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }

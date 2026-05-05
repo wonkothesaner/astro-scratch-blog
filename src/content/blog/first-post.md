@@ -1,8 +1,8 @@
 ---
 title: Hello World!
 description: First blog post ever
-pubDate: Jun 01 2025
-updatedDate: April 25 2026
+pubDate: 2025-06-01
+updatedDate: 2026-04-25
 heroImage: ../../assets/images/blog/shaft-of-pen.jpg
 heroImageAlt: A picture of a Seamus Heaney's poem "First Gloss"
 heroFit: contain

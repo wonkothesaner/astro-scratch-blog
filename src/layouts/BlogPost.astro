@@ -4,7 +4,9 @@ import { Image } from "astro:assets";
 import BaseLayout from "./BaseLayout.astro";
 import FormattedDate from "../components/utilityComponents/FormattedDate.astro";
 
-type Props = CollectionEntry<"blog">["data"];
+type Props = CollectionEntry<"blog">["data"] & {
+  pageType?: "website" | "article";
+};
 
 const {
   title,
@@ -16,18 +18,27 @@ const {
   heroFit,
   heroAspectRatio,
   heroPortrait,
+  pageType = "article",
 } = Astro.props;
+
 const { pathname } = Astro.url;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout
+  title={title}
+  description={description}
+  pageType={pageType}
+  pubDate={pubDate}
+  updatedDate={updatedDate}
+  author="Martin Driscoll"
+>
   <main>
     <div
       class="hero-image wide"
       data-fit={heroFit}
       data-portrait={heroPortrait}
       style={heroAspectRatio ? `--hero-aspect: ${heroAspectRatio}` : undefined}
-      id={pathname === "/about/" ? "about-hero-image" : undefined}
+      id={pathname === "/about" ? "about-hero-image" : undefined}
     >
       {heroImage && <Image src={heroImage} alt={heroImageAlt ?? ""} priority />}
     </div>
@@ -89,12 +100,12 @@ const { pathname } = Astro.url;
   }
   .date {
     margin-bottom: 0.5em;
-    color: var(--color-gray);
+    color: var(--color-meta);
   }
   .last-updated-on {
     font-style: italic;
     margin-top: 0.5em;
     font-size: 0.8em;
-    color: var(--color-gray-dark);
+    color: var(--color-meta);
   }
 </style>

@@ -41,6 +41,15 @@
   h6 {
     overflow-wrap: break-word;
   }
+  /* Reset the default ring */
+  :focus {
+    outline: none;
+  }
+  /* Restore a deliberate ring for keyboard users */
+  :focus-visible {
+    outline: 2px solid var(--color-link-hover);
+    outline-offset: 2px;
+  }
 }
 
 @layer tokens {
@@ -55,6 +64,7 @@
     --color-link: var(--color-text);
     --color-link-hover: #808080;
     --color-table-highlight: #e0e0e0;
+    --color-meta: var(--color-gray);
 
     /* Typography */
     --font-primary: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -88,6 +98,17 @@
 
     /* Box shadows */
     --box-shadow: 0 4px 6px var(--color-text);
+
+    /* color scheme and prefers-reduced-motion added to address user preferences */
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #121212;
+      --color-text: #e8e8e8;
+      --color-table-highlight: #424242;
+      --color-meta: var(--color-text);
+    }
   }
 }
 
@@ -161,11 +182,11 @@
     background-color: var(--color-gray-light);
   }
 
-  pre {
+  /* pre {
     padding: var(--space-3);
     background-color: var(--color-text);
     color: var(--color-bg);
-  }
+  } Commented out as not currently used. I should make sure it is removed at some stage. */
 
   blockquote {
     border-left: 4px solid var(--color-text);
@@ -178,6 +199,41 @@
     border: none;
     border-top: var(--border-thin);
     margin: var(--space-4) 0;
+  }
+
+  @media print {
+    body > header,
+    body > footer,
+    aside {
+      display: none;
+    }
+    body {
+      color: black;
+      background: white;
+    }
+    a {
+      color: black;
+      text-decoration: underline;
+    }
+    a[href^="http"]::after {
+      content: " (" attr(href) ")";
+    }
+    pre,
+    blockquote {
+      page-break-inside: avoid;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -293,8 +349,6 @@
     border-block-start: var(--border-thin); /* divider above when stacked */
     font-size: var(--font-size-sm);
     line-height: var(--line-height-base);
-    container-type: inline-size;
-    container-name: sidebar;
 
     & h2,
     & h3 {
@@ -381,19 +435,19 @@
     clip-path: inset(50%);
     white-space: nowrap;
   }
-}
 
-/* Typograhpy styling */
-.text-warning {
-  color: var(--color-accent);
-}
+  /* Typograhpy styling */
+  .text-warning {
+    color: var(--color-accent);
+  }
 
-.text-centered {
-  text-align: center;
-}
+  .text-centered {
+    text-align: center;
+  }
 
-.note {
-  font-style: italic;
-  font-size: var(--font-size-sm);
-  font-weight: 300;
+  .note {
+    font-style: italic;
+    font-size: var(--font-size-sm);
+    font-weight: 300;
+  }
 }

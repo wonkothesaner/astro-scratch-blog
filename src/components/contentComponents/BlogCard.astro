@@ -11,7 +11,7 @@ const { post } = Astro.props;
 ---
 
 <article class="blog-card">
-  <a href={`/blog/${post.id}/`}>
+  <a href={`/blog/${post.id}`}>
     {
       post.data.heroImage && (
         <Image
@@ -55,11 +55,6 @@ const { post } = Astro.props;
     margin: 0;
     font-size: var(--font-size-lg);
     line-height: var(--line-height-heading);
-  }
-
-  .blog-card time {
-    font-size: var(--font-size-sm);
-    color: var(--color-gray);
   }
 
   .blog-card p {

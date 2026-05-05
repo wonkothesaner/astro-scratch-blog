@@ -1,7 +1,7 @@
 ---
 title: "Still to come"
 description: "Third post - WIP"
-pubDate: "Jun 13 2025"
+pubDate: 2025-06-13
 heroImage: "../../assets/images/blog/blog-placeholder-2.jpg"
 ---
 
