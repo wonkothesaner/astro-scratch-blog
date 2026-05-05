@@ -25,13 +25,13 @@ const recentPosts = (await getCollection("blog"))
       ever having seen a code snippet before. Perhaps you have never worked
       through the opening exercise of the latest coding or development tutorial?
     </p>
-    <p class="impact extra-gap">No matter.</p>
+    <p class="impact">No matter.</p>
     <p>
       For this is <u><b>not</b></u> a coding tutorial. It is a guide to some of the
       things that I have learned while trying to follow others' lessons and tutorials.
       And some other miscellaneous items that I also picked up along the way.
     </p>
-    <p class="extra-gap">
+    <p>
       Hi, I'm Martin. I am a (relatively) new web developer but one with more
       than 30 years of other work experiences. I stopped doing the work that I
       used to do because I wanted to learn something new. And I promised myself
@@ -57,8 +57,8 @@ const recentPosts = (await getCollection("blog"))
       whole world; he lived on the inside and was sane, everyone else lived on the
       outside and were not.
     </p>
-    <p class="impact extra-gap">Hence I call this site "Sane Musings"</p>
-    <p>The site is structured as follows:</p>
+    <p class="impact">Hence I call this site "Sane Musings"</p>
+    <p class="list-start">The site is structured as follows:</p>
     <ul>
       <li>
         <a href="/blog/">Blog content</a> where I attempt to capture and document
@@ -95,7 +95,8 @@ const recentPosts = (await getCollection("blog"))
     border-radius: 3px;
   }
 
-  .extra-gap {
-    margin-top: 2em;
+  .list-start {
+    margin-bottom: 0;
+    gap: 0;
   }
 </style>

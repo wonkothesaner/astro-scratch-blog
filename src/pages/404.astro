@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE } from "../consts";
+---
+
+<BaseLayout
+  title={`Page not found — ${SITE_TITLE}`}
+  description="The page you are looking for does not exist on this site."
+>
+  <main>
+    <section class="not-found">
+      <h1 class="text-warning">404</h1>
+      <p class="lede">This page does not exist (or no longer does).</p>
+      <p>
+        It may have moved, been renamed, or never have been here in the first
+        place.
+      </p>
+      <p>
+        If you followed a link to get here, I'm afraid that link is out of date.
+      </p>
+      <p>
+        You should be able to get back to content using any of the links above.
+      </p>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .not-found {
+    text-align: center;
+    padding-block: var(--space-8);
+  }
+
+  .not-found h1 {
+    font-size: clamp(4rem, 2rem + 8vw, 8rem);
+    line-height: 1;
+    margin-bottom: var(--space-2);
+  }
+
+  .lede {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-4);
+  }
+
+  .links {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-6);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  .links a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>

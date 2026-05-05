@@ -67,7 +67,8 @@
     --color-meta: var(--color-gray);
 
     /* Typography */
-    --font-primary: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-primary:
+      "Atkinson Hyperlegible", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --font-size-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
     --font-size-base: clamp(1rem, 0.95rem + 0.5vw, 1.25rem);
     --font-size-lg: clamp(1.125rem, 1rem + 0.6vw, 1.25rem);
@@ -113,6 +114,19 @@
 }
 
 @layer base {
+  @font-face {
+    font-family: "Atkinson Hyperlegible";
+    src: url("/fonts/atkinson-regular.woff") format("woff");
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Atkinson Hyperlegible";
+    src: url("/fonts/atkinson-bold.woff") format("woff");
+    font-weight: 700;
+    font-display: swap;
+  }
+
   body {
     font-family: var(--font-primary);
     background-color: var(--color-bg);
@@ -199,6 +213,17 @@
     border: none;
     border-top: var(--border-thin);
     margin: var(--space-4) 0;
+  }
+
+  ul {
+    margin-inline-start: var(--space-3);
+    margin-inline-end: var(--space-3);
+    padding-inline-start: var(--space-2);
+  }
+
+  li {
+    padding-inline-start: var(--space-1);
+    padding-inline-end: var(--space-2);
   }
 
   @media print {

@@ -2,8 +2,8 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import "../../styles/global.css";
-import { SITE_TITLE } from "../../consts";
-import PostHog from "../codeComponents/PostHog.astro";
+import StructuredData from "../codeComponents/StructuredData.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 
 interface Props {
   title: string;
@@ -17,8 +17,6 @@ interface Props {
   tags?: string[];
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-
 const {
   title,
   description,
@@ -30,7 +28,62 @@ const {
   author,
   tags,
 } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_TITLE,
+  url: Astro.site?.toString(),
+  description: SITE_DESCRIPTION,
+  inLanguage: "en",
+  author: {
+    "@type": "Person",
+    name: "Martin Driscoll",
+    url: new URL("/about", Astro.site).toString(),
+  },
+};
+
+// In frontmatter, after websiteSchema:
+const articleSchema =
+  pageType === "article"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: title,
+        description,
+        image: image ? new URL(image, Astro.site).toString() : undefined,
+        datePublished: pubDate?.toISOString(),
+        dateModified: (updatedDate ?? pubDate)?.toISOString(),
+        url: canonicalURL.toString(),
+        mainEntityOfPage: canonicalURL.toString(),
+        author: {
+          "@type": "Person",
+          name: author ?? "Martin Driscoll",
+          url: new URL("/about", Astro.site).toString(),
+        },
+        publisher: {
+          "@type": "Person",
+          name: "Martin Driscoll",
+          url: Astro.site?.toString(),
+        },
+      }
+    : null;
 ---
+
+<!-- Security & Privacy meta tags -->{
+  import.meta.env.PROD && (
+    <>
+      <meta
+        http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' static.cloudflareinsights.com cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'"
+      />
+      <meta name="referrer" content="strict-origin-when-cross-origin" />
+    </>
+  )
+}
+<!-- End security & privacy meta tags                                   -->
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
@@ -112,15 +165,20 @@ const {
   content="A2MELFvkyGvkRuMoOlPezpRVJ6_SetynCBTJlVF2_VU"
 />
 
-<PostHog />
+<!-- Structured data for the page -->
+<StructuredData data={websiteSchema} />
+{articleSchema && <StructuredData data={articleSchema} />}
+<!-- End structured data for the page -->
+
 <!-- Cloudflare Web Analytics -->
 {
   import.meta.env.PROD && (
     <script
+      is:inline
       defer
       src="https://static.cloudflareinsights.com/beacon.min.js"
       data-cf-beacon='{"token": "3dff1f363e0a4b848a18dc361245f880"}'
-    />
+    ></script>
   )
 }
 <!-- End Cloudflare Web Analytics -->
