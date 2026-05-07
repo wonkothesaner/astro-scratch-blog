@@ -72,7 +72,8 @@ const articleSchema =
     : null;
 ---
 
-<!-- Security & Privacy meta tags -->{
+{/* Security & Privacy meta tags */}
+{
   import.meta.env.PROD && (
     <>
       <meta
@@ -83,9 +84,9 @@ const articleSchema =
     </>
   )
 }
-<!-- End security & privacy meta tags                                   -->
+{/* End security & privacy meta tags */}
 
-<!-- Global Metadata -->
+{/* Global Metadata */}
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -99,7 +100,7 @@ const articleSchema =
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Font preloads -->
+{/* Font preloads */}
 <link
   rel="preload"
   href="/fonts/atkinson-regular.woff"
@@ -115,15 +116,15 @@ const articleSchema =
   crossorigin
 />
 
-<!-- Canonical URL -->
+{/* Canonical URL */}
 <link rel="canonical" href={canonicalURL} />
 
-<!-- Primary Meta Tags -->
+{/* Primary Meta Tags */}
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook -->
+{/* Open Graph / Facebook */}
 <meta property="og:type" content={pageType} />
 
 {
@@ -153,7 +154,7 @@ const articleSchema =
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, canonicalURL)} />
 
-<!-- Twitter -->
+{/* Twitter */}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:url" content={canonicalURL} />
 <meta name="twitter:title" content={title} />
@@ -165,12 +166,16 @@ const articleSchema =
   content="A2MELFvkyGvkRuMoOlPezpRVJ6_SetynCBTJlVF2_VU"
 />
 
-<!-- Structured data for the page -->
-<StructuredData data={websiteSchema} />
+{/* Structured data for the page */}
+{
+  (Astro.url.pathname === "/" || Astro.url.pathname === "") && (
+    <StructuredData data={websiteSchema} />
+  )
+}
 {articleSchema && <StructuredData data={articleSchema} />}
-<!-- End structured data for the page -->
+{/* End structured data for the page */}
 
-<!-- Cloudflare Web Analytics -->
+{/* Cloudflare Web Analytics */}
 {
   import.meta.env.PROD && (
     <script
@@ -178,7 +183,7 @@ const articleSchema =
       defer
       src="https://static.cloudflareinsights.com/beacon.min.js"
       data-cf-beacon='{"token": "3dff1f363e0a4b848a18dc361245f880"}'
-    ></script>
+    />
   )
 }
-<!-- End Cloudflare Web Analytics -->
+{/* End Cloudflare Web Analytics */}
