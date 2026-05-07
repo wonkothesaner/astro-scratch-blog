@@ -18,11 +18,9 @@ export default config({
         description: fields.text({ label: 'Description', multiline: true }),
         pubDate: fields.date({ label: 'Publication Date' }),
         updatedDate: fields.date({ label: 'Updated Date' }),
-        heroImage: fields.image({
-          label: 'Hero Image',
-          directory: 'src/assets/images/blog',
-          publicPath: '../../assets/images/blog/',
-          validation: { isRequired: false }
+        heroImage: fields.text({
+          label: 'Hero Image (path, e.g. ../../assets/images/blog/foo.png)',
+          description: 'Drop the file into src/assets/images/blog/ via your editor, then enter the relative path here.'
         }),
 
 
