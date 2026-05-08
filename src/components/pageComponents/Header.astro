@@ -1,18 +1,40 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
-import { SITE_TITLE } from "../../consts";
+import { SITE_TITLE, NAV_PRIMARY, NAV_SECONDARY } from "../../consts";
+
+const NAV_ALL = [...NAV_PRIMARY, ...NAV_SECONDARY];
 ---
 
 <header>
   <nav>
     <h2 class="site-title"><a href="/">{SITE_TITLE}</a></h2>
-    <div class="internal-links">
-      <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/blog">Blog</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink>
-      <HeaderLink href="/wisdom">Wisdom</HeaderLink>
-      <HeaderLink href="/projects">Projects</HeaderLink>
-      <HeaderLink href="/glossary">Glossary</HeaderLink>
+
+    {/* Wide nav: all links inline, no dropdown */}
+    <div class="internal-links wide-nav">
+      {
+        NAV_ALL.map((l) => (
+          <HeaderLink href={l.href}>{l.label}</HeaderLink>
+        ))
+      }
+    </div>
+
+    {/* Narrow nav: primary inline, secondary inside <details> */}
+    <div class="internal-links narrow-nav">
+      {
+        NAV_PRIMARY.map((l) => (
+          <HeaderLink href={l.href}>{l.label}</HeaderLink>
+        ))
+      }
+      <details>
+        <summary>More</summary>
+        <div class="dropdown">
+          {
+            NAV_SECONDARY.map((l) => (
+              <HeaderLink href={l.href}>{l.label}</HeaderLink>
+            ))
+          }
+        </div>
+      </details>
     </div>
     <div class="social-links">
       <a
@@ -53,6 +75,9 @@ import { SITE_TITLE } from "../../consts";
   .internal-links {
     grid-column: 2;
     justify-self: center;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
   }
   .social-links {
     grid-column: 3;
@@ -110,4 +135,71 @@ import { SITE_TITLE } from "../../consts";
       display: none;
     }
   }
+
+  /* === Two-nav swap: wide vs narrow ============================== */
+  /* Default: show wide nav, hide narrow nav. */
+  .narrow-nav {
+    display: none;
+  }
+
+  /* Below 700px container width: swap them. */
+  @container (max-width: 700px) {
+    .wide-nav {
+      display: none;
+    }
+    .narrow-nav {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  /* Styling for the <details>/summary "More" dropdown (narrow nav only) */
+  .narrow-nav details {
+    position: relative;
+  }
+
+  /* Make <summary> look and behave like the nav <a> elements */
+  .narrow-nav summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1em 0.5em;
+    color: var(--color-text);
+    border-bottom: 4px solid transparent;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .narrow-nav summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .narrow-nav summary:hover {
+    color: var(--color-link-hover);
+    border-bottom-color: var(--color-link-hover);
+  }
+
+  /* Dropdown panel anchored below the summary */
+  .narrow-nav .dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--color-bg);
+    border: var(--border-thin);
+    display: flex;
+    flex-direction: column;
+    min-width: 8rem;
+    z-index: 2;
+  }
+
+  /* Dropdown items: vertical layout, tighter padding, no animated underline */
+  .narrow-nav .dropdown a {
+    padding: 0.5em 1em;
+    border-bottom: none;
+    display: block;
+  }
+
+  .narrow-nav .dropdown a:hover:not(.active) {
+    border-bottom: none;
+  }
+  /* === End two-nav swap ========================================== */
 </style>
