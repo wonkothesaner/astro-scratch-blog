@@ -1,6 +1,14 @@
 import { glob } from 'astro/loaders';
 import { defineCollection } from 'astro:content';
 import { z } from 'zod';
+import { CATEGORIES } from "./consts";
+
+// Derives the enum tuple from the CATEGORIES keys at build time.
+// If you add a new key to CATEGORIES, the schema picks it up automatically
+const categorySlugs = Object.keys(CATEGORIES) as [
+	keyof typeof CATEGORIES,
+	...Array<keyof typeof CATEGORIES>
+];
 
 const blog = defineCollection({
 	// Load Markdown and MDX files in the `src/content/blog/` directory.
@@ -12,12 +20,7 @@ const blog = defineCollection({
 		description: z.string(),
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
-		category: z.enum([
-			"sap",
-			"50-plus-dev",
-			"miscellany",
-			"life-in-general",
-		]),
+		category: z.enum(categorySlugs),
 		heroImage: image().optional(),
 		heroImageAlt: z.string().optional(),
 		heroFit: z.enum(["cover", "contain"]).optional().default("cover"),

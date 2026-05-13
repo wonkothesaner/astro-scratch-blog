@@ -25,6 +25,7 @@
   svg {
     display: block;
     max-width: 100%;
+    height: auto;
   }
   input,
   button,
@@ -492,5 +493,25 @@
     font-style: italic;
     font-size: var(--font-size-sm);
     font-weight: 300;
+  }
+
+  .float-right {
+    float: right;
+    width: clamp(150px, 33%, 300px);
+    height: auto;
+    margin: 0 0 var(--space-3) var(--space-3);
+    shape-outside: margin-box;
+  }
+
+  .float-left {
+    float: left;
+    width: clamp(150px, 33%, 300px);
+    height: auto;
+    margin: 0 var(--space-3) var(--space-3) 0;
+    shape-outside: margin-box;
+  }
+
+  .clear {
+    clear: both;
   }
 }
