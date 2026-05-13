@@ -1,5 +1,6 @@
 import { glob } from 'astro/loaders';
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'zod';
 
 const blog = defineCollection({
 	// Load Markdown and MDX files in the `src/content/blog/` directory.
@@ -11,6 +12,12 @@ const blog = defineCollection({
 		description: z.string(),
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
+		category: z.enum([
+			"sap",
+			"50-plus-dev",
+			"miscellany",
+			"life-in-general",
+		]),
 		heroImage: image().optional(),
 		heroImageAlt: z.string().optional(),
 		heroFit: z.enum(["cover", "contain"]).optional().default("cover"),

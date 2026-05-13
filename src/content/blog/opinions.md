@@ -4,6 +4,7 @@ description: >-
   How recently listening to a Syntax.fm episode confirmed an opinion that I have held for a while.
 pubDate: 2025-07-25
 updatedDate: 2026-05-12
+category: sap
 heroImage: ../../assets/images/blog/syntaxfm.png
 heroImageAlt: Image of the Syntax.fm podcast logo
 heroFit: contain

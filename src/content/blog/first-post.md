@@ -3,13 +3,13 @@ title: Hello World!
 description: First blog post ever
 pubDate: 2025-06-01
 updatedDate: 2026-04-25
+category: life-in-general
 heroImage: ../../assets/images/blog/shaft-of-pen.jpg
 heroImageAlt: A picture of a Seamus Heaney's poem "First Gloss"
 heroFit: contain
 heroAspectRatio: "3 / 4"
 heroPortrait: true
 tags:
-  - musings
   - life
 ---
 
