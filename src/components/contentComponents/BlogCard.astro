@@ -28,7 +28,7 @@ const { post } = Astro.props;
     <div class="blog-card__body">
       <h3>{post.data.title}</h3>
       <FormattedDate date={post.data.pubDate} />
-      {post.data.category && <p>{CATEGORIES[post.data.category]}</p>}
+      {post.data.category && <p>A Sane Musing on <strong>{CATEGORIES[post.data.category]}</strong></p>}
       {post.data.description && <p>{post.data.description}</p>}
     </div>
   </a>
