@@ -1,0 +1,45 @@
+{
+  "rows": [
+    {
+      "tla": "HWGA",
+      "description": "<strong>Here we go again</strong>. A feeling quite often felt when talking at the dinner table."
+    },
+    {
+      "tla": "TL;DR",
+      "description": "<strong>Too long; didn't read</strong>. What people say when they think you have a short attention span but want you to read on anyway."
+    },
+    {
+      "tla": "BTW",
+      "description": "<strong>By the way</strong>. Or the VAT Tax you pay in Belgium."
+    },
+    {
+      "tla": "TOB",
+      "description": "<strong>Taks op beursverrichtingen</strong> (tax on stock exchnage transactions). Another tax, this one a transaction tax placed by the Belgian authorities on any buy or sell stock market transaction one makes. Just don't ask anyone to explain how it works or which TOB tax rate to apply to which transaction."
+    },
+    {
+      "tla": "SAP",
+      "description": "<strong>Systeme, Anwendungen und Produkte in der Datenverarbeitung</strong> or Systems, Applications and Products in Data Processing - the first thing they teach you when starting and the last thing you need to remember. A very large German software company that very few people of heard of IRL. Used by many large and medium (but rarely small) companies to run their sales, production, purchasing, warehouse, logistics, HR, and accounting operations."
+    },
+    {
+      "tla": "IRL",
+      "description": "<strong>In Real Life</strong>. Something that I try to ignore. Most of the time."
+    },
+    {
+      "tla": "DT",
+      "description": "<strong>Digital Transformation</strong> - a catchall term used by many to justify (often unnecessary) overspends on IT projects. Said overspends can then lead to further digital transformation (often the middle digit) in the target user base.  Not to be confused with Delerium Tremens (the Belgian beer) or the DTs, which you may experience after drinking a few too many."
+    },
+    {
+      "tla": "AI",
+      "description": "<strong>Artificial Intelligence</strong> something that is definitely aritificial and occasionally appears intelligent."
+    },
+    {
+      "tla": "AGI",
+      "description": "<strong>Aritifcial General Intelligence</strong> a variant of AI that comes with one, two, three or four stars.t"
+    }
+  ],
+  "columns": [
+    { "key": "tla", "label": "Acronym" },
+    { "key": "description", "label": "Description" }
+  ],
+  "caption": "Some three and four letter acroynms that you may want to understand better"
+}

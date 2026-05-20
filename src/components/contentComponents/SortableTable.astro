@@ -1,0 +1,58 @@
+---
+import type { TableData, Column } from "../../content.config";
+type Props = TableData & { tableClass?: string };
+
+const { rows: rawRows, columns, caption, tableClass } = Astro.props;
+const rows = (rawRows ?? []) as Record<string, unknown>[];
+
+const prettify = (k: string) =>
+  k.replace(/[_-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+const resolvedColumns: Column[] =
+  columns ??
+  (rows.length > 0
+    ? Object.keys(rows[0]).map((key) => ({ key, label: prettify(key) }))
+    : []);
+---
+
+{
+  rows.length === 0 ? (
+    <p class="prose">No data.</p>
+  ) : (
+    <table class={`${tableClass ?? ""}`}>
+      {caption && (
+        <caption>
+          <strong>Table of collected Wisdoms: </strong>
+          {caption}
+        </caption>
+      )}
+      <thead>
+        <tr>
+          {resolvedColumns.map((col) => (
+            <th scope="col">{col.label ?? prettify(col.key)}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr>
+            {resolvedColumns.map((col) => (
+              <td set:html={String(row[col.key] ?? "")} />
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+}
+
+<style>
+  caption {
+    font-size: var(--font-size-sm);
+    font-style: italic;
+    caption-side: bottom;
+    text-align: right;
+    margin-top: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+</style>

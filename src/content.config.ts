@@ -30,4 +30,23 @@ const blog = defineCollection({
 	}),
 });
 
-export const collections = { blog };
+const columnSchema = z.object({
+	key: z.string(),
+	label: z.string().optional(),
+});
+
+const tableSchema = z.object({
+	columns: z.array(columnSchema).optional(),
+	rows: z.array(z.record(z.string(), z.unknown())),
+	caption: z.string().optional(),
+});
+
+export type TableData = z.infer<typeof tableSchema>;
+export type Column = z.infer<typeof columnSchema>;
+
+const tables = defineCollection({
+	loader: glob({ base: './src/content/tables', pattern: '**/*.json' }),
+	schema: tableSchema
+});
+
+export const collections = { blog, tables };
