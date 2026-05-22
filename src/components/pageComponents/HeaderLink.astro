@@ -8,8 +8,7 @@ const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "");
 const subpath = pathname.match(/[^\/]+/g);
 const hrefStr = typeof href === "string" ? href : (href?.toString() ?? "");
 const isActive =
-  hrefStr.slice(1) === pathname ||
-  hrefStr.slice(1) === (subpath?.[0] + "/" || "");
+  hrefStr.slice(1) === pathname || hrefStr.slice(1) === subpath?.[0];
 ---
 
 <a

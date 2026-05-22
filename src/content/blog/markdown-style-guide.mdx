@@ -1,39 +1,52 @@
 ---
 title: "Astro's Markdown Style Guide"
-description: "Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro."
-pubDate: 2024-06-19
-category: miscellany
-heroImage: "../../assets/images/blog/blog-placeholder-1.jpg"
+description: "A Markdown syntax primer borrowed from Astro."
+pubDate: 2026-05-22
+category: 50-plus-dev
+heroImage: "../../assets/images/blog/computers.jpg"
 ---
+import MediaObject from "../../components/mediaComponents/MediaObject.astro";
+import AstroThemes from "../../assets/images/blog/astrotheme.jpg";
 
-Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
+<MediaObject image={AstroThemes} alt="" source="https://astro.build/themes/" flip="true" imageWidth="200px">
+The starting seed of this blog was a free theme template that I found on [Astro's site](https://astro.build) two to three years ago.  I've just tried to find it back again but the only remnant I can find is that they are using the theme's image as the entry point for their [Blog Themes](https://astro.build/themes) as seen here.
+
+Luckily I had not modified the README file yet and that gives credit for the theme as being "based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/)". And I would like to second that credit because I found a number of elements in the template design to be extremely "elegant".
+
+Specifically, the text decoration (bold and underline) on the active page in the header navigation menu looks (to me at least!) like it is being dynamically applied with JavaScript but comes for free with CSS at build time.  Astro builds each and every page separately and therefore knows, which route should have which menu item decorated so, as you click through, all you are seeing is pre-built styled content that appears to move in synchronisation with the URL/route changing.
+</MediaObject>
+
+In the same sample blog, there was a basic Markdown syntax and style guide that I feel warrants being copied across.  I am writing each of these posts in markdown or MDX (more on MDX in [this post](/blog/50-plus-dev/using-mdx)) and, if nothing else, I will have a place I can return to quickly to remind myself of how to style content in each post by coming back here to re-read and re-member.
 
 ## Headings
 
 The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
+<div class="example-list">
+# H1 Headline
 
-# H1
+## H2 Related section of interest
 
-## H2
+### H3 Diving further into the rabbit hole
 
-### H3
+#### H4 It's getting dark in here
 
-#### H4
+##### H5 And I thought I was detailed
 
-##### H5
+###### H6 Jeez, we are well below the level of 5 Whys at this stage
 
-###### H6
+</div>
+
+**Point of further note** - as I understand things, it is best not to skip Heading levels in any of your pages if you want Google and others to see your page as "well written".  In other words make sure `<h2>`s follow `<h1>`s, `<h3>`s follow `<h2>`s, and so on.  HTML is, after all, all about structure and **semantics**, if the specification recognises that headings are hierarchical then don't break the hierarchy...and, yes, I recognize that this post now has two `<h1>` headings and I've gone against my own advice immediately.
 
 ## Paragraph
 
-Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
-
-Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
+This is "just" text in a paragraph - no need to include any #s, just type.  In order for you to see it rendered here as a complete paragraph I have to type a few words or resort to Latin for content, e.g. ipso facto, quod erat demonstrandum, to fill the space.  But really it's just text that you want to appear as a paragraph; nothing more or less complicated than that.
 
 ## Images
 
 ### Syntax
 
+If you want to insert an image in the text then just put the following markdown inline with the rest of the text.
 ```markdown
 ![Alt text](./full/or/relative/path/of/image)
 ```
@@ -44,20 +57,20 @@ Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sap
 
 ## Blockquotes
 
-The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a `footer` or `cite` element, and optionally with in-line changes such as annotations and abbreviations.
+If you're quoting from another source then use the blockquote element.  If you want to add a citation to credit the source then this should be included in a `footer`, `cite` element or, optionally, through the use of annotations and abbreviations (see below).
 
 ### Blockquote without attribution
 
 #### Syntax
 
 ```markdown
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.  
+> Tiam, ad mint andaepu dandae nostion secatur sequo quae.
 > **Note** that you can use _Markdown syntax_ within a blockquote.
 ```
 
 #### Output
 
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.  
+> Tiam, ad mint andaepu dandae nostion secatur sequo quae.<br />
 > **Note** that you can use _Markdown syntax_ within a blockquote.
 
 ### Blockquote with attribution
@@ -76,61 +89,9 @@ The blockquote element represents content that is quoted from another source, op
 
 [^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
 
-## Tables
-
-### Syntax
-
-```markdown
-| Italics   | Bold     | Code   |
-| --------- | -------- | ------ |
-| _italics_ | **bold** | `code` |
-```
-
-### Output
-
-| Italics   | Bold     | Code   |
-| --------- | -------- | ------ |
-| _italics_ | **bold** | `code` |
-
-## Code Blocks
-
-### Syntax
-
-we can use 3 backticks ``` in new line and write snippet and close with 3 backticks on new line and to highlight language specific syntax, write one word of language name after first 3 backticks, for eg. html, javascript, css, markdown, typescript, txt, bash
-
-````markdown
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Example HTML5 Document</title>
-  </head>
-  <body>
-    <p>Test</p>
-  </body>
-</html>
-```
-````
-
-### Output
-
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Example HTML5 Document</title>
-  </head>
-  <body>
-    <p>Test</p>
-  </body>
-</html>
-```
-
 ## List Types
 
-### Ordered List
+### Ordered (numbered) List
 
 #### Syntax
 
@@ -146,7 +107,7 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 2. Second item
 3. Third item
 
-### Unordered List
+### Unordered (bulleted) List
 
 #### Syntax
 
@@ -186,7 +147,135 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
   - Milk
   - Cheese
 
-## Other Elements — abbr, sub, sup, kbd, mark
+### Task lists
+
+#### Syntax
+
+```markdown
+- [x] Do this
+- [ ] Still got to do that
+```
+
+#### Output
+
+- [x] Do this
+- [ ] Still got to do that
+
+## Tables
+
+Note that I often see markdown table examples where the horizontal `-`s or vertical `|`s don't line up very well.  I understand this is because the parser that reads them before rendering is very lenient.
+
+Turns out that, as long as each row has the same number of vertical separators (`|`s), the ugliest looking table in markdown should render perfectly in HTML.
+
+As an example - the two markdowns below will effectively yield the same result even if you can read one much more easily in markdown form than the other.  I suspect there's an art in counting spaces between characters if you want the raw markdown file to be readable, especially if you have many columns.  Unless you look for help from tooling such as Prettier with `--prose-wrap`, as one example.
+
+In the end, whatever works for you when authoring is your choice.  Just know that choices exist.
+
+### Syntax
+
+```markdown
+| Italics   | Bold     | Code   |
+| --------- | -------- | ------ |
+| _italics_ | **bold** | `code` |
+
+...will render the same way as this...
+
+| Italics   | Bold     | Code   |
+| -- | -- | -- |
+| _italics_ | **bold** | `code` |
+
+```
+### Output
+
+| Italics   | Bold     | Code   |
+| --------- | -------- | ------ |
+| _italics_ | **bold** | `code` |
+
+## Utilities that may be helpful
+
+### Syntax
+```markdown
+- Use ~~ to ~~wipeout~~ strike through text
+- [^2] for adding a footnote and then...clicking on the link will take you to the footnote, which itself has a friendly return link to return you to the footnote in the text
+- [^labels] you can use whatever you want as a label in the markdown
+
+For horizontal rules, three or more hyphens or asterisks on a line will render as a horizontal line across the screen:
+--- or ***
+
+Conventionally the footnotes themselves go at bottom of the markdown file
+[^2]: Add the text that you want to appear at the bottom of the page.  Conventionally you'd also place this text at the bottom of the markdown page as well.
+[^labels]: can be text as well as numbers, up to you.
+
+```
+
+### Output
+- Use ~~ to ~~wipeout~~ strike through text
+- [^2] for adding a footnote and then...clicking on the link will take you to the footnote, which itself has a friendly return link to return you to the footnote in the text
+- [^labels] `[^labels]` will render as a number
+[^labels]: watch out - the footnotes come with a free return to the top of the page but, if you have a sticky header then don't forget to add scroll-padding-top to your CSS calculations so the user is not returned to text under a sticky header!
+- For horizontal rules, three or more hyphens or asterisks on a line will render as a horizontal line across the screen:
+--- or ***
+---
+
+
+## Including Code - in one block
+
+### Syntax
+
+One can use 3 backticks ``` on a new line, write the code snippet, and close with 3 backticks on another new line.  Optionally specify the language right after the opening backticks so the renderer knows how to highlight it.  Astro uses [Shiki](https://shiki.style/) built in to give us syntax highlighting out of the box and for free for languages like html, javascript, css, markdown, typescript, txt, bash, etc.
+
+````markdown
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Example HTML5 Document</title>
+  </head>
+  <body>
+    <p>Test</p>
+  </body>
+</html>
+```
+````
+
+### Output
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Example HTML5 Document</title>
+  </head>
+  <body>
+    <p>Test</p>
+  </body>
+</html>
+```
+
+## Including Code - inline with 'normal' text
+
+### Syntax
+
+Wrap short technical references in backticks: ``var foo = 1`` becomes `var foo = 1`.
+Useful for referencing element names, function names, file paths, or short literal values inline with prose.
+
+### Output
+
+The HTML element `<code>` is for inline code; `<pre><code>` is for block code.
+File paths like `/src/styles/global.css` look better in monospace.
+
+## Miscellany - abbr, sub, sup, kbd, mark
+
+For a number of edge cases when you want to feel like you're actually writing in Microsoft Word rather than markdown.
+- **Abbr**eviation
+- **Sub**script
+- **Sup**erscript
+- **K**ey**b**oar**d**
+- **Mark**ed text
+
+Further points of note - these markdown "elements" yield HTML with specific semantics, e.g. marked text for highlighting a search result rather than permanently emphasising a word or phrase.  So use each wisely having understood that you've got your semantics right!
 
 ### Syntax
 
@@ -213,3 +302,67 @@ X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
 Press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Delete</kbd> to end the session.
 
 Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
+
+<style>{`
+  .prose :is(h1, h2, h3, h4, h5, h6) {
+    margin-block-start: 1.5em;
+    margin-block-end: 0;
+  }
+
+  /* Default for content blocks — element specificity only */
+  .prose :is(p, ul, ol, blockquote, pre) {
+    margin-block-start: 0;
+    margin-block-end: var(--space-3);
+  }
+
+  /* Wrapper divs get the same bottom margin, separate rule */
+  .prose .example-list {
+    margin-block-start: 0;
+    margin-block-end: var(--space-3);
+  }
+
+  /* Adjacency rule — unchanged */
+  .prose :is(h1, h2, h3, h4, h5, h6) + :is(p, pre, code, blockquote, ul, ol, table) {
+    margin-block-start: 0.75em;
+  }
+
+  .prose :is(p, pre, code, blockquote, ul, ol) + :is(h2, h3, h4, h5, h6) {
+    margin-block-start: 0.75em;
+  }
+
+  .prose :is(h1, h2, h3, h4, h5) + :is(h2, h3, h4, h5, h6) {
+    margin-block-start: 0.75em;    /* tighter when one heading follows another */
+  }
+
+  /* Optional: bigger gap above section-level H2s */
+  .prose h2 {
+    border-radius: var(--space-8);
+    background-color: var(--color-text);
+    padding: 0.5em 1em;
+    display: inline-block;
+    color: var(--color-bg);
+  }
+
+  .prose h3 {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 0.05em;
+  }
+
+  .prose h4 {
+    font-size: var(--font-size-base);
+  }
+
+  .prose .example-list :is(h1, h2, h3, h4, h5, h6) {
+    border-radius: 0;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    display: block;
+    padding: 0;
+    text-decoration: none;
+  }
+
+  .prose .example-list :is(h1, h2, h3, h4, h5, h6):first-child {
+    margin-block-start: 0;
+  }
+`}</style>

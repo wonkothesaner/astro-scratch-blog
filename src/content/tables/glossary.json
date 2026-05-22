@@ -35,6 +35,14 @@
     {
       "tla": "AGI",
       "description": "<strong>Aritifcial General Intelligence</strong> a variant of AI that comes with one, two, three or four stars.t"
+    },
+    {
+      "tla": "SNAFU",
+      "description": "<strong>Situation Normal All F****ed Up</strong> - I thought this came first from the Vietnam War until, yet again, I looked it up and found out that I was wrong again.  Apparently originated by American GIs in World War II.  I can't comment further other than to continue to be amazed at what and how that generation did what they did"
+    },
+    {
+      "tla": "FUBAR",
+      "description": "<strong>F****d Up Beyond All Recognition</strong>.  Etymologically similar to SNAFU although now finds it's way into many, many coding examples when broken into two variables 'foo' and 'bar'."
     }
   ],
   "columns": [
