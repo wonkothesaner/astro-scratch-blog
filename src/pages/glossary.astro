@@ -1,14 +1,17 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { SITE_TITLE } from "../consts";
 import { getEntry } from "astro:content";
 import SortableTable from "../components/contentComponents/SortableTable.astro";
 const table = await getEntry("tables", "glossary");
 if (!table) throw new Error("wisdom table not found");
 const { rows, columns, caption } = table.data;
+const description =
+  "Glossary of terms that may help navigate the writings on the site as well as real life.";
+const title = "Glossary";
 ---
 
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
   <aside class="aside-first">
     <p>An attempt at humour.</p>
     <br />

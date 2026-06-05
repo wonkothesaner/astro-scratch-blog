@@ -40,7 +40,7 @@ const { pathname } = Astro.url;
       style={heroAspectRatio ? `--hero-aspect: ${heroAspectRatio}` : undefined}
       id={pathname === "/about" ? "about-hero-image" : undefined}
     >
-      {heroImage && <Image src={heroImage} alt={heroImageAlt ?? ""} priority />}
+      {heroImage && <Image src={heroImage} alt={heroImageAlt ?? `Featured image for ${title}`} priority />}
     </div>
     <article>
       <div class="prose">

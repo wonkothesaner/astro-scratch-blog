@@ -1,9 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { SITE_TITLE } from "../consts";
+const description =
+  "Description of some of the projects that Martin Driscoll is currently working on or has recently completed";
+const title = "Projects";
 ---
 
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
   <main>
     <h4>Work in Progress</h4>
   </main>

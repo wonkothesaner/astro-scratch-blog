@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { SITE_TITLE } from "../consts";
 import { getEntry } from "astro:content";
 
 import SortableTable from "../components/contentComponents/SortableTable.astro";
@@ -18,9 +18,12 @@ const shaped = rows.map((r: Record<string, unknown>) => {
       : r.source,
   };
 });
+const description =
+  "A living collection of sayings, phrases, thoughts and other snippets of 'wisdom' that Martin Driscoll has collected over the years";
+const title = "Wisdom";
 ---
 
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
   <aside class="aside-first">
     <p>
       A collection of sayings, phrases, thoughts and other snippets of 'wisdom'

@@ -2,7 +2,7 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = 'Sane Musings';
-export const SITE_DESCRIPTION = 'Thoughts on learning to code and others issues of today.';
+export const SITE_DESCRIPTION = "Martin Driscoll's thoughts on how to learn to code if you are over 50 and other issues of today.";
 
 // Top-level navigation links.
 // Edit these arrays to add, remove, or reorder links.
@@ -20,7 +20,7 @@ export const NAV_SECONDARY = [
   { href: "/glossary", label: "Glossary" },
 ] as const;
 
-// Utility look up on blog categories 
+// Utility look up on blog categories
 export const CATEGORIES = {
   "sap": "SAP",
   "50-plus-dev": "Web Dev for 50+",
