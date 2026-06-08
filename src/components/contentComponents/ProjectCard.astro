@@ -1,0 +1,260 @@
+---
+interface TechStack {
+  rendering: string;
+  css: string;
+  jsFramework: string;
+  hosting: string;
+  auth: string;
+}
+
+interface Props {
+  title: string;
+  heroImage?: string;
+  heroAlt?: string;
+  heroVideoUrl?: string;
+  description: string;
+  techStack: TechStack;
+  lessonsLearned: string;
+  notes?: string;
+}
+
+const {
+  title,
+  heroImage,
+  heroAlt = "",
+  heroVideoUrl,
+  description,
+  techStack,
+  lessonsLearned,
+  notes,
+} = Astro.props;
+---
+
+<article class="project-card">
+  <h2 class="project-card__title">{title}</h2>
+
+  <details class="project-card__section" open>
+    <summary class="project-card__summary">Preview</summary>
+    <div class="project-card__content project-card__hero">
+      {
+        heroImage ? (
+          heroVideoUrl ? (
+            <a href={heroVideoUrl} class="project-card__hero-link">
+              <img src={heroImage} alt={heroAlt} loading="lazy" />
+              <span class="project-card__play-hint">Watch demo</span>
+            </a>
+          ) : (
+            <img src={heroImage} alt={heroAlt} loading="lazy" />
+          )
+        ) : (
+          <div class="project-card__hero-placeholder">No preview yet</div>
+        )
+      }
+    </div>
+  </details>
+
+  <details class="project-card__section">
+    <summary class="project-card__summary">Description</summary>
+    <div class="project-card__content">
+      <p>{description}</p>
+    </div>
+  </details>
+
+  <details class="project-card__section">
+    <summary class="project-card__summary">Tech Stack</summary>
+    <div class="project-card__content">
+      <table class="project-card__table">
+        <tbody>
+          <tr>
+            <th scope="row">Rendering</th>
+            <td>{techStack.rendering}</td>
+          </tr>
+          <tr>
+            <th scope="row">CSS Tooling</th>
+            <td>{techStack.css}</td>
+          </tr>
+          <tr>
+            <th scope="row">JS Framework</th>
+            <td>{techStack.jsFramework}</td>
+          </tr>
+          <tr>
+            <th scope="row">Hosting</th>
+            <td>{techStack.hosting}</td>
+          </tr>
+          <tr>
+            <th scope="row">Auth</th>
+            <td>{techStack.auth}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="project-card__section">
+    <summary class="project-card__summary">Lessons Learned</summary>
+    <div class="project-card__content">
+      <p>{lessonsLearned}</p>
+    </div>
+  </details>
+
+  {
+    notes && (
+      <details class="project-card__section">
+        <summary class="project-card__summary">Notes</summary>
+        <div class="project-card__content">
+          <p>{notes}</p>
+        </div>
+      </details>
+    )
+  }
+</article>
+
+<style>
+  .project-card {
+    border: var(--border-thin);
+    display: flex;
+    flex-direction: column;
+    /* Ensure all cards in a row stretch to the same height */
+    height: 100%;
+  }
+
+  .project-card__title {
+    font-size: var(--font-size-xl);
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    border-bottom: var(--border-thin);
+    letter-spacing: -0.02em;
+  }
+
+  .project-card__section {
+    border-bottom: var(--border-thin);
+  }
+
+  .project-card__section:last-child {
+    border-bottom: none;
+  }
+
+  .project-card__summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-1) var(--space-3);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    user-select: none;
+  }
+
+  /* Remove default marker in all browsers */
+  .project-card__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Custom indicator using a pseudo-element */
+  .project-card__summary::after {
+    content: "+";
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    transition: none;
+  }
+
+  .project-card__section[open] > .project-card__summary::after {
+    content: "−";
+  }
+
+  .project-card__summary:hover {
+    color: var(--color-link-hover);
+  }
+
+  .project-card__content {
+    padding: var(--space-2) var(--space-3) var(--space-3);
+    border-top: var(--border-thin);
+  }
+
+  .project-card__content p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+  }
+
+  /* Hero section */
+  .project-card__hero img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+
+  .project-card__hero-link {
+    display: block;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .project-card__play-hint {
+    position: absolute;
+    bottom: var(--space-1);
+    right: var(--space-2);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    background: var(--color-bg);
+    color: var(--color-text);
+    padding: 2px var(--space-1);
+    border: var(--border-thin);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .project-card__hero-placeholder {
+    aspect-ratio: 16 / 9;
+    background: var(--color-table-highlight);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Tech stack table — override global table styles for compact card use */
+  .project-card__table {
+    width: 100%;
+    border: none;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+    margin: 0;
+  }
+
+  .project-card__table th,
+  .project-card__table td {
+    padding: var(--space-1) var(--space-2);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .project-card__table th {
+    font-weight: var(--font-weight-bold);
+    width: 40%;
+    background: transparent;
+    color: var(--color-text);
+  }
+
+  .project-card__table tbody tr:nth-child(odd) td {
+    background: var(--color-table-highlight);
+  }
+
+  .project-card__table tbody tr:nth-child(odd) th {
+    background: var(--color-table-highlight);
+  }
+
+  .project-card__table tbody tr:nth-child(even) td,
+  .project-card__table tbody tr:nth-child(even) th {
+    background: var(--color-bg);
+  }
+</style>

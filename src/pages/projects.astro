@@ -1,13 +1,80 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/contentComponents/ProjectCard.astro";
 import { SITE_TITLE } from "../consts";
+
 const description =
   "Description of some of the projects that Martin Driscoll is currently working on or has recently completed";
 const title = "Projects";
+
+const projects = [
+  {
+    title: "Astro Scratch Blog",
+    heroImage: undefined,
+    heroAlt: "Astro Scratch Blog screenshot",
+    heroVideoUrl: undefined,
+    description:
+      "A personal blog and portfolio site built from scratch with Astro. The goal was to learn the framework properly rather than starting from a template — covering content collections, layouts, CSS cascade layers, and static site generation.",
+    techStack: {
+      rendering: "SSG",
+      css: "Vanilla CSS (cascade layers)",
+      jsFramework: "None — Astro components only",
+      hosting: "GitHub Pages",
+      auth: "None",
+    },
+    lessonsLearned:
+      "Astro's content collections and type-safe frontmatter make a big difference for maintainability. Cascade layers are underused in the wild but give real control over specificity without hacks.",
+    notes:
+      "This site itself. Ongoing experiment in writing CSS without reaching for a framework.",
+  },
+  {
+    title: "Project Two",
+    heroImage: undefined,
+    heroAlt: "",
+    heroVideoUrl: undefined,
+    description: "A short description of what this project does and why it exists. Replace this with your actual project description.",
+    techStack: {
+      rendering: "SSR",
+      css: "Tailwind CSS",
+      jsFramework: "React",
+      hosting: "Vercel",
+      auth: "Clerk",
+    },
+    lessonsLearned:
+      "Placeholder — add your lessons learned here once the project is underway.",
+    notes: undefined,
+  },
+];
 ---
 
 <BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
   <main>
-    <h4>Work in Progress</h4>
+    <h1>Projects</h1>
+    <div class="project-grid full-bleed">
+      {projects.map((project) => <ProjectCard {...project} />)}
+    </div>
   </main>
 </BaseLayout>
+
+<style>
+  h1 {
+    grid-column: measure;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    padding-inline: var(--space-2);
+    width: 100%;
+    max-width: var(--layout-max-width);
+    margin-inline: auto;
+  }
+
+  @media (min-width: 720px) {
+    .project-grid {
+      grid-template-columns: repeat(2, 1fr);
+      padding-inline: var(--space-4);
+    }
+  }
+</style>
