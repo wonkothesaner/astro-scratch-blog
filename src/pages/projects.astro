@@ -51,9 +51,9 @@ const projects = [
   <main>
     <h1>Projects that I have worked on or am still working on</h1>
     <p>I have a number of ideas for things that I would like to build in this new world of citizen coding.  I have detailed below several of them listing their tech stacks and current status.</p>
-    <p>I have written elsewhere on this site about the difference between <a href="/blog/opinions">facts and opinions</a> and how the world of JavaScript development seemed to me (as a SAPper) to be built on opinions.  Frameworks are described as opinionated.  There are books written on the "good parts" of JavaScript implying there are people holding the opinion that there are "bad parts". So I should state my opinions.</p>
+    <p>I have written elsewhere on this site about the difference between <a href="/blog/sap/opinions">facts and opinions</a> and how the world of JavaScript development seemed to me (as a SAPper) to be built on opinions.  Frameworks are described as opinionated.  There are books written on the "good parts" of JavaScript implying there are people holding the opinion that there are "bad parts". So I should state my opinions.</p>
     <h2>My opinions</h2>
-    <table>
+    <table class="wide">
       <th>Opinion</th>
       <th>Rationale</th>
       <tr>
@@ -95,6 +95,9 @@ const projects = [
         </td>
       </tr>
     </table>
+     <div class="project-grid full-bleed">
+      {projects.map((project) => <ProjectCard {...project} />)}
+    </div>
   </main>
 </BaseLayout>
 
