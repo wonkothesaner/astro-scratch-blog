@@ -49,10 +49,52 @@ const projects = [
 
 <BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
   <main>
-    <h1>Projects</h1>
-    <div class="project-grid full-bleed">
-      {projects.map((project) => <ProjectCard {...project} />)}
-    </div>
+    <h1>Projects that I have worked on or am still working on</h1>
+    <p>I have a number of ideas for things that I would like to build in this new world of citizen coding.  I have detailed below several of them listing their tech stacks and current status.</p>
+    <p>I have written elsewhere on this site about the difference between <a href="/blog/opinions">facts and opinions</a> and how the world of JavaScript development seemed to me (as a SAPper) to be built on opinions.  Frameworks are described as opinionated.  There are books written on the "good parts" of JavaScript implying there are people holding the opinion that there are "bad parts". So I should state my opinions.</p>
+    <h2>My opinions</h2>
+    <table>
+      <th>Opinion</th>
+      <th>Rationale</th>
+      <tr>
+        <td>I will not knowingly code using React or anything that looks or feels like React.</td>
+        <td>
+          Multiple including I personally do not like Mark Zuckerberg's approach to life in general, I think the concept of the shadom DOM smells like a "bad" pattern and I tend to be a contrarian, i.e. if everyone is building with React then I will probably try something else.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Cloudflare appear to have reasonably good intentions.  
+        </td>
+        <td>
+          For a public listed company, at least, their position on looking to protect the IP of creators from AI Bots, crawlers and the like is (IMO) to be commended.  Yes, it helps, that they offer a generous free tier to budding "citizen developers" such as myself. rather 
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Vanilla CSS is a worthy goal but, jeez, does Tailwind save a lot of headaches.
+        </td>
+        <td>
+          I remember 10-15 years ago when everything starting looking like Bootstrap, which was well before AI started turning everything purple at the end of 2025.  At that time, I found <a href="https://bulma.io">Bulma</a> as a CSS framework pleasant enough to use.  Since then I have listened with interest to the increasing number of new "standard" CSS features that are making their way into our browsers and have thought "surely" now is the time for writing 'vanilla' CSS only.  I have tried (on this site in fact) and let's just say 'I have enjoyed the learning experiences!'  It's not the generalities that make it problematic but the way you hit edge case after edge case, which can be exhausting.    
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Two pizza delivery team sizes may work for making things quickly but it often sucks when others try to understand what has been built.
+        </td>
+        <td>
+           Try understanding the documentation of many AWS Services (Cognito anyone?) and you may see that the small team deveelopment approach may not naturally lend itself to  understandable documentation that is consistent across Services.  There's a whole universe of conversations we can have about Waterfall vs. Agile development techniques but here is not the place to go any further.     
+        </td>
+      </tr>
+      <tr>
+        <td>
+          If there was one right way to do something then there would be one tool/approach/opinion on getting it done.  
+        </td>
+        <td>
+         I take the fact that there are so many opinions as evidence that there is rarely one right way to do any one thing.  So pick a set of opinions that you are happy with and stick iwth it; do not get too distracted by all the talk of "new" this or that.  After all, the only thing that remains the same is that everything changes.  But changing everything at the same time is extremely hard to do.
+        </td>
+      </tr>
+    </table>
   </main>
 </BaseLayout>
 
