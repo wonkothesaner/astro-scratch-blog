@@ -8,5 +8,5 @@
   "env": {
     "builtin": true
   },
-  "ignorePatterns": ["dist/**", ".astro/**", "src/components/codeComponents/_PostHog.astro"]
+  "ignorePatterns": ["dist/**", ".astro/**"]
 }
