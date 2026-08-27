@@ -68,7 +68,21 @@ const { pathname } = Astro.url;
         )
       }
       {
-        heroImage?.kind === "file" && (
+        heroImage?.kind === "file" && heroImage.asset.format === "svg" && (
+          // The Cloudflare Images binding (used for astro:assets processing
+          // in production) doesn't support SVG as an output format at all —
+          // requests 400 with "Unsupported format: svg". SVGs don't need
+          // raster optimization anyway, so skip the image service for them.
+          <img
+            src={heroImage.asset.src}
+            width={heroImage.asset.width}
+            height={heroImage.asset.height}
+            alt={heroImageAlt ?? `Featured image for ${title}`}
+          />
+        )
+      }
+      {
+        heroImage?.kind === "file" && heroImage.asset.format !== "svg" && (
           <Image
             src={heroImage.asset}
             alt={heroImageAlt ?? `Featured image for ${title}`}
