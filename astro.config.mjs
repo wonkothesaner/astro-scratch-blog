@@ -2,14 +2,14 @@
 import { defineConfig } from "astro/config";
 import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
-import node from "@astrojs/node";
+import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import rehypeExternalLinks from "rehype-external-links";
 import browserslist from "browserslist";
 import { browserslistToTargets } from "lightningcss";
-import emdash, { local } from "emdash/astro";
-import { sqlite } from "emdash/db";
+import emdash from "emdash/astro";
+import { d1, r2 } from "@emdash-cms/cloudflare";
 
 // Resolve the browserslist query (declared in package.json) into the
 // integer-encoded targets object that Lightning CSS expects.
@@ -19,17 +19,14 @@ const cssTargets = browserslistToTargets(browserslist());
 export default defineConfig({
   site: "https://wts.services",
   output: "server",
-  adapter: node({ mode: "standalone" }),
+  adapter: cloudflare(),
   integrations: [
     mdx(),
     sitemap(),
     react(),
     emdash({
-      database: sqlite({ url: "file:./data.db" }),
-      storage: local({
-        directory: "./uploads",
-        baseUrl: "/_emdash/api/media/file",
-      }),
+      database: d1({ binding: "DB" }),
+      storage: r2({ binding: "MEDIA" }),
     }),
   ],
   trailingSlash: "never",

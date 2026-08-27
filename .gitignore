@@ -20,8 +20,9 @@ pnpm-debug.log*
 
 # EmDash local dev
 .emdash/
-data.db
-uploads/
+
+# Wrangler local state (D1/R2/KV simulation, deploy metadata)
+.wrangler/
 
 # macOS-specific files
 .DS_Store

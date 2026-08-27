@@ -61,11 +61,11 @@ export interface Project {
   description: string;
   lessons_learned: string;
   notes?: string;
-  tech_rendering: "SSG" | "SSR" | "SPA" | "Hybrid" | "Static";
   tech_css: string;
   tech_js_framework: string;
   tech_hosting: string;
   tech_auth: string;
+  tech_rendering: "SSG" | "SSR" | "SPA" | "Hybrid" | "Static";
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
