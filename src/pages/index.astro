@@ -1,11 +1,21 @@
 ---
+export const prerender = false;
+
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogCard from "../components/contentComponents/BlogCard.astro";
 import { getCollection } from "astro:content";
+import { getEmDashCollection } from "emdash";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { postCardFromFile, postCardFromEmdash } from "../utils/blog";
 
-const recentPosts = (await getCollection("blog"))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+const filePosts = await getCollection("blog");
+const { entries: emdashPosts } = await getEmDashCollection("posts", { status: "published" });
+
+const recentPosts = [
+  ...filePosts.map(postCardFromFile),
+  ...emdashPosts.map(postCardFromEmdash),
+]
+  .sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf())
   .slice(0, 5);
 ---
 

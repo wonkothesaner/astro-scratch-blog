@@ -1,11 +1,29 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
+import { Image as EmdashImage } from "emdash/ui";
 import BaseLayout from "./BaseLayout.astro";
 import FormattedDate from "../components/utilityComponents/FormattedDate.astro";
+import type { PostCardImage } from "../utils/blog";
 
-type Props = CollectionEntry<"blog">["data"] & {
+// Explicit shape rather than inheriting CollectionEntry<"blog">["data"]
+// wholesale: this layout renders both file-based and EmDash-sourced posts,
+// and only needs the fields it actually uses below.
+type Props = {
+  title: string;
+  description?: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  heroImage?: PostCardImage;
+  heroImageAlt?: string;
+  heroFit?: CollectionEntry<"blog">["data"]["heroFit"];
+  heroAspectRatio?: string;
+  heroPortrait?: boolean;
   pageType?: "website" | "article";
+  // Unused by this layout, but about.astro (file-based, out of scope for
+  // the EmDash migration) still passes it through with its other
+  // CollectionEntry<"blog">["data"] props.
+  category?: string;
 };
 
 const {
@@ -26,7 +44,7 @@ const { pathname } = Astro.url;
 
 <BaseLayout
   title={title}
-  description={description}
+  description={description ?? title}
   pageType={pageType}
   pubDate={pubDate}
   updatedDate={updatedDate}
@@ -40,7 +58,20 @@ const { pathname } = Astro.url;
       style={heroAspectRatio ? `--hero-aspect: ${heroAspectRatio}` : undefined}
       id={pathname === "/about" ? "about-hero-image" : undefined}
     >
-      {heroImage && <Image src={heroImage} alt={heroImageAlt ?? `Featured image for ${title}`} priority />}
+      {heroImage?.kind === "emdash" && (
+        <EmdashImage
+          image={heroImage.value}
+          alt={heroImageAlt ?? `Featured image for ${title}`}
+          priority
+        />
+      )}
+      {heroImage?.kind === "file" && (
+        <Image
+          src={heroImage.asset}
+          alt={heroImageAlt ?? `Featured image for ${title}`}
+          priority
+        />
+      )}
     </div>
     <article>
       <div class="prose">

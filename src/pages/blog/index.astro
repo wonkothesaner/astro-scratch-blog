@@ -1,12 +1,20 @@
 ---
+export const prerender = false;
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import BlogCard from "../../components/contentComponents/BlogCard.astro";
 import { getCollection } from "astro:content";
+import { getEmDashCollection } from "emdash";
 import { SITE_TITLE } from "../../consts";
+import { postCardFromFile, postCardFromEmdash } from "../../utils/blog";
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const filePosts = await getCollection("blog");
+const { entries: emdashPosts } = await getEmDashCollection("posts", { status: "published" });
+
+const posts = [
+  ...filePosts.map(postCardFromFile),
+  ...emdashPosts.map(postCardFromEmdash),
+].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 const description =
   "Home page for all Sane Musing blog posts as written by Martin Driscoll";
 const title = "Blog";

@@ -6,13 +6,17 @@ import { SITE_TITLE } from "../consts";
 import { getEmDashCollection } from "emdash";
 import SortableTable from "../components/contentComponents/SortableTable.astro";
 
-type PortableTextSpan = { text: string; marks?: string[] };
-type PortableTextBlock = { children: PortableTextSpan[] };
-
 // Minimal Portable Text -> HTML for glossary descriptions: single-paragraph
-// entries with bold spans only. Not a general-purpose renderer.
-function portableTextToHtml(blocks: PortableTextBlock[]): string {
+// entries with bold spans only, the only shape these entries actually use.
+// Not a general-purpose renderer. Loosely typed on purpose — the "emdash"
+// package's PortableTextBlock type collides with an ambient duplicate
+// declared in the project's generated emdash-env.d.ts.
+function portableTextToHtml(blocks: unknown[]): string {
   return blocks
+    .filter(
+      (block): block is { children: { text: string; marks?: string[] }[] } =>
+        typeof block === "object" && block !== null && (block as { _type?: string })._type === "block",
+    )
     .map((block) =>
       block.children
         .map((span) =>
@@ -32,11 +36,8 @@ const columns = [
 const caption = "Some three and four letter acroynms that you may want to understand better";
 
 const rows = entries.map((entry) => {
-  const { term, description: desc } = entry.data as {
-    term: string;
-    description: PortableTextBlock[];
-  };
-  return { tla: term, description: portableTextToHtml(desc) };
+  const { term, description } = entry.data;
+  return { tla: term, description: portableTextToHtml(description) };
 });
 
 const description =

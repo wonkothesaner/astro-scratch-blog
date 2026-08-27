@@ -1,35 +1,43 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
+import { Image as EmdashImage } from "emdash/ui";
 import FormattedDate from "../utilityComponents/FormattedDate.astro";
-import { postUrl } from "../../utils/blog";
+import type { PostCard } from "../../utils/blog";
 import { CATEGORIES } from "../../consts";
 
 interface Props {
-  post: CollectionEntry<"blog">;
+  post: PostCard;
 }
 
 const { post } = Astro.props;
 ---
 
 <article class="blog-card">
-  <a href={postUrl(post)}>
-    {
-      post.data.heroImage && (
-        <Image
-          src={post.data.heroImage}
-          alt=""
-          widths={[200, 400, 600, 800]}
-          sizes="(min-width: 600px) 33vw, 100vw"
-          loading="lazy"
-        />
-      )
-    }
+  <a href={post.url}>
+    {post.heroImage?.kind === "emdash" && (
+      <EmdashImage
+        image={post.heroImage.value}
+        alt=""
+        width={800}
+        height={600}
+        sizes="(min-width: 600px) 33vw, 100vw"
+        loading="lazy"
+      />
+    )}
+    {post.heroImage?.kind === "file" && (
+      <Image
+        src={post.heroImage.asset}
+        alt=""
+        widths={[200, 400, 600, 800]}
+        sizes="(min-width: 600px) 33vw, 100vw"
+        loading="lazy"
+      />
+    )}
     <div class="blog-card__body">
-      <h3>{post.data.title}</h3>
-      <FormattedDate date={post.data.pubDate} />
-      {post.data.category && <p>A Sane Musing on <strong>{CATEGORIES[post.data.category]}</strong></p>}
-      {post.data.description && <p>{post.data.description}</p>}
+      <h3>{post.title}</h3>
+      <FormattedDate date={post.pubDate} />
+      {post.category && <p>A Sane Musing on <strong>{CATEGORIES[post.category]}</strong></p>}
+      {post.description && <p>{post.description}</p>}
     </div>
   </a>
 </article>

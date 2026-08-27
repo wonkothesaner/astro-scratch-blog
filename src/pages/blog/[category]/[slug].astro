@@ -1,24 +1,51 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+export const prerender = false;
+
+import { type CollectionEntry, getEntry, render } from "astro:content";
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
 import BlogPost from "../../../layouts/BlogPost.astro";
-import { render } from "astro:content";
-import { postParams } from "../../../utils/blog";
 
-type Props = CollectionEntry<"blog">;
+const { category, slug } = Astro.params;
 
-export const prerender = true;
-export async function getStaticPaths() {
-  const posts = await getCollection("blog");
-  return posts.map((post) => ({
-    params: postParams(post),
-    props: post,
-  }));
+if (!slug || !category) {
+  return Astro.redirect("/404");
 }
 
-const post = Astro.props;
-const { Content } = await render(post);
+const { entry: emdashPost } = await getEmDashEntry("posts", slug);
+const useEmdash = Boolean(emdashPost && emdashPost.data.category === category);
+
+let filePost: CollectionEntry<"blog"> | undefined;
+let FileContent: Awaited<ReturnType<typeof render>>["Content"] | undefined;
+
+if (!useEmdash) {
+  filePost = await getEntry("blog", slug);
+  if (!filePost || filePost.data.category !== category) {
+    return Astro.redirect("/404");
+  }
+  ({ Content: FileContent } = await render(filePost));
+}
 ---
 
-<BlogPost {...post.data}>
-  <Content />
-</BlogPost>
+{useEmdash && emdashPost ? (
+  <BlogPost
+    title={emdashPost.data.title}
+    description={emdashPost.data.excerpt}
+    pubDate={new Date(emdashPost.data.pub_date)}
+    updatedDate={emdashPost.data.updated_date ? new Date(emdashPost.data.updated_date) : undefined}
+    heroImage={emdashPost.data.featured_image ? { kind: "emdash", value: emdashPost.data.featured_image } : undefined}
+    heroImageAlt={emdashPost.data.hero_image_alt}
+  >
+    <PortableText value={emdashPost.data.content} />
+  </BlogPost>
+) : (
+  filePost &&
+  FileContent && (
+    <BlogPost
+      {...filePost.data}
+      heroImage={filePost.data.heroImage ? { kind: "file", asset: filePost.data.heroImage } : undefined}
+    >
+      <FileContent />
+    </BlogPost>
+  )
+)}

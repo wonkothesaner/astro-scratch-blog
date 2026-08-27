@@ -15,7 +15,7 @@ const columns = [
 const caption = "a few things I've seen or heard that help me better understand some things in life";
 
 const shaped = entries.map((entry) => {
-  const { saying, note, source, source_url } = entry.data as Record<string, unknown>;
+  const { saying, note, source, source_url } = entry.data;
   return {
     saying: note ? `${saying} <span class="note">${note}</span>` : saying,
     source: source_url
