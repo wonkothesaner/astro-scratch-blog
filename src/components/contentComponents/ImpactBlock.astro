@@ -1,0 +1,23 @@
+---
+// Custom Portable Text block-style renderer, mapped to the "blockquote"
+// style for EmDash-sourced pages that want the .impact callout look
+// (originally a <p class="impact"> in file-based markup — Portable Text
+// has no arbitrary custom-class mechanism, so blockquote style is
+// repurposed here instead).
+const { node, index, isInline, ...attrs } = Astro.props;
+---
+
+<p class="impact" {...attrs}><slot /></p>
+
+<style>
+  .impact {
+    width: 80%;
+    margin-inline: auto;
+    padding: var(--space-2) var(--space-3);
+    text-align: center;
+    font-family: monospace;
+    background-color: var(--color-table-highlight);
+    color: var(--color-text);
+    border-radius: 3px;
+  }
+</style>

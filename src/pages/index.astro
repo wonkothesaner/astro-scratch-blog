@@ -3,8 +3,10 @@ export const prerender = false;
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogCard from "../components/contentComponents/BlogCard.astro";
+import ImpactBlock from "../components/contentComponents/ImpactBlock.astro";
 import { getCollection } from "astro:content";
-import { getEmDashCollection } from "emdash";
+import { getEmDashCollection, getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { postCardFromFile, postCardFromEmdash } from "../utils/blog";
 
@@ -17,6 +19,8 @@ const recentPosts = [
 ]
   .sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf())
   .slice(0, 5);
+
+const { entry: homePage } = await getEmDashEntry("pages", "home");
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
@@ -25,88 +29,11 @@ const recentPosts = [
     {recentPosts.map((post) => <BlogCard post={post} />)}
   </aside>
   <main>
-    <p class="impact">Hello World!</p>
-    <p>
-      This is how it always seems to start. So it seems as good a way as any to
-      start here.
-    </p>
-    <p>
-      Perhaps that means nothing to you? Perhaps you have landed here without
-      ever having seen a code snippet before. Perhaps you have never worked
-      through the opening exercise of the latest coding or development tutorial?
-    </p>
-    <p class="impact">No matter.</p>
-    <p>
-      For this is <u><b>not</b></u> a coding tutorial. It is a guide to some of the
-      things that I have learned while trying to follow others' lessons and tutorials.
-      And some other miscellaneous items that I also picked up along the way.
-    </p>
-    <p>
-      Hi, I'm Martin. I am a (relatively) new web developer but one with more
-      than 30 years of other work experiences. I stopped doing the work that I
-      used to do because I wanted to learn something new. And I promised myself
-      that as I learned, I would keep a record of what I learned in case others
-      might find them useful.
-    </p>
-    <p>
-      That is what you are reading now - the introduction to some lessons
-      learned. For example, this site is built on top of all the good work done
-      by the team at <a href="https://astro.build">Astro</a>. A <b>big</b>
-      thank you to them from me; I hope to share more on the subject of Astro builds
-      once I have learned enough to share.
-    </p>
-    <p>
-      My goal in writing the content on this site is to offer my "musings" on
-      the world. The world of web developmet as I find it; and the world beyond.
-      In writing, as in life, I view the world as I hope John Watson would have
-      viewed it. John Watson, aka Wonko the Sane, is a character in the
-      wonderful <b>trilogy</b> "The Hitchhiker's Guide to the Galaxy" that Douglas
-      Adams wrote in
-      <i>five</i> parts. If you haven't read it yet, then I highly recommend you do;
-      it contains a lot of lessons for life. John Watson built an asylum against the
-      whole world; he lived on the inside and was sane, everyone else lived on the
-      outside and were not.
-    </p>
-    <p class="impact">Hence I call this site "Sane Musings"</p>
-    <p class="list-start">The site is structured as follows:</p>
-    <ul>
-      <li>
-        <a href="/blog/">Blog content</a> where I attempt to capture and document
-        what I have learned in building this and other sites
-      </li>
-      <li>
-        Some thoughts on <a href="/wisdom">Wisdom</a> I have picked up along the way
-        that I hope may help you along your way
-      </li>
-      <li>
-        A <a href="/glossary">Glossary of Terms</a> to help navigate the content,
-        the wider web and (in some cases) life in general
-      </li>
-      <li>
-        And a list of <a href="/projects">Projects and other things</a> that I am
-        working on.
-      </li>
-    </ul>
-    <p>
-      Hopefully some of what you find here is of use and you may return looking
-      for more as I build out more and more content.
-    </p>
+    {homePage?.data.content && (
+      <PortableText
+        value={homePage.data.content}
+        components={{ block: { blockquote: ImpactBlock } }}
+      />
+    )}
   </main>
 </BaseLayout>
-<style>
-  .impact {
-    width: 80%; /* size to whatever the text needs */
-    margin-inline: auto;
-    padding: var(--space-2) var(--space-3);
-    text-align: center;
-    font-family: monospace;
-    background-color: var(--color-table-highlight);
-    color: var(--color-text);
-    border-radius: 3px;
-  }
-
-  .list-start {
-    margin-bottom: 0;
-    gap: 0;
-  }
-</style>
