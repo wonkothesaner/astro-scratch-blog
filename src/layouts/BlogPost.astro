@@ -58,20 +58,24 @@ const { pathname } = Astro.url;
       style={heroAspectRatio ? `--hero-aspect: ${heroAspectRatio}` : undefined}
       id={pathname === "/about" ? "about-hero-image" : undefined}
     >
-      {heroImage?.kind === "emdash" && (
-        <EmdashImage
-          image={heroImage.value}
-          alt={heroImageAlt ?? `Featured image for ${title}`}
-          priority
-        />
-      )}
-      {heroImage?.kind === "file" && (
-        <Image
-          src={heroImage.asset}
-          alt={heroImageAlt ?? `Featured image for ${title}`}
-          priority
-        />
-      )}
+      {
+        heroImage?.kind === "emdash" && (
+          <EmdashImage
+            image={heroImage.value}
+            alt={heroImageAlt ?? `Featured image for ${title}`}
+            priority
+          />
+        )
+      }
+      {
+        heroImage?.kind === "file" && (
+          <Image
+            src={heroImage.asset}
+            alt={heroImageAlt ?? `Featured image for ${title}`}
+            priority
+          />
+        )
+      }
     </div>
     <article>
       <div class="prose">

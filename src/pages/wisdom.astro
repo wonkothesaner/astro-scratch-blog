@@ -6,13 +6,16 @@ import { SITE_TITLE } from "../consts";
 import { getEmDashCollection } from "emdash";
 
 import SortableTable from "../components/contentComponents/SortableTable.astro";
-const { entries } = await getEmDashCollection("wisdom", { status: "published" });
+const { entries } = await getEmDashCollection("wisdom", {
+  status: "published",
+});
 
 const columns = [
   { key: "saying", label: "Saying" },
   { key: "source", label: "Source" },
 ];
-const caption = "a few things I've seen or heard that help me better understand some things in life";
+const caption =
+  "a few things I've seen or heard that help me better understand some things in life";
 
 const shaped = entries.map((entry) => {
   const { saying, note, source, source_url } = entry.data;

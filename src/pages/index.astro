@@ -11,7 +11,9 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { postCardFromFile, postCardFromEmdash } from "../utils/blog";
 
 const filePosts = await getCollection("blog");
-const { entries: emdashPosts } = await getEmDashCollection("posts", { status: "published" });
+const { entries: emdashPosts } = await getEmDashCollection("posts", {
+  status: "published",
+});
 
 const recentPosts = [
   ...filePosts.map(postCardFromFile),
@@ -29,11 +31,13 @@ const { entry: homePage } = await getEmDashEntry("pages", "home");
     {recentPosts.map((post) => <BlogCard post={post} />)}
   </aside>
   <main>
-    {homePage?.data.content && (
-      <PortableText
-        value={homePage.data.content}
-        components={{ block: { blockquote: ImpactBlock } }}
-      />
-    )}
+    {
+      homePage?.data.content && (
+        <PortableText
+          value={homePage.data.content}
+          components={{ block: { blockquote: ImpactBlock } }}
+        />
+      )
+    }
   </main>
 </BaseLayout>

@@ -68,8 +68,7 @@
     --color-meta: var(--color-gray);
 
     /* Typography */
-    --font-primary:
-      "Atkinson Hyperlegible", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-primary: "Atkinson Hyperlegible", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --font-size-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
     --font-size-base: clamp(1rem, 0.95rem + 0.5vw, 1.25rem);
     --font-size-lg: clamp(1.125rem, 1rem + 0.6vw, 1.25rem);

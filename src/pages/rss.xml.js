@@ -10,10 +10,9 @@ export async function GET(context) {
   const filePosts = await getCollection("blog");
   const { entries: emdashPosts } = await getEmDashCollection("posts", { status: "published" });
 
-  const posts = [
-    ...filePosts.map(postCardFromFile),
-    ...emdashPosts.map(postCardFromEmdash),
-  ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+  const posts = [...filePosts.map(postCardFromFile), ...emdashPosts.map(postCardFromEmdash)].sort(
+    (a, b) => b.pubDate.valueOf() - a.pubDate.valueOf(),
+  );
 
   return rss({
     title: SITE_TITLE,

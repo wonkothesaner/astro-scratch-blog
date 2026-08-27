@@ -27,25 +27,39 @@ if (!useEmdash) {
 }
 ---
 
-{useEmdash && emdashPost ? (
-  <BlogPost
-    title={emdashPost.data.title}
-    description={emdashPost.data.excerpt}
-    pubDate={new Date(emdashPost.data.pub_date)}
-    updatedDate={emdashPost.data.updated_date ? new Date(emdashPost.data.updated_date) : undefined}
-    heroImage={emdashPost.data.featured_image ? { kind: "emdash", value: emdashPost.data.featured_image } : undefined}
-    heroImageAlt={emdashPost.data.hero_image_alt}
-  >
-    <PortableText value={emdashPost.data.content} />
-  </BlogPost>
-) : (
-  filePost &&
-  FileContent && (
+{
+  useEmdash && emdashPost ? (
     <BlogPost
-      {...filePost.data}
-      heroImage={filePost.data.heroImage ? { kind: "file", asset: filePost.data.heroImage } : undefined}
+      title={emdashPost.data.title}
+      description={emdashPost.data.excerpt}
+      pubDate={new Date(emdashPost.data.pub_date)}
+      updatedDate={
+        emdashPost.data.updated_date
+          ? new Date(emdashPost.data.updated_date)
+          : undefined
+      }
+      heroImage={
+        emdashPost.data.featured_image
+          ? { kind: "emdash", value: emdashPost.data.featured_image }
+          : undefined
+      }
+      heroImageAlt={emdashPost.data.hero_image_alt}
     >
-      <FileContent />
+      <PortableText value={emdashPost.data.content} />
     </BlogPost>
+  ) : (
+    filePost &&
+    FileContent && (
+      <BlogPost
+        {...filePost.data}
+        heroImage={
+          filePost.data.heroImage
+            ? { kind: "file", asset: filePost.data.heroImage }
+            : undefined
+        }
+      >
+        <FileContent />
+      </BlogPost>
+    )
   )
-)}
+}

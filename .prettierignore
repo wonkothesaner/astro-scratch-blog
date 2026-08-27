@@ -1,0 +1,14 @@
+# Prettier only handles .astro files in this project — everything else is
+# formatted by Oxfmt. Re-include directories so traversal continues, then
+# only re-include .astro files within them.
+*
+!*/
+!*.astro
+
+dist/
+.astro/
+node_modules/
+
+# Unused vendor snippet; prettier-plugin-astro's parser chokes on its inline
+# <script>, and it's dead code (not imported anywhere) besides.
+src/components/codeComponents/_PostHog.astro

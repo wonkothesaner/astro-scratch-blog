@@ -15,25 +15,32 @@ function portableTextToHtml(blocks: unknown[]): string {
   return blocks
     .filter(
       (block): block is { children: { text: string; marks?: string[] }[] } =>
-        typeof block === "object" && block !== null && (block as { _type?: string })._type === "block",
+        typeof block === "object" &&
+        block !== null &&
+        (block as { _type?: string })._type === "block",
     )
     .map((block) =>
       block.children
         .map((span) =>
-          span.marks?.includes("strong") ? `<strong>${span.text}</strong>` : span.text,
+          span.marks?.includes("strong")
+            ? `<strong>${span.text}</strong>`
+            : span.text,
         )
         .join(""),
     )
     .join(" ");
 }
 
-const { entries } = await getEmDashCollection("glossary", { status: "published" });
+const { entries } = await getEmDashCollection("glossary", {
+  status: "published",
+});
 
 const columns = [
   { key: "tla", label: "Acronym" },
   { key: "description", label: "Description" },
 ];
-const caption = "Some three and four letter acroynms that you may want to understand better";
+const caption =
+  "Some three and four letter acroynms that you may want to understand better";
 
 const rows = entries.map((entry) => {
   const { term, description } = entry.data;

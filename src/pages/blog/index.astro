@@ -9,7 +9,9 @@ import { SITE_TITLE } from "../../consts";
 import { postCardFromFile, postCardFromEmdash } from "../../utils/blog";
 
 const filePosts = await getCollection("blog");
-const { entries: emdashPosts } = await getEmDashCollection("posts", { status: "published" });
+const { entries: emdashPosts } = await getEmDashCollection("posts", {
+  status: "published",
+});
 
 const posts = [
   ...filePosts.map(postCardFromFile),
@@ -22,19 +24,28 @@ const title = "Blog";
 
 <BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
   <aside>
-    <h2 class="aside">Sane Musings - a collection of writing on a number of different subjects</h2>
+    <h2 class="aside">
+      Sane Musings - a collection of writing on a number of different subjects
+    </h2>
     <ol>
       <li>
-        <strong>SAP</strong> - three small letters but a very large piece of software that everyone uses whether they realise it or not.
+        <strong>SAP</strong> - three small letters but a very large piece of software
+        that everyone uses whether they realise it or not.
       </li>
       <li>
-        <strong>50+ Development</strong> - I believe we are entering a world in which anyone can write their own code, development their own applications, bring to life whatever they want.  I am not being ageist but if you learn a certain way, have certain lived experiences from the last two or three decades of last year then I hope to curate a set of articles on how you can learn to code.
+        <strong>50+ Development</strong> - I believe we are entering a world in which
+        anyone can write their own code, development their own applications, bring
+        to life whatever they want. I am not being ageist but if you learn a certain
+        way, have certain lived experiences from the last two or three decades of
+        last year then I hope to curate a set of articles on how you can learn to
+        code.
       </li>
       <li>
         <strong>Life in general</strong> - Sane Musings on living today.
       </li>
       <li>
-        <strong>Miscellany</strong> - stuff that I found interesting that I have picked up along the way and want to share.
+        <strong>Miscellany</strong> - stuff that I found interesting that I have picked
+        up along the way and want to share.
       </li>
     </ol>
   </aside>

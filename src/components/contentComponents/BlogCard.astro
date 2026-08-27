@@ -14,29 +14,39 @@ const { post } = Astro.props;
 
 <article class="blog-card">
   <a href={post.url}>
-    {post.heroImage?.kind === "emdash" && (
-      <EmdashImage
-        image={post.heroImage.value}
-        alt=""
-        width={800}
-        height={600}
-        sizes="(min-width: 600px) 33vw, 100vw"
-        loading="lazy"
-      />
-    )}
-    {post.heroImage?.kind === "file" && (
-      <Image
-        src={post.heroImage.asset}
-        alt=""
-        widths={[200, 400, 600, 800]}
-        sizes="(min-width: 600px) 33vw, 100vw"
-        loading="lazy"
-      />
-    )}
+    {
+      post.heroImage?.kind === "emdash" && (
+        <EmdashImage
+          image={post.heroImage.value}
+          alt=""
+          width={800}
+          height={600}
+          sizes="(min-width: 600px) 33vw, 100vw"
+          loading="lazy"
+        />
+      )
+    }
+    {
+      post.heroImage?.kind === "file" && (
+        <Image
+          src={post.heroImage.asset}
+          alt=""
+          widths={[200, 400, 600, 800]}
+          sizes="(min-width: 600px) 33vw, 100vw"
+          loading="lazy"
+        />
+      )
+    }
     <div class="blog-card__body">
       <h3>{post.title}</h3>
       <FormattedDate date={post.pubDate} />
-      {post.category && <p>A Sane Musing on <strong>{CATEGORIES[post.category]}</strong></p>}
+      {
+        post.category && (
+          <p>
+            A Sane Musing on <strong>{CATEGORIES[post.category]}</strong>
+          </p>
+        )
+      }
       {post.description && <p>{post.description}</p>}
     </div>
   </a>
