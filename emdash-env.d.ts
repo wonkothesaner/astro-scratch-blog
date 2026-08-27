@@ -50,6 +50,25 @@ export interface Post {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Project {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
+  hero_alt?: string;
+  hero_video_url?: string;
+  description: string;
+  tech_stack: unknown;
+  lessons_learned: string;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 export interface Wisdom {
   id: string;
   slug: string | null;
@@ -70,6 +89,7 @@ declare module "emdash" {
     glossary: Glossary;
     pages: Page;
     posts: Post;
+    projects: Project;
     wisdom: Wisdom;
   }
 }
