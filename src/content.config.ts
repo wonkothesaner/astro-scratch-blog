@@ -30,6 +30,9 @@ const blog = defineCollection({
 	}),
 });
 
+// Kept as plain types (not a registered collection) — SortableTable.astro
+// still uses this shape for its Props, now fed by EmDash-sourced data
+// instead of the file-based "tables" collection.
 const columnSchema = z.object({
 	key: z.string(),
 	label: z.string().optional(),
@@ -44,9 +47,4 @@ const tableSchema = z.object({
 export type TableData = z.infer<typeof tableSchema>;
 export type Column = z.infer<typeof columnSchema>;
 
-const tables = defineCollection({
-	loader: glob({ base: './src/content/tables', pattern: '**/*.json' }),
-	schema: tableSchema
-});
-
-export const collections = { blog, tables };
+export const collections = { blog };

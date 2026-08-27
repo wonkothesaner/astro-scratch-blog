@@ -1,11 +1,44 @@
 ---
+export const prerender = false;
+
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_TITLE } from "../consts";
-import { getEntry } from "astro:content";
+import { getEmDashCollection } from "emdash";
 import SortableTable from "../components/contentComponents/SortableTable.astro";
-const table = await getEntry("tables", "glossary");
-if (!table) throw new Error("wisdom table not found");
-const { rows, columns, caption } = table.data;
+
+type PortableTextSpan = { text: string; marks?: string[] };
+type PortableTextBlock = { children: PortableTextSpan[] };
+
+// Minimal Portable Text -> HTML for glossary descriptions: single-paragraph
+// entries with bold spans only. Not a general-purpose renderer.
+function portableTextToHtml(blocks: PortableTextBlock[]): string {
+  return blocks
+    .map((block) =>
+      block.children
+        .map((span) =>
+          span.marks?.includes("strong") ? `<strong>${span.text}</strong>` : span.text,
+        )
+        .join(""),
+    )
+    .join(" ");
+}
+
+const { entries } = await getEmDashCollection("glossary", { status: "published" });
+
+const columns = [
+  { key: "tla", label: "Acronym" },
+  { key: "description", label: "Description" },
+];
+const caption = "Some three and four letter acroynms that you may want to understand better";
+
+const rows = entries.map((entry) => {
+  const { term, description: desc } = entry.data as {
+    term: string;
+    description: PortableTextBlock[];
+  };
+  return { tla: term, description: portableTextToHtml(desc) };
+});
+
 const description =
   "Glossary of terms that may help navigate the writings on the site as well as real life.";
 const title = "Glossary";

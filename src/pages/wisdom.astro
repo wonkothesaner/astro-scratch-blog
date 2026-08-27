@@ -1,21 +1,26 @@
 ---
+export const prerender = false;
+
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_TITLE } from "../consts";
-import { getEntry } from "astro:content";
+import { getEmDashCollection } from "emdash";
 
 import SortableTable from "../components/contentComponents/SortableTable.astro";
-const table = await getEntry("tables", "wisdom");
-if (!table) throw new Error("wisdom table not found");
-const { rows, columns, caption } = table.data;
+const { entries } = await getEmDashCollection("wisdom", { status: "published" });
 
-const shaped = rows.map((r: Record<string, unknown>) => {
+const columns = [
+  { key: "saying", label: "Saying" },
+  { key: "source", label: "Source" },
+];
+const caption = "a few things I've seen or heard that help me better understand some things in life";
+
+const shaped = entries.map((entry) => {
+  const { saying, note, source, source_url } = entry.data as Record<string, unknown>;
   return {
-    saying: r.note
-      ? `${r.saying} <span class="note">${r.note}</span>`
-      : r.saying,
-    source: r.source_url
-      ? `<a href="${r.source_url}" target="_blank">${r.source}</a>`
-      : r.source,
+    saying: note ? `${saying} <span class="note">${note}</span>` : saying,
+    source: source_url
+      ? `<a href="${source_url}" target="_blank">${source}</a>`
+      : source,
   };
 });
 const description =

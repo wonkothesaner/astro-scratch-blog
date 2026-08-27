@@ -5,6 +5,19 @@
 
 import type { ContentBylineCredit, TaxonomyTerm, PortableTextBlock } from "emdash";
 
+export interface Glossary {
+  id: string;
+  slug: string | null;
+  status: string;
+  term: string;
+  description: PortableTextBlock[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 export interface Page {
   id: string;
   slug: string | null;
@@ -33,9 +46,26 @@ export interface Post {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Wisdom {
+  id: string;
+  slug: string | null;
+  status: string;
+  saying: string;
+  note?: string;
+  source: string;
+  source_url?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 declare module "emdash" {
   interface EmDashCollections {
+    glossary: Glossary;
     pages: Page;
     posts: Post;
+    wisdom: Wisdom;
   }
 }
