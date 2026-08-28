@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 import { Image as EmdashImage } from "emdash/ui";
 import BaseLayout from "./BaseLayout.astro";
 import FormattedDate from "../components/utilityComponents/FormattedDate.astro";
-import type { PostCardImage } from "../utils/blog";
+import type { PostCard, PostCardImage } from "../utils/blog";
 
 // Explicit shape rather than inheriting CollectionEntry<"blog">["data"]
 // wholesale: this layout renders both file-based and EmDash-sourced posts,
@@ -20,6 +20,8 @@ type Props = {
   heroAspectRatio?: string;
   heroPortrait?: boolean;
   pageType?: "website" | "article";
+  prev?: PostCard;
+  next?: PostCard;
   // Unused by this layout, but about.astro (file-based, out of scope for
   // the EmDash migration) still passes it through with its other
   // CollectionEntry<"blog">["data"] props.
@@ -37,6 +39,8 @@ const {
   heroAspectRatio,
   heroPortrait,
   pageType = "article",
+  prev,
+  next,
 } = Astro.props;
 
 const { pathname } = Astro.url;
@@ -110,6 +114,28 @@ const { pathname } = Astro.url;
         <slot />
       </div>
     </article>
+    {
+      (prev || next) && (
+        <nav class="post-nav" aria-label="Post navigation">
+          {prev ? (
+            <a class="post-nav__prev" href={prev.url}>
+              <span class="post-nav__label">← Previous</span>
+              <span class="post-nav__title">{prev.title}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {next ? (
+            <a class="post-nav__next" href={next.url}>
+              <span class="post-nav__label">Next →</span>
+              <span class="post-nav__title">{next.title}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+        </nav>
+      )
+    }
   </main>
 </BaseLayout>
 
@@ -156,5 +182,40 @@ const { pathname } = Astro.url;
     margin-top: 0.5em;
     font-size: 0.8em;
     color: var(--color-meta);
+  }
+
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: var(--border-thin);
+  }
+
+  .post-nav a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .post-nav__next {
+    text-align: right;
+    grid-column: 2;
+  }
+
+  .post-nav__label {
+    font-size: var(--font-size-sm);
+    color: var(--color-meta);
+  }
+
+  .post-nav__title {
+    font-weight: bold;
+  }
+
+  .post-nav a:hover .post-nav__title {
+    color: var(--color-link-hover);
   }
 </style>

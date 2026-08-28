@@ -1,0 +1,48 @@
+---
+export const prerender = false;
+
+import { getCollection } from "astro:content";
+import { getEntriesByTerm } from "emdash";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BlogCard from "../../../components/contentComponents/BlogCard.astro";
+import { CATEGORIES, type CategorySlug } from "../../../consts";
+import { postCardFromFile, postCardFromEmdash, type EmdashPostRef } from "../../../utils/blog";
+
+const { slug } = Astro.params;
+
+if (!slug || !(slug in CATEGORIES)) {
+  return Astro.redirect("/404");
+}
+const category = slug as CategorySlug;
+
+// Every entry getEntriesByTerm returns is already known to carry this
+// category term, so no extra taxonomy lookup is needed per post here.
+const emdashEntries = await getEntriesByTerm("posts", "category", category);
+const filePosts = (await getCollection("blog")).filter((p) => p.data.category === category);
+
+const posts = [
+  ...filePosts.map(postCardFromFile),
+  ...emdashEntries.map((entry) =>
+    postCardFromEmdash(entry as unknown as EmdashPostRef, category),
+  ),
+].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+
+const title = CATEGORIES[category];
+const description = `Sane Musings posts in the "${title}" category`;
+---
+
+<BaseLayout title={`${title} - Blog`} description={description}>
+  <main>
+    <h1 class="text-centered">{title}</h1>
+    <section class="blog-list wide">
+      {posts.map((post) => <BlogCard post={post} />)}
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .blog-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+</style>

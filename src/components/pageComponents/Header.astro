@@ -1,13 +1,15 @@
 ---
+import { getSiteSetting } from "emdash";
 import HeaderLink from "./HeaderLink.astro";
-import { SITE_TITLE, NAV_PRIMARY, NAV_SECONDARY } from "../../consts";
+import { NAV_PRIMARY, NAV_SECONDARY } from "../../consts";
 
 const NAV_ALL = [...NAV_PRIMARY, ...NAV_SECONDARY];
+const siteTitle = await getSiteSetting("title");
 ---
 
 <header>
   <nav>
-    <h2 class="site-title"><a href="/">{SITE_TITLE}</a></h2>
+    <h2 class="site-title"><a href="/">{siteTitle}</a></h2>
 
     {/* Wide nav: all links inline, no dropdown */}
     <ul class="internal-links wide-nav">

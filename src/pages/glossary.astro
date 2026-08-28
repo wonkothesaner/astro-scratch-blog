@@ -2,9 +2,10 @@
 export const prerender = false;
 
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE_TITLE } from "../consts";
-import { getEmDashCollection } from "emdash";
+import { getEmDashCollection, getSiteSetting } from "emdash";
 import SortableTable from "../components/contentComponents/SortableTable.astro";
+
+const siteTitle = await getSiteSetting("title");
 
 // Minimal Portable Text -> HTML for glossary descriptions: single-paragraph
 // entries with bold spans only, the only shape these entries actually use.
@@ -52,7 +53,7 @@ const description =
 const title = "Glossary";
 ---
 
-<BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
+<BaseLayout title={`${title} - ${siteTitle}`} description={description}>
   <aside class="aside-first">
     <p>An attempt at humour.</p>
     <br />

@@ -1,10 +1,12 @@
 ---
+import { getSiteSetting } from "emdash";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE_TITLE } from "../consts";
+
+const siteTitle = await getSiteSetting("title");
 ---
 
 <BaseLayout
-  title={`Page not found — ${SITE_TITLE}`}
+  title={`Page not found — ${siteTitle}`}
   description="404 page - the page you are looking for does not exist on this site."
 >
   <main>

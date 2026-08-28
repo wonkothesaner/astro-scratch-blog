@@ -3,26 +3,17 @@ export const prerender = false;
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import BlogCard from "../../components/contentComponents/BlogCard.astro";
-import { getCollection } from "astro:content";
-import { getEmDashCollection } from "emdash";
-import { SITE_TITLE } from "../../consts";
-import { postCardFromFile, postCardFromEmdash } from "../../utils/blog";
+import { getSiteSetting } from "emdash";
+import { getAllPostCards } from "../../utils/blog";
 
-const filePosts = await getCollection("blog");
-const { entries: emdashPosts } = await getEmDashCollection("posts", {
-  status: "published",
-});
-
-const posts = [
-  ...filePosts.map(postCardFromFile),
-  ...emdashPosts.map(postCardFromEmdash),
-].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+const posts = await getAllPostCards();
+const siteTitle = await getSiteSetting("title");
 const description =
   "Home page for all Sane Musing blog posts as written by Martin Driscoll";
 const title = "Blog";
 ---
 
-<BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
+<BaseLayout title={`${title} - ${siteTitle}`} description={description}>
   <aside>
     <h2 class="aside">
       Sane Musings - a collection of writing on a number of different subjects

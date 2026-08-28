@@ -3,9 +3,9 @@ export const prerender = false;
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/contentComponents/ProjectCard.astro";
-import { SITE_TITLE } from "../consts";
-import { getEmDashCollection } from "emdash";
+import { getEmDashCollection, getSiteSetting } from "emdash";
 
+const siteTitle = await getSiteSetting("title");
 const description =
   "Description of some of the projects that Martin Driscoll is currently working on or has recently completed";
 const title = "Projects";
@@ -68,7 +68,7 @@ const projects = entries.map((entry) => {
 });
 ---
 
-<BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
+<BaseLayout title={`${title} - ${siteTitle}`} description={description}>
   <main>
     <h1>Projects that I have worked on or am still working on</h1>
     <p>

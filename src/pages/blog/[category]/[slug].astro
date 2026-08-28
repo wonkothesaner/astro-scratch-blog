@@ -2,9 +2,10 @@
 export const prerender = false;
 
 import { type CollectionEntry, getEntry, render } from "astro:content";
-import { getEmDashEntry } from "emdash";
+import { getEmDashEntry, getEntryTerms } from "emdash";
 import { PortableText } from "emdash/ui";
 import BlogPost from "../../../layouts/BlogPost.astro";
+import { getAllPostCards, getAdjacentPosts } from "../../../utils/blog";
 
 const { category, slug } = Astro.params;
 
@@ -13,7 +14,13 @@ if (!slug || !category) {
 }
 
 const { entry: emdashPost } = await getEmDashEntry("posts", slug);
-const useEmdash = Boolean(emdashPost && emdashPost.data.category === category);
+let useEmdash = false;
+if (emdashPost) {
+  // emdashPost.id is the slug (getEmDashEntry's live-collection shape) —
+  // the real ULID content_taxonomies keys on is at .data.id.
+  const categoryTerms = await getEntryTerms("posts", emdashPost.data.id, "category");
+  useEmdash = categoryTerms.some((term) => term.slug === category);
+}
 
 let filePost: CollectionEntry<"blog"> | undefined;
 let FileContent: Awaited<ReturnType<typeof render>>["Content"] | undefined;
@@ -25,6 +32,9 @@ if (!useEmdash) {
   }
   ({ Content: FileContent } = await render(filePost));
 }
+
+const allPosts = await getAllPostCards();
+const { prev, next } = getAdjacentPosts(allPosts, Astro.url.pathname);
 ---
 
 {
@@ -44,6 +54,8 @@ if (!useEmdash) {
           : undefined
       }
       heroImageAlt={emdashPost.data.hero_image_alt}
+      prev={prev}
+      next={next}
     >
       <PortableText value={emdashPost.data.content} />
     </BlogPost>
@@ -57,6 +69,8 @@ if (!useEmdash) {
             ? { kind: "file", asset: filePost.data.heroImage }
             : undefined
         }
+        prev={prev}
+        next={next}
       >
         <FileContent />
       </BlogPost>

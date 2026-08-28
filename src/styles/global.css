@@ -382,6 +382,8 @@
 
   main > .full-bleed {
     grid-column: full;
+    margin-left: var(--space-2);
+    margin-right: var(--space-2);
   }
 
   @media (min-width: 720px) {

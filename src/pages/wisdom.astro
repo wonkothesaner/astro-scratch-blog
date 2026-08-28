@@ -2,10 +2,10 @@
 export const prerender = false;
 
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE_TITLE } from "../consts";
-import { getEmDashCollection } from "emdash";
+import { getEmDashCollection, getSiteSetting } from "emdash";
 
 import SortableTable from "../components/contentComponents/SortableTable.astro";
+const siteTitle = await getSiteSetting("title");
 const { entries } = await getEmDashCollection("wisdom", {
   status: "published",
 });
@@ -31,7 +31,7 @@ const description =
 const title = "Wisdom";
 ---
 
-<BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
+<BaseLayout title={`${title} - ${siteTitle}`} description={description}>
   <aside class="aside-first">
     <p>
       A collection of sayings, phrases, thoughts and other snippets of 'wisdom'

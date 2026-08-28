@@ -2,10 +2,18 @@
 // Single source of truth: change the URL shape here and BlogCard, the
 // dynamic route page, and the RSS feed will all stay in sync.
 
+import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import type { ContentEntry } from "emdash";
+import { getEmDashCollection, getTermsForEntries } from "emdash";
 import type { Post as EmdashPost } from "../../.emdash/types";
 import type { CategorySlug } from "../consts";
+
+// Narrower than ContentEntry<EmdashPost> deliberately: getEntriesByTerm
+// (used by the category/tag archive pages) returns a plain
+// { id, data } shape without the `edit` visual-editing proxy that
+// ContentEntry carries — this is the common subset both that and
+// getEmDashCollection/getEmDashEntry results satisfy.
+export type EmdashPostRef = { id: string; data: EmdashPost };
 
 /**
  * Compute the category/slug params for a blog post.
@@ -67,16 +75,83 @@ export function postCardFromFile(post: CollectionEntry<"blog">): PostCard {
   };
 }
 
-export function postCardFromEmdash(entry: ContentEntry<EmdashPost>): PostCard {
-  const category = entry.data.category as CategorySlug;
+// Category is a taxonomy relationship, not a schema field on the post
+// itself — callers must resolve it (via getTermsForEntries/getEntryTerms)
+// and pass the slug in, rather than this function reading entry.data.category.
+export function postCardFromEmdash(entry: EmdashPostRef, categorySlug: CategorySlug): PostCard {
   return {
     title: entry.data.title,
     description: entry.data.excerpt,
     pubDate: new Date(entry.data.pub_date),
-    category,
-    url: `/blog/${category}/${entry.data.slug}`,
+    category: categorySlug,
+    url: `/blog/${categorySlug}/${entry.data.slug}`,
     heroImage: entry.data.featured_image
       ? { kind: "emdash", value: entry.data.featured_image }
       : undefined,
   };
+}
+
+/**
+ * Resolve the "category" taxonomy term slug for a batch of EmDash post
+ * entries in one round trip. Every post is required to have exactly one
+ * category term (enforced by editorial convention, not a DB constraint) —
+ * throws loudly on a missing term rather than silently mis-categorizing,
+ * since that would otherwise produce a broken /blog/undefined/<slug> URL.
+ */
+export async function resolvePostCategories(
+  entries: EmdashPostRef[],
+): Promise<Map<string, CategorySlug>> {
+  // entry.id is the slug for getEmDashCollection/getEmDashEntry results —
+  // the real ULID (what content_taxonomies.entry_id actually stores) lives
+  // at entry.data.id. Using entry.id here silently produced empty term
+  // lookups for every post rather than an obvious type error, since both
+  // are plain strings.
+  const termsByEntry = await getTermsForEntries(
+    "posts",
+    entries.map((e) => e.data.id),
+    "category",
+  );
+  const result = new Map<string, CategorySlug>();
+  for (const entry of entries) {
+    const term = termsByEntry.get(entry.data.id)?.[0];
+    if (!term) {
+      throw new Error(`Post "${entry.data.id}" (${entry.data.slug}) has no category taxonomy term assigned`);
+    }
+    result.set(entry.data.id, term.slug as CategorySlug);
+  }
+  return result;
+}
+
+/**
+ * The merged, sorted, all-sources post list — single implementation shared
+ * by the blog listing, the homepage's recent-posts section, the RSS feed,
+ * and prev/next neighbor lookups, so they can't drift out of sync.
+ */
+export async function getAllPostCards(): Promise<PostCard[]> {
+  const [filePosts, { entries: emdashPosts }] = await Promise.all([
+    getCollection("blog"),
+    getEmDashCollection("posts", { status: "published" }),
+  ]);
+  const categories = await resolvePostCategories(emdashPosts);
+  return [
+    ...filePosts.map(postCardFromFile),
+    ...emdashPosts.map((entry) => postCardFromEmdash(entry, categories.get(entry.data.id)!)),
+  ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+}
+
+/**
+ * The previous (older) and next (newer) post relative to `currentUrl`
+ * within the given list — pass the full site-wide list for single-post
+ * navigation, or a category/tag-filtered subset to keep navigation scoped
+ * to that archive.
+ */
+export function getAdjacentPosts(
+  posts: PostCard[],
+  currentUrl: string,
+): { prev?: PostCard; next?: PostCard } {
+  const index = posts.findIndex((p) => p.url === currentUrl);
+  if (index === -1) return {};
+  // posts are sorted newest-first: the next *array* entry is the older
+  // (chronologically previous) post, and vice versa.
+  return { prev: posts[index + 1], next: posts[index - 1] };
 }

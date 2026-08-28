@@ -1,0 +1,48 @@
+---
+export const prerender = false;
+
+import { getEntriesByTerm, getTerm } from "emdash";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BlogCard from "../../../components/contentComponents/BlogCard.astro";
+import { postCardFromEmdash, resolvePostCategories, type EmdashPostRef } from "../../../utils/blog";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect("/404");
+}
+
+const term = await getTerm("tag", slug);
+if (!term) {
+  return Astro.redirect("/404");
+}
+
+const emdashEntries = (await getEntriesByTerm(
+  "posts",
+  "tag",
+  slug,
+)) as unknown as EmdashPostRef[];
+const categories = await resolvePostCategories(emdashEntries);
+
+const posts = emdashEntries
+  .map((entry) => postCardFromEmdash(entry, categories.get(entry.id)!))
+  .sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+
+const description = `Sane Musings posts tagged "${term.label}"`;
+---
+
+<BaseLayout title={`${term.label} - Blog`} description={description}>
+  <main>
+    <h1 class="text-centered">{term.label}</h1>
+    <section class="blog-list wide">
+      {posts.map((post) => <BlogCard post={post} />)}
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .blog-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+</style>
