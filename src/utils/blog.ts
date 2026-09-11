@@ -62,6 +62,7 @@ export interface PostCard {
   category: CategorySlug;
   url: string;
   heroImage?: PostCardImage;
+  heroImageAlt?: string;
 }
 
 export function postCardFromFile(post: CollectionEntry<"blog">): PostCard {
@@ -72,6 +73,7 @@ export function postCardFromFile(post: CollectionEntry<"blog">): PostCard {
     category: post.data.category,
     url: postUrl(post),
     heroImage: post.data.heroImage ? { kind: "file", asset: post.data.heroImage } : undefined,
+    heroImageAlt: post.data.heroImageAlt,
   };
 }
 
@@ -88,6 +90,7 @@ export function postCardFromEmdash(entry: EmdashPostRef, categorySlug: CategoryS
     heroImage: entry.data.featured_image
       ? { kind: "emdash", value: entry.data.featured_image }
       : undefined,
+    heroImageAlt: entry.data.hero_image_alt,
   };
 }
 

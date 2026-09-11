@@ -18,7 +18,7 @@ const { post } = Astro.props;
       post.heroImage?.kind === "emdash" && (
         <EmdashImage
           image={post.heroImage.value}
-          alt=""
+          alt={post.heroImageAlt || post.title}
           width={800}
           height={600}
           sizes="(min-width: 600px) 33vw, 100vw"
@@ -30,7 +30,7 @@ const { post } = Astro.props;
       post.heroImage?.kind === "file" && (
         <Image
           src={post.heroImage.asset}
-          alt=""
+          alt={post.heroImageAlt || post.title}
           widths={[200, 400, 600, 800]}
           sizes="(min-width: 600px) 33vw, 100vw"
           loading="lazy"

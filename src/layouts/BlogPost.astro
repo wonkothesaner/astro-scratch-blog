@@ -90,6 +90,8 @@ const { pathname } = Astro.url;
           <Image
             src={heroImage.asset}
             alt={heroImageAlt ?? `Featured image for ${title}`}
+            widths={[400, 800, 1200]}
+            sizes="(max-width: 800px) 100vw, 1200px"
             priority
           />
         )

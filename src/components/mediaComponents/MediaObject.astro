@@ -20,7 +20,23 @@ const mediaClass = flip ? "media media-flip" : "media";
   style={imageWidth ? `--media-image-width: ${imageWidth}` : undefined}
 >
   <div class="img">
-    <Image src={image} alt={alt} />
+    {
+      image.format === "svg" ? (
+        <img
+          src={image.src}
+          width={image.width}
+          height={image.height}
+          alt={alt}
+        />
+      ) : (
+        <Image
+          src={image}
+          alt={alt}
+          widths={[200, 400, 600]}
+          sizes="(max-width: 640px) 200px, 400px"
+        />
+      )
+    }
     <p class="source">
       {source && <span>Source: {source}</span>}
     </p>
