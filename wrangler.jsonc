@@ -8,17 +8,25 @@
     "directory": "./dist",
     "binding": "ASSETS",
   },
+  // "remote": true makes `astro dev` / `wrangler dev` bind to the *deployed*
+  // D1 database and R2 bucket instead of the local Miniflare simulation in
+  // .wrangler/state (which is gitignored, so a fresh clone starts empty and
+  // EmDash sees no collections and no posts). It has no effect on deploys.
+  // Requires `wrangler login`. Set to false (or run with
+  // CLOUDFLARE_VITE_FORCE_LOCAL=true) to work against local state instead.
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "wts-services-db",
       "database_id": "bb16a600-ea15-4532-8a51-e84a1d78ede9",
+      "remote": true,
     },
   ],
   "r2_buckets": [
     {
       "binding": "MEDIA",
       "bucket_name": "wts-services-media",
+      "remote": true,
     },
   ],
   "observability": {
