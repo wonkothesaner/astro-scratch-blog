@@ -382,8 +382,7 @@
 
   main > .full-bleed {
     grid-column: full;
-    margin-left: var(--space-2);
-    margin-right: var(--space-2);
+    margin-inline: var(--space-2);
   }
 
   @media (min-width: 720px) {
@@ -467,6 +466,14 @@
   td {
     padding: var(--space-2) var(--space-4);
     text-align: left;
+    hyphens: auto; /* needs <html lang>; lets long words hyphenate so tables fit narrow screens */
+  }
+
+  @media (max-width: 640px) {
+    th,
+    td {
+      padding: var(--space-1) var(--space-2);
+    }
   }
   th {
     background: var(--color-bg);
@@ -480,9 +487,13 @@
     background: var(--color-bg);
   }
 
-  .page-table {
-    max-width: 75rem;
-    margin-inline: auto;
+  /* Spans the full track, capped at 75rem and centred. Width (not margins)
+     keeps a --space-2 gutter each side; `safe` stops a table wider than the
+     track (min-content of long cells) overflowing off the left edge. */
+  main > .page-table {
+    grid-column: full;
+    justify-self: safe center;
+    width: min(75rem, 100% - 2 * var(--space-2));
   }
 }
 

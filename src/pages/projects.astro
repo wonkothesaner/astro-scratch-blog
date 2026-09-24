@@ -3,9 +3,9 @@ export const prerender = false;
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/contentComponents/ProjectCard.astro";
-import { getEmDashCollection, getSiteSetting } from "emdash";
+import { SITE_TITLE } from "../consts";
+import { getEmDashCollection } from "emdash";
 
-const siteTitle = await getSiteSetting("title");
 const description =
   "Description of some of the projects that Martin Driscoll is currently working on or has recently completed";
 const title = "Projects";
@@ -68,8 +68,25 @@ const projects = entries.map((entry) => {
 });
 ---
 
-<BaseLayout title={`${title} - ${siteTitle}`} description={description}>
-  <main>
+<BaseLayout title={`${title} - ${SITE_TITLE}`} description={description}>
+  <aside class="aside-first">
+    <p>
+      What I am working on. In some cases workong on a lot and others just once
+      in a while.
+    </p>
+    <br />
+    <p>
+      One of the reasons for writing this website is to share what I have done
+      as a new 'old' (50+) developer and lessons I have learned along the way.
+      This page showcases the private and public projects that are in my GitHub
+      repos.
+    </p>
+    <br />
+    <p>
+      I accept no responsibility for anything that may happen as a result of
+      taking any of this seriously
+    </p>
+  </aside><main>
     <h1>Projects that I have worked on or am still working on</h1>
     <p>
       I have a number of ideas for things that I would like to build in this new
