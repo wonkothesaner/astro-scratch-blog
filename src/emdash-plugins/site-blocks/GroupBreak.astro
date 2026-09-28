@@ -1,0 +1,26 @@
+---
+// Ends an image + text group in rich text: clears floated images so the next
+// group starts on its own row (see the .prose rules in global.css).
+interface Props {
+  node: { line?: "none" | "subtle" };
+}
+
+const { node } = Astro.props;
+---
+
+<div
+  class:list={["group-break", { "group-break--line": node?.line === "subtle" }]}
+  aria-hidden="true"
+>
+</div>
+
+<style>
+  .group-break {
+    clear: both;
+    margin-block: var(--space-3);
+  }
+
+  .group-break--line {
+    border-block-start: 1px solid var(--color-table-highlight);
+  }
+</style>

@@ -1,164 +1,49 @@
 ---
-import BlogPost from "../layouts/BlogPost.astro";
+export const prerender = false;
+
+import { getEmDashEntry, getSiteSetting } from "emdash";
+import { PortableText } from "emdash/ui";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageAside from "../components/pageComponents/PageAside.astro";
 import petKeyboard from "../assets/images/about/PET_Keyboard_improved.svg";
-import MediaObject from "../components/mediaComponents/MediaObject.astro";
-import profileImage from "../assets/images/about/martin_headshot.png"; // Import the image
-import golfImage from "../assets/images/about/golf_image.jpg";
-import apolloImage from "../assets/images/about/apollo_11_crew.jpg"; // Import the image
-import warningImage from "../assets/images/about/warning_Symbol.png"; // Import the image
-import mondeoImage from "../assets/images/about/ford_mondeo.jpg"; // Import the image
-import astroImage from "../assets/images/about/astro-logo-dark.png"; // Import the image
-import earthriseImage from "../assets/images/about/earthrise_apollo_8.jpg"; // Import the image
+
+// Body text and images are EmDash-managed (Admin → Pages → "About Me"); the
+// hero banner stays here — it's an SVG, which the production image service
+// can't process. Left/right images are EmDash image blocks with Alignment
+// set, grouped with Group breaks — see the .prose rules in global.css.
+const { entry: aboutPage } = await getEmDashEntry("pages", "about");
+const siteTitle = await getSiteSetting("title");
+const title = aboutPage?.data.title ?? "About Me";
+const description =
+  "About me page for Martin Driscoll, owner and author of the site and Sane Musings.";
 ---
 
-<BlogPost
-  title="About Me"
-  description="About me page for Martin Driscoll, owner and author of the site and Sane Musings."
-  pubDate={new Date("June 08 2025")}
-  pageType="website"
-  category="miscellany"
-  heroImage={{ kind: "file", asset: petKeyboard }}
-  heroImageAlt="Commodore PET 2001 Keyboard"
-  heroFit="contain"
-  heroAspectRatio="21 / 9"
-  heroPortrait={false}
->
-  <MediaObject image={warningImage} alt="Warning Sign">
-    <h3 class="text-warning">Warning</h3>
-    <p>
-      Left to my own devices, writing about myself is the last thing that I
-      choose to do. So please forgive what follows.
-    </p></MediaObject
-  >
-  <MediaObject image={profileImage} alt="Portrait of Martin Driscoll">
-    <p>
-      <b>TL;DR</b>...I used to work stupid long hours doing things with other
-      people's software. Not stupid because I was not paid well (I was) but
-      stupid because I was unable to many of the things that I needed and wanted
-      to do. I <b>needed</b> to look after myself and my family and I
-      <b>wanted</b> to write a website like this one.
-    </p>
-  </MediaObject>
-  <hr />
-  <p>
-    BTW please see <a href="/glossary">
-      here for a list of definitions that may help</a
-    > with things like TL;DR (and BTW).
-  </p>
-  <p>
-    I am no longer paid. I am trying, among other things, to write my own code
-    and explain what I learn along the way. There is already a wealth of courses
-    and content out there. All of which is written and presented by many people
-    much more qualified than I. So any content here should be taken as the
-    "Musings of the Sane". Where Sane here is a reference to John Watson,
-    otherwise known as Wonko the Sane. See <a
-      href="https://hitchhikers.fandom.com/wiki/Wonko_the_Sane"
-      target="_blank">Hitchhiker's Fandom here</a
-    > for further explanation.
-  </p>
-  <p>
-    I am happiest at home, when working, talking and learning with family and
-    friends. I am
-    <b><i>curious, impatient, perpetually.</i></b>
-    At least that is what it says on my WhatsApp profile, which is the only Meta product
-    I use.
-  </p>
-  <MediaObject
-    image={apolloImage}
-    alt="Apollo 11 astronauts Neil Armstrong, Michael Collins, and Buzz Aldrin"
-    source="NASA"
-    flip={true}
-  >
-    <p>
-      I was born in London before they landed on the moon. Not that they landed
-      on the moon in London; you know what I meant I hope? If I had a dinner
-      party with 5 people (alive or dead), I would invite Buzz Aldrin for sure.
-      🌝 Neil Armstrong might kill the atmosphere, sorry Neil. I will leave the
-      other four invitees for a later blog post.
-    </p>
-  </MediaObject>
-  <p>
-    Philip Larkin wrote a poem about parents which I believe he titled <a
-      href="https://www.poetryfoundation.org/poems/48419/this-be-the-verse"
-      target="_blank"
-      rel="noopener noreferrer">This Be The Verse</a
-    >). It may resonate with you. I can relate to some (but not all) of it; most
-    especially because I now have children myself.
-  </p>
-  <p>
-    I grew up south of London. Where exactly? That is not as important as all
-    the chances that I was given by my parents. Chances to do and explore pretty
-    much as I wanted to. Within boundaries, yes, but at least those boundaries
-    were clear (it was easier back then). One day, Dad brought a Commodore Pet
-    back and I remember playing Space Invaders and a game, whose name I cannot
-    remember, where you fought naval battles. Either way, I enjoyed myself and
-    eventually moved up to a BBC Micro and Elite in the 80s. If you want to know
-    what a Commodore Pet is then look at the top of this page for a picture of
-    its keyboard and <a
-      href="https://collection.sciencemuseumgroup.org.uk/objects/co493761/commodore-pet-2001-8-bs-personal-computer-1977"
-      target="_blank">the Science Museum in the London</a
-    > for an example.
-  </p>
-  <p>
-    Once I left home, I went to university and did some Engineering, while being
-    sponsored by Jaguar Motor Cars (back when they were owned by the UK
-    Government and not Ford or Tata or whomever). I was not particularly good at
-    it. And I left University not knowing what I wanted to do.
-  </p>
-  <MediaObject
-    image={golfImage}
-    alt="Martin Driscoll and teammates in front of St Andrews Clubhouse"
-    flip={false}
-  >
-    <p>
-      I played golf while working out the next step to take. And then a lady
-      asked for an egg and cress sandwich (I was working in the golf club bar)
-      and mentioned her husband had a job going. I went along for the interview
-      and started working for living.
-    </p>
-  </MediaObject>
-  <MediaObject image={mondeoImage} alt="Ford Mondeo" flip={true}>
-    <p>
-      I worked for a company that made the front seats for the Ford Mondeo. And,
-      within a year, found myself working in Belgium with a wonderful lady
-      called Karin, who quickly became the love of my life. We set off around
-      the world on a series of adventures.
-    </p>
-  </MediaObject>
-  <MediaObject image={earthriseImage} alt="Apollo 8 Earthrise" source="NASA">
-    <p>
-      We lived in the UK and then moved to east coast (Boston) and west coast of
-      the US. Before then moving on to Singapore, Australia before returning to
-      London in the UK. We typically never lived in one place more than two
-      years. Until we got to London in 2006, where we stuck. Two children
-      arrived in 2010 and 2012 before Brexit happened in 2016.
-    </p>
-  </MediaObject>
-  <p>
-    Which brings us to the current chapter in our lives together. As a result of
-    many things, we moved back to live in Belgium at the beginning of 2021. It
-    is here, in place called Hasselt Limburg, that I write these words and say
-    thank you for reading this far.
-  </p>
-  <MediaObject image={astroImage} alt="Astro Logo" flip={false}>
-    <p>
-      And thanks too <a href="https://astro.build" target="_blank">for Astro</a> which
-      is an amazing project. I have tried to use it properly when building this site
-      but am sure there are multiple things I could (and should) have done differently.
-    </p><p>
-      I look forward to finding out what they are as I continue my journey as an
-      astronaut.
-    </p>
-    <p>
-      <span
-        >For the latest news, read the&nbsp;
-        <a href="https://astro.build/blog/" id="news" class="box"
-          >Astro blog here</a
-        >
-        &nbsp;and follow them&nbsp;
-        <a href="https://m.webtoo.ls/@astro" target="_blank">on Mastodon here</a
-        >.
-      </span>
-    </p>
-  </MediaObject>
-</BlogPost>
+<BaseLayout title={`${title} - ${siteTitle}`} description={description}>
+  <PageAside area="aside-about" />
+  <main>
+    <h1 class="text-centered">{title}</h1>
+    <div class="about-hero wide">
+      <img
+        src={petKeyboard.src}
+        width={petKeyboard.width}
+        height={petKeyboard.height}
+        alt="Commodore PET 2001 Keyboard"
+      />
+    </div>
+    <div class="prose">
+      {aboutPage?.data.content && <PortableText value={aboutPage.data.content} />}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .about-hero img {
+    display: block;
+    margin-inline: auto;
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    aspect-ratio: 21 / 9;
+    object-fit: contain;
+  }
+</style>

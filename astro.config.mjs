@@ -10,6 +10,7 @@ import browserslist from "browserslist";
 import { browserslistToTargets } from "lightningcss";
 import emdash from "emdash/astro";
 import { d1, r2 } from "@emdash-cms/cloudflare";
+import { siteBlocksPlugin } from "./src/emdash-plugins/site-blocks/index.ts";
 // import { seoPlugin } from "@jdevalk/emdash-plugin-seo";
 // Disabled: its dependency @jdevalk/astro-seo-graph declares
 // peerDependencies astro "^5.0.0 || ^6.0.0" — doesn't claim Astro 7 support
@@ -38,7 +39,8 @@ export default defineConfig({
     emdash({
       database: d1({ binding: "DB" }),
       storage: r2({ binding: "MEDIA" }),
-      // plugins: [seoPlugin()], // see note above
+      // seoPlugin() disabled — see note above
+      plugins: [siteBlocksPlugin()],
     }),
   ],
   trailingSlash: "never",

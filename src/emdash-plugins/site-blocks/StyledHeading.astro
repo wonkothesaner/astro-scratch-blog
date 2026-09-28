@@ -1,0 +1,36 @@
+---
+// A real h2–h4 (so page structure and screen readers are unaffected) coloured
+// by a site tone. Tones map to --color-tone-* tokens in global.css; to add
+// one, add a token, a rule below and an option in ./index.ts.
+const LEVELS = ["h2", "h3", "h4"] as const;
+const TONES = ["warning", "success", "info", "muted"] as const;
+
+interface Props {
+  node: {
+    text?: string;
+    level?: (typeof LEVELS)[number];
+    tone?: (typeof TONES)[number];
+  };
+}
+
+const { node } = Astro.props;
+const Tag = LEVELS.includes(node?.level as never) ? node.level! : "h3";
+const tone = TONES.includes(node?.tone as never) ? node.tone! : "warning";
+---
+
+{node?.text && <Tag class:list={["styled-heading", `styled-heading--${tone}`]}>{node.text}</Tag>}
+
+<style>
+  .styled-heading--warning {
+    color: var(--color-tone-warning);
+  }
+  .styled-heading--success {
+    color: var(--color-tone-success);
+  }
+  .styled-heading--info {
+    color: var(--color-tone-info);
+  }
+  .styled-heading--muted {
+    color: var(--color-tone-muted);
+  }
+</style>

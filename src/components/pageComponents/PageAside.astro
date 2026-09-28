@@ -16,13 +16,24 @@ const { area, class: className } = Astro.props;
 // Request-cached, so WidgetArea's own lookup below costs no extra query.
 const widgetArea = await getWidgetArea(area);
 const hasWidgets = (widgetArea?.widgets.length ?? 0) > 0;
-const fallback = hasWidgets ? "" : (await Astro.slots.render("default")).trim();
+const fallback =
+  !hasWidgets && Astro.slots.has("default")
+    ? ((await Astro.slots.render("default")) ?? "").trim()
+    : "";
 ---
 
 {
   (hasWidgets || fallback) && (
     <aside class={className}>
-      {hasWidgets ? <WidgetArea name={area} /> : <Fragment set:html={fallback} />}
+      {/* One wrapper whatever the source, so the aside's look lives in
+          one place (.aside-panel in global.css) and can't drift */}
+      <div class="aside-panel">
+        {hasWidgets ? (
+          <WidgetArea name={area} />
+        ) : (
+          <Fragment set:html={fallback} />
+        )}
+      </div>
     </aside>
   )
 }

@@ -22,10 +22,6 @@ type Props = {
   pageType?: "website" | "article";
   prev?: PostCard;
   next?: PostCard;
-  // Unused by this layout, but about.astro (file-based, out of scope for
-  // the EmDash migration) still passes it through with its other
-  // CollectionEntry<"blog">["data"] props.
-  category?: string;
 };
 
 const {
@@ -148,7 +144,7 @@ const { pathname } = Astro.url;
   .hero-image img {
     display: block;
     margin: 0 auto;
-    border-radius: 0;
+    border-radius: var(--radius-none);
     box-shadow: var(--box-shadow);
     width: 100%;
     max-width: 900px;

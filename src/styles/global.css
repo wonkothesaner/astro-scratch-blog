@@ -65,7 +65,14 @@
     --color-link: var(--color-text);
     --color-link-hover: #808080;
     --color-table-highlight: #e0e0e0;
+    --color-lowlight: #f0f0f0;
     --color-meta: var(--color-gray);
+
+    /* Tones for the Styled heading editor block (site-blocks plugin) */
+    --color-tone-warning: var(--color-accent);
+    --color-tone-success: #1e7a3c;
+    --color-tone-info: #1f5fa8;
+    --color-tone-muted: var(--color-gray-light);
 
     /* Typography */
     --font-primary: "Atkinson Hyperlegible", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -96,7 +103,10 @@
     --media-image-width: 200px;
     --sticky-header-height: 5rem; /* clearance for the sticky <header> nav */
 
-    /* Borders: Hard edges only */
+    /* Borders: hard edges by default; radii only where a softer panel earns it */
+    --radius-none: 0;
+    --radius-sm: 3px; /* barely-there softening: scrollbar thumb, impact block */
+    --radius-md: 1rem; /* panels, e.g. the aside panel */
     --border-thin: 1px solid var(--color-text);
 
     /* Box shadows */
@@ -200,7 +210,7 @@
 
   /* Hard edges for images */
   img {
-    border-radius: 0;
+    border-radius: var(--radius-none);
   }
 
   /* Inline code in prose */
@@ -336,7 +346,7 @@
   }
   .page:has(> aside) > aside::-webkit-scrollbar-thumb {
     background: var(--color-gray);
-    border-radius: 3px;
+    border-radius: var(--radius-sm);
   }
   .page:has(> aside) > aside::-webkit-scrollbar-track {
     background: transparent;
@@ -407,6 +417,36 @@
     text-wrap: auto;
   }
 
+  /* EmDash rich text: left/right-aligned image blocks behave like a media
+     object. EmDash floats them (and un-floats below 640px); flow-root keeps
+     the text beside an image in its own column instead of wrapping under
+     it, and every image, break (visible line) or Group break (site-blocks
+     plugin: spacing, optional subtle line) starts a new group. Insert a
+     Group break before each new image to end the group above. */
+  .prose {
+    --emdash-caption-color: var(--color-gray-light);
+
+    & :is(p, ul, ol, h2, h3, h4) {
+      display: flow-root;
+    }
+
+    & :is(.emdash-image--align-left, .emdash-image--align-right, .emdash-break) {
+      clear: both;
+    }
+
+    /* text beside an image starts level with its top edge */
+    & :is(.emdash-image--align-left, .emdash-image--align-right) + :is(p, h2, h3, h4) {
+      margin-block-start: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .prose .emdash-image img {
+      display: block;
+      margin-inline: auto; /* centred when stacked, like the old MediaObject */
+    }
+  }
+
   /* Styling applied to aside */
   .page > aside {
     padding: var(--space-4) var(--space-3);
@@ -414,10 +454,27 @@
     font-size: var(--font-size-sm);
     line-height: var(--line-height-base);
 
+    /* EmDash's widget wrappers add nesting, not meaning: flatten them so
+       widget content and hand-written fallback content style identically.
+       (display: contents boxes can't take backgrounds — the panel below
+       lives on PageAside's own wrapper instead.) */
+    & :is(.widget-area, .widget, .widget__content) {
+      display: contents;
+    }
+
+    /* The aside's look, whatever the content source (PageAside emits it) */
+    & .aside-panel {
+      background-color: var(--color-lowlight);
+      border-radius: var(--radius-md);
+      padding: var(--space-2);
+    }
+
     & h2,
     & h3 {
       font-size: var(--font-size-base);
       margin-block-end: var(--space-2);
+      text-align: center;
+      color: var(--color-gray-light);
     }
     & p {
       margin-block-end: var(--space-2);
@@ -456,7 +513,7 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0px;
-    border-radius: 0px;
+    border-radius: var(--radius-none);
     border: var(--border-thin);
     overflow: hidden;
     margin-top: 0;

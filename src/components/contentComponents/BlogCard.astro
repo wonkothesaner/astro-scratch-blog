@@ -11,7 +11,9 @@ interface Props {
 
 const { post } = Astro.props;
 // Cached per request, so a list of cards costs one lookup per category.
-const categoryTerm = post.category ? await getTerm("category", post.category) : null;
+const categoryTerm = post.category
+  ? await getTerm("category", post.category)
+  : null;
 const categoryLabel = categoryTerm?.label ?? post.category;
 ---
 
@@ -77,6 +79,9 @@ const categoryLabel = categoryTerm?.label ?? post.category;
 
   .blog-card h3 {
     margin: 0;
+    /* Own these, so a container's heading styles (e.g. the aside) can't */
+    text-align: start;
+    color: inherit;
     font-size: var(--font-size-lg);
     line-height: var(--line-height-heading);
   }
