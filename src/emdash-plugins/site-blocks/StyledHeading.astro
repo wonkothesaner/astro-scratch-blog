@@ -1,36 +1,76 @@
 ---
-// A real h2–h4 (so page structure and screen readers are unaffected) coloured
-// by a site tone. Tones map to --color-tone-* tokens in global.css; to add
-// one, add a token, a rule below and an option in ./index.ts.
+// A real h2–h4 (so page structure and screen readers are unaffected) with a
+// tone (colour) and a style (shape), kept separate so any shape works with
+// any colour. Tones map to --color-tone-* tokens in global.css; to add a tone
+// or style, add a rule below and an option in ./index.ts.
 const LEVELS = ["h2", "h3", "h4"] as const;
-const TONES = ["warning", "success", "info", "muted"] as const;
+const TONES = ["default", "warning", "success", "info", "muted"] as const;
+const VARIANTS = ["plain", "exaggerated", "underlined"] as const;
 
 interface Props {
   node: {
     text?: string;
     level?: (typeof LEVELS)[number];
     tone?: (typeof TONES)[number];
+    variant?: (typeof VARIANTS)[number];
   };
 }
 
 const { node } = Astro.props;
 const Tag = LEVELS.includes(node?.level as never) ? node.level! : "h3";
-const tone = TONES.includes(node?.tone as never) ? node.tone! : "warning";
+const tone = TONES.includes(node?.tone as never) ? node.tone! : "default";
+// Blocks saved before the Style field existed have no variant: plain.
+const variant = VARIANTS.includes(node?.variant as never) ? node.variant! : "plain";
 ---
 
-{node?.text && <Tag class:list={["styled-heading", `styled-heading--${tone}`]}>{node.text}</Tag>}
+{
+  node?.text && (
+    <Tag
+      class:list={[
+        "styled-heading",
+        `styled-heading--${tone}`,
+        `styled-heading--${variant}`,
+      ]}
+    >
+      {node.text}
+    </Tag>
+  )
+}
 
 <style>
+  /* Tone sets one custom property; each style decides how to use it */
+  .styled-heading--default {
+    --tone: var(--color-tone-default);
+  }
   .styled-heading--warning {
-    color: var(--color-tone-warning);
+    --tone: var(--color-tone-warning);
   }
   .styled-heading--success {
-    color: var(--color-tone-success);
+    --tone: var(--color-tone-success);
   }
   .styled-heading--info {
-    color: var(--color-tone-info);
+    --tone: var(--color-tone-info);
   }
   .styled-heading--muted {
-    color: var(--color-tone-muted);
+    --tone: var(--color-tone-muted);
+  }
+
+  .styled-heading--plain {
+    color: var(--tone);
+  }
+
+  .styled-heading--exaggerated {
+    display: inline-block;
+    padding: 0.5em 1em;
+    border-radius: var(--radius-pill);
+    background-color: var(--tone);
+    color: var(--color-bg);
+  }
+
+  .styled-heading--underlined {
+    color: var(--tone);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 0.05em;
   }
 </style>

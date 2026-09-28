@@ -55,7 +55,7 @@ export function createPlugin() {
           type: "styledHeading",
           label: "Styled heading",
           category: "Text",
-          description: "A heading in a site tone: warning, success, info or muted",
+          description: "A heading in a site tone (colour) and style (shape)",
           fields: [
             { type: "text_input", action_id: "text", label: "Heading text" },
             {
@@ -74,12 +74,24 @@ export function createPlugin() {
               action_id: "tone",
               label: "Tone",
               options: [
+                { label: "Default (text colour)", value: "default" },
                 { label: "Warning", value: "warning" },
                 { label: "Success", value: "success" },
                 { label: "Info", value: "info" },
                 { label: "Muted", value: "muted" },
               ],
-              initial_value: "warning",
+              initial_value: "default",
+            },
+            {
+              type: "select",
+              action_id: "variant",
+              label: "Style",
+              options: [
+                { label: "Plain", value: "plain" },
+                { label: "Exaggerated (pill)", value: "exaggerated" },
+                { label: "Underlined", value: "underlined" },
+              ],
+              initial_value: "plain",
             },
           ],
         },

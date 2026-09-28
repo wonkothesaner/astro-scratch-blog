@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { getTerm } from "emdash";
 import { Image as EmdashImage } from "emdash/ui";
-import FormattedDate from "../utilityComponents/FormattedDate.astro";
+import PublishedDates from "../utilityComponents/PublishedDates.astro";
 import type { PostCard } from "../../utils/blog";
 
 interface Props {
@@ -44,7 +44,7 @@ const categoryLabel = categoryTerm?.label ?? post.category;
     }
     <div class="blog-card__body">
       <h3>{post.title}</h3>
-      <FormattedDate date={post.pubDate} />
+      <PublishedDates pubDate={post.pubDate} updatedDate={post.updatedDate} />
       {
         post.category && (
           <p>

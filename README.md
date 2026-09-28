@@ -41,6 +41,8 @@ npm run dev:local:clean  # first — use after config changes; stale Vite dep-op
 
 Local and production data drift apart over time — local mode is a sandbox, not a mirror. `wrangler d1 export` can't be used to copy production down: it refuses databases containing EmDash's FTS5 search tables (and briefly blocks queries while it runs).
 
+**EmDash CLI (`npx emdash …`) logins are per mode:** the CLI stores one login for this project folder, so after switching between `npm run dev` and `npm run dev:local`, run `npx emdash login --url http://localhost:4321` again. It shows a short code to confirm in the browser, which must be signed in to the admin in that mode (your passkey in remote mode, the dev-bypass below in local mode).
+
 **Logging in on `dev:local`:** the local database has no passkeys (yours live in production), so sign in via EmDash's dev-only bypass instead: `http://localhost:4321/_emdash/api/auth/dev-bypass?redirect=/_emdash/admin`. Use the `auth` bypass, not `setup/dev-bypass` (that one re-runs setup and can apply demo content / overwrite the site title). **Never use it in remote mode** (`npm run dev`) — it would create a `dev@emdash.local` admin in production.
 
 Once running, visit `http://localhost:4321/_emdash/admin` to manage EmDash content. First run walks you through a setup wizard to create an admin account (passkey-based).

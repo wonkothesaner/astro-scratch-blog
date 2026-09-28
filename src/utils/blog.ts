@@ -58,6 +58,7 @@ export interface PostCard {
   title: string;
   description?: string;
   pubDate: Date;
+  updatedDate?: Date;
   category: string;
   url: string;
   heroImage?: PostCardImage;
@@ -69,6 +70,7 @@ export function postCardFromFile(post: CollectionEntry<"blog">): PostCard {
     title: post.data.title,
     description: post.data.description,
     pubDate: post.data.pubDate,
+    updatedDate: post.data.updatedDate,
     category: post.data.category,
     url: postUrl(post),
     heroImage: post.data.heroImage ? { kind: "file", asset: post.data.heroImage } : undefined,
@@ -84,6 +86,7 @@ export function postCardFromEmdash(entry: EmdashPostRef, categorySlug: string): 
     title: entry.data.title,
     description: entry.data.excerpt,
     pubDate: new Date(entry.data.pub_date),
+    updatedDate: entry.data.updated_date ? new Date(entry.data.updated_date) : undefined,
     category: categorySlug,
     url: `/blog/${categorySlug}/${entry.data.slug}`,
     heroImage: entry.data.featured_image

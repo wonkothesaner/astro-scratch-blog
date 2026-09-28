@@ -1,0 +1,45 @@
+---
+// Editorial dates for a post, used wherever a post's date is shown (post
+// header, blog cards). An updated post shows "First published" plus a
+// smaller, muted "Updated" line; an unchanged post just "Published".
+import FormattedDate from "./FormattedDate.astro";
+
+interface Props {
+  pubDate: Date;
+  updatedDate?: Date;
+}
+
+const { pubDate, updatedDate } = Astro.props;
+// Only a later calendar day counts as an update.
+const isUpdated =
+  !!updatedDate && updatedDate.toDateString() !== pubDate.toDateString() && updatedDate > pubDate;
+---
+
+<div class="published-dates">
+  <span>{isUpdated ? "First published" : "Published"}: <FormattedDate date={pubDate} /></span>
+  {
+    isUpdated && (
+      <span class="published-dates__updated">
+        Updated: <FormattedDate date={updatedDate!} />
+      </span>
+    )
+  }
+</div>
+
+<style>
+  .published-dates {
+    display: grid;
+    gap: 0.15em;
+    color: var(--color-meta);
+  }
+
+  .published-dates__updated {
+    font-size: 0.85em; /* relative, so it scales in cards and post headers alike */
+    color: var(--color-gray-light);
+  }
+
+  /* the dates inherit the muted line colour rather than FormattedDate's own */
+  .published-dates__updated :global(time) {
+    color: inherit;
+  }
+</style>

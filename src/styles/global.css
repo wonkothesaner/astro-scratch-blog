@@ -69,6 +69,7 @@
     --color-meta: var(--color-gray);
 
     /* Tones for the Styled heading editor block (site-blocks plugin) */
+    --color-tone-default: var(--color-text);
     --color-tone-warning: var(--color-accent);
     --color-tone-success: #1e7a3c;
     --color-tone-info: #1f5fa8;
@@ -107,6 +108,7 @@
     --radius-none: 0;
     --radius-sm: 3px; /* barely-there softening: scrollbar thumb, impact block */
     --radius-md: 1rem; /* panels, e.g. the aside panel */
+    --radius-pill: 999px; /* fully rounded ends, whatever the height */
     --border-thin: 1px solid var(--color-text);
 
     /* Box shadows */
@@ -437,6 +439,23 @@
     /* text beside an image starts level with its top edge */
     & :is(.emdash-image--align-left, .emdash-image--align-right) + :is(p, h2, h3, h4) {
       margin-block-start: 0;
+    }
+  }
+
+  /* Task lists pasted as an HTML block (the editor has none, and the HTML
+     block strips <input>): <ul class="task-list"><li class="done">…</li>.
+     The boxes are decorations, so they're read-only, as published lists
+     should be. */
+  .prose .task-list {
+    /* bullets stay, as in Markdown's "- [x]"; the box sits after them */
+    & li::before {
+      content: "☐";
+      margin-inline-end: var(--space-1);
+      color: var(--color-gray-light); /* reads as a disabled checkbox */
+    }
+
+    & li.done::before {
+      content: "☑";
     }
   }
 
