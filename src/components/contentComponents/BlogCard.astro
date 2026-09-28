@@ -95,7 +95,7 @@ const categoryLabel = categoryTerm?.label ?? post.category;
     color: var(--color-link-hover);
   }
 
-  @container (min-width: 420px) {
+  @container (min-width: 20rem) { /* side-by-side from 320px: fits the aside panel */
     .blog-card a {
       grid-template-columns: 1fr 2fr;
       align-items: start;
