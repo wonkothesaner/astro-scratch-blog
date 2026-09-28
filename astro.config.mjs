@@ -31,6 +31,17 @@ const cssTargets = browserslistToTargets(browserslist());
 export default defineConfig({
   site: "https://wts.services",
   output: "server",
+  // The adapter's default image service is the Cloudflare Images binding
+  // (runtime), which already resizes astro:assets images. EmDash renders
+  // its media through <Image> too, but with an absolute URL to this site's
+  // media route — and Astro only transforms remote URLs whose origin is
+  // allowed here. Without this, EmDash images are served at full size.
+  image: {
+    remotePatterns: [
+      { protocol: "https", hostname: "wts.services", pathname: "/_emdash/api/media/file/**" },
+      { protocol: "https", hostname: "www.wts.services", pathname: "/_emdash/api/media/file/**" },
+    ],
+  },
   adapter: cloudflare(),
   integrations: [
     mdx(),
