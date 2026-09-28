@@ -16,8 +16,8 @@ Not everything on the site is EmDash-managed. Two different content sources coex
 
 | Source | What lives there | Why |
 | --- | --- | --- |
-| **EmDash** (database, editable via `/_emdash/admin`) | `/wisdom`, `/glossary`, `/projects`, most blog posts, the home page body copy | Editor-managed content — add/edit without a code change or rebuild |
-| **File-based** (`src/content/blog/*.mdx`, `src/pages/about.astro`) | Two blog posts (`markdown-style-guide`, `using-mdx`) that are themselves documentation about Astro/Markdown/MDX with embedded components, plus the About page (image-heavy, uses a custom `MediaObject` layout pattern EmDash has no equivalent for yet) | Developer-authored content with embedded Astro components — needs a rebuild to change, which is the right tradeoff for content that's really "docs about the codebase" rather than editorial writing |
+| **EmDash** (database, editable via `/_emdash/admin`) | `/wisdom`, `/glossary`, `/projects`, `/about` (body text, images and CV aside), most blog posts, the home page body copy, and every page aside (widget areas `aside-<page>`) | Editor-managed content — add/edit without a code change or rebuild |
+| **File-based** (`src/content/blog/*.mdx`) | Two blog posts (`markdown-style-guide`, `using-mdx`) that are themselves documentation about Astro/Markdown/MDX with embedded components (e.g. `MediaObject`) | Developer-authored content with embedded Astro components — needs a rebuild to change, which is the right tradeoff for content that's really "docs about the codebase" rather than editorial writing |
 
 `src/pages/blog/[category]/[slug].astro` looks up EmDash first, then falls back to the file-based collection, so both sources render under the same `/blog/<category>/<slug>` URL shape. `src/utils/blog.ts` has the shared normalization helpers (`postCardFromFile`/`postCardFromEmdash`) used by the blog listing, the homepage's recent-posts list, and `rss.xml.js` to merge and sort both sources together.
 

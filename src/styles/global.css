@@ -443,7 +443,7 @@
   @media (max-width: 640px) {
     .prose .emdash-image img {
       display: block;
-      margin-inline: auto; /* centred when stacked, like the old MediaObject */
+      margin-inline: auto; /* centred when stacked, like MediaObject */
     }
   }
 

@@ -8,7 +8,8 @@
 //
 // The editor stores a block as { _type, _key, id, ...fieldValues } and only
 // round-trips blocks that carry field data, so every block needs at least
-// one field.
+// one field. No `icon`: the editor only knows video, code, link,
+// link-external and form, and shows a generic cube for anything else.
 import { definePlugin } from "emdash";
 import type { PluginDescriptor } from "emdash";
 
@@ -35,7 +36,6 @@ export function createPlugin() {
         {
           type: "groupBreak",
           label: "Group break",
-          icon: "minus",
           category: "Layout",
           description: "End an image + text group; the next content starts on its own row",
           fields: [
@@ -54,7 +54,6 @@ export function createPlugin() {
         {
           type: "styledHeading",
           label: "Styled heading",
-          icon: "heading",
           category: "Text",
           description: "A heading in a site tone: warning, success, info or muted",
           fields: [
