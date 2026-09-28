@@ -8,12 +8,15 @@
     "directory": "./dist",
     "binding": "ASSETS",
   },
-  // "remote": true makes `astro dev` / `wrangler dev` bind to the *deployed*
-  // D1 database and R2 bucket instead of the local Miniflare simulation in
-  // .wrangler/state (which is gitignored, so a fresh clone starts empty and
-  // EmDash sees no collections and no posts). It has no effect on deploys.
-  // Requires `wrangler login`. Set to false (or run with
-  // CLOUDFLARE_VITE_FORCE_LOCAL=true) to work against local state instead.
+  // Two dev modes (no effect on deploys):
+  //   npm run dev        -> "remote": true below: binds to the *deployed*
+  //                         D1/R2, so dev reads/writes PRODUCTION data.
+  //                         Used on a fresh clone (e.g. the laptop), since
+  //                         .wrangler/state is gitignored and starts empty.
+  //                         Requires `wrangler login`.
+  //   npm run dev:local  -> CLOUDFLARE_VITE_FORCE_LOCAL=true overrides
+  //                         "remote" and uses the local Miniflare copy in
+  //                         .wrangler/state. Safe for experiments.
   "d1_databases": [
     {
       "binding": "DB",

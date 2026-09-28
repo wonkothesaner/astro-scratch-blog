@@ -5,6 +5,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getEmDashCollection, getSiteSetting } from "emdash";
 
 import SortableTable from "../components/contentComponents/SortableTable.astro";
+import PageAside from "../components/pageComponents/PageAside.astro";
 const siteTitle = await getSiteSetting("title");
 const { entries } = await getEmDashCollection("wisdom", {
   status: "published",
@@ -32,35 +33,7 @@ const title = "Wisdom";
 ---
 
 <BaseLayout title={`${title} - ${siteTitle}`} description={description}>
-  <aside class="aside-first">
-    <p>
-      A collection of sayings, phrases, thoughts and other snippets of 'wisdom'
-      that I have been exposed to over the years.
-    </p>
-    <br />
-    <p>
-      I realize that 'wisdom' may be a little strong. I also acknowledge that I
-      have largely only been exposed to words in the English language and mostly
-      those written or said in the last half-century as I have never really read
-      the 'classics'.
-    </p>
-    <br />
-    <p>But one has to start somehwere.</p>
-    <br />
-    <p>
-      Many of these inform the way I think, work and play. I will look to add to
-      them over time and, if the list grows long enough, will categorize them to
-      enable sorting as well.
-    </p>
-    <br />
-    <p>
-      I have tried to ensure that the attributation is correct, i.e. I have
-      checked my sources as best I can. However, I continue to be amazed by the
-      number of times that I confidently ascribe a saying in my head to a source
-      only to find that the person never said it or were certainly not the first
-      to say it.
-    </p>
-  </aside>
+  <PageAside area="aside-wisdom" class="aside-first" />
   <main>
     <h2 class="text-centered">Thoughts to work, play and live by?</h2>
     <SortableTable

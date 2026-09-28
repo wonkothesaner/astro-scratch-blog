@@ -6,7 +6,6 @@ import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import { getEmDashCollection, getTermsForEntries } from "emdash";
 import type { Post as EmdashPost } from "../../.emdash/types";
-import type { CategorySlug } from "../consts";
 
 // Narrower than ContentEntry<EmdashPost> deliberately: getEntriesByTerm
 // (used by the category/tag archive pages) returns a plain
@@ -59,7 +58,7 @@ export interface PostCard {
   title: string;
   description?: string;
   pubDate: Date;
-  category: CategorySlug;
+  category: string;
   url: string;
   heroImage?: PostCardImage;
   heroImageAlt?: string;
@@ -80,7 +79,7 @@ export function postCardFromFile(post: CollectionEntry<"blog">): PostCard {
 // Category is a taxonomy relationship, not a schema field on the post
 // itself — callers must resolve it (via getTermsForEntries/getEntryTerms)
 // and pass the slug in, rather than this function reading entry.data.category.
-export function postCardFromEmdash(entry: EmdashPostRef, categorySlug: CategorySlug): PostCard {
+export function postCardFromEmdash(entry: EmdashPostRef, categorySlug: string): PostCard {
   return {
     title: entry.data.title,
     description: entry.data.excerpt,
@@ -103,7 +102,7 @@ export function postCardFromEmdash(entry: EmdashPostRef, categorySlug: CategoryS
  */
 export async function resolvePostCategories(
   entries: EmdashPostRef[],
-): Promise<Map<string, CategorySlug>> {
+): Promise<Map<string, string>> {
   // entry.id is the slug for getEmDashCollection/getEmDashEntry results —
   // the real ULID (what content_taxonomies.entry_id actually stores) lives
   // at entry.data.id. Using entry.id here silently produced empty term
@@ -114,13 +113,13 @@ export async function resolvePostCategories(
     entries.map((e) => e.data.id),
     "category",
   );
-  const result = new Map<string, CategorySlug>();
+  const result = new Map<string, string>();
   for (const entry of entries) {
     const term = termsByEntry.get(entry.data.id)?.[0];
     if (!term) {
       throw new Error(`Post "${entry.data.id}" (${entry.data.slug}) has no category taxonomy term assigned`);
     }
-    result.set(entry.data.id, term.slug as CategorySlug);
+    result.set(entry.data.id, term.slug);
   }
   return result;
 }

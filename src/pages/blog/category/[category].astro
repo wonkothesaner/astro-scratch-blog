@@ -2,18 +2,24 @@
 export const prerender = false;
 
 import { getCollection } from "astro:content";
-import { getEntriesByTerm } from "emdash";
+import { getEntriesByTerm, getTerm } from "emdash";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import BlogCard from "../../../components/contentComponents/BlogCard.astro";
-import { CATEGORIES, type CategorySlug } from "../../../consts";
+import PageAside from "../../../components/pageComponents/PageAside.astro";
 import { postCardFromFile, postCardFromEmdash, type EmdashPostRef } from "../../../utils/blog";
 
-const { slug } = Astro.params;
+const { category } = Astro.params;
 
-if (!slug || !(slug in CATEGORIES)) {
+if (!category) {
   return Astro.redirect("/404");
 }
-const category = slug as CategorySlug;
+
+// EmDash is the single source of categories: any term created in
+// Admin → Taxonomies → Category gets a working page here, no code change.
+const term = await getTerm("category", category);
+if (!term) {
+  return Astro.redirect("/404");
+}
 
 // Every entry getEntriesByTerm returns is already known to carry this
 // category term, so no extra taxonomy lookup is needed per post here.
@@ -27,11 +33,16 @@ const posts = [
   ),
 ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 
-const title = CATEGORIES[category];
+const title = term.label;
 const description = `Sane Musings posts in the "${title}" category`;
 ---
 
 <BaseLayout title={`${title} - Blog`} description={description}>
+  {/* Widget area `aside-category-<slug>` if one exists, else the term's
+      own description; with neither, no aside and the page stays full-width. */}
+  <PageAside area={`aside-category-${category}`}>
+    {term.description && <p>{term.description}</p>}
+  </PageAside>
   <main>
     <h1 class="text-centered">{title}</h1>
     <section class="blog-list wide">

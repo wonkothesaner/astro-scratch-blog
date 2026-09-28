@@ -6,13 +6,13 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import BlogCard from "../../../components/contentComponents/BlogCard.astro";
 import { postCardFromEmdash, resolvePostCategories, type EmdashPostRef } from "../../../utils/blog";
 
-const { slug } = Astro.params;
+const { tag } = Astro.params;
 
-if (!slug) {
+if (!tag) {
   return Astro.redirect("/404");
 }
 
-const term = await getTerm("tag", slug);
+const term = await getTerm("tag", tag);
 if (!term) {
   return Astro.redirect("/404");
 }
@@ -20,7 +20,7 @@ if (!term) {
 const emdashEntries = (await getEntriesByTerm(
   "posts",
   "tag",
-  slug,
+  tag,
 )) as unknown as EmdashPostRef[];
 const categories = await resolvePostCategories(emdashEntries);
 

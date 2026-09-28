@@ -1,0 +1,10 @@
+#!/bin/sh
+# Type-check before pushing: a push to master triggers the Workers Builds
+# deploy, and errors like a missing import fail that build silently from
+# here (the site just stays on the previous version). Bypass in an
+# emergency with `git push --no-verify`.
+echo "pre-push: running astro check..."
+if ! npx astro check; then
+  echo "pre-push: astro check failed — push aborted." >&2
+  exit 1
+fi

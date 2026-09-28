@@ -1,0 +1,28 @@
+---
+// Page sidebar whose content is editable in EmDash (Admin → Widgets).
+// Renders the named widget area when it has widgets; otherwise falls back to
+// the slot content, so a page never goes blank while its area is still
+// empty. With neither, no <aside> is rendered at all and the page lays out
+// full-width. Area names follow the `aside-<page>` convention.
+import { getWidgetArea } from "emdash";
+import { WidgetArea } from "emdash/ui";
+
+interface Props {
+  area: string;
+  class?: string;
+}
+
+const { area, class: className } = Astro.props;
+// Request-cached, so WidgetArea's own lookup below costs no extra query.
+const widgetArea = await getWidgetArea(area);
+const hasWidgets = (widgetArea?.widgets.length ?? 0) > 0;
+const fallback = hasWidgets ? "" : (await Astro.slots.render("default")).trim();
+---
+
+{
+  (hasWidgets || fallback) && (
+    <aside class={className}>
+      {hasWidgets ? <WidgetArea name={area} /> : <Fragment set:html={fallback} />}
+    </aside>
+  )
+}

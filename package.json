@@ -3,8 +3,11 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks || true",
     "dev": "astro dev",
     "dev:clean": "rm -rf .astro node_modules/.vite dist && npm run dev",
+    "dev:local": "CLOUDFLARE_VITE_FORCE_LOCAL=true astro dev",
+    "dev:local:clean": "rm -rf .astro node_modules/.vite dist && npm run dev:local",
     "db:reset-auth": "wrangler d1 execute wts-services-db --local --command \"DELETE FROM users; DELETE FROM credentials; DELETE FROM options WHERE name IN ('emdash:setup_state', 'emdash:setup_complete');\"",
     "build": "astro build",
     "preview": "astro preview",

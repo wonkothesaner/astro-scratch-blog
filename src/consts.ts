@@ -20,12 +20,5 @@ export const NAV_SECONDARY = [
   { href: "/glossary", label: "Glossary" },
 ] as const;
 
-// Utility look up on blog categories
-export const CATEGORIES = {
-  sap: "SAP",
-  "50-plus-dev": "Web Dev for 50+",
-  miscellany: "Miscellany",
-  "life-in-general": "Life in general",
-} as const;
-
-export type CategorySlug = keyof typeof CATEGORIES;
+// Blog categories live in EmDash (Admin → Taxonomies → Category), not here —
+// look them up with `await getTerm("category", slug)` from "emdash".

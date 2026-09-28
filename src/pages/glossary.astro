@@ -4,6 +4,7 @@ export const prerender = false;
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getEmDashCollection, getSiteSetting } from "emdash";
 import SortableTable from "../components/contentComponents/SortableTable.astro";
+import PageAside from "../components/pageComponents/PageAside.astro";
 
 const siteTitle = await getSiteSetting("title");
 
@@ -54,19 +55,7 @@ const title = "Glossary";
 ---
 
 <BaseLayout title={`${title} - ${siteTitle}`} description={description}>
-  <aside class="aside-first">
-    <p>An attempt at humour.</p>
-    <br />
-    <p>
-      Glossary of some Terms that may (or may not) help you navigate the musings
-      on this site and/or life in general.
-    </p>
-    <br />
-    <p>
-      I accept no responsibility for anything that may happen as a result of
-      taking any of this seriously
-    </p>
-  </aside>
+  <PageAside area="aside-glossary" class="aside-first" />
   <main>
     <h2 class="text-centered wide">
       Some three (or more) letter acronyms (TLAs)

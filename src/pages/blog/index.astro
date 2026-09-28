@@ -5,6 +5,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import BlogCard from "../../components/contentComponents/BlogCard.astro";
 import { getSiteSetting } from "emdash";
 import { getAllPostCards } from "../../utils/blog";
+import PageAside from "../../components/pageComponents/PageAside.astro";
 
 const posts = await getAllPostCards();
 const siteTitle = await getSiteSetting("title");
@@ -14,34 +15,7 @@ const title = "Blog";
 ---
 
 <BaseLayout title={`${title} - ${siteTitle}`} description={description}>
-  <aside>
-    <h2 class="aside">
-      Sane Musings - a collection of writing on a number of different subjects
-    </h2>
-    <ol>
-      <li>
-        <strong>SAP</strong> - three small letters but a very large piece of software
-        that everyone uses whether they realise it or not.
-      </li>
-      <li>
-        <strong>50+ Development</strong> - I believe we are entering a world in which
-        anyone can write their own code, develop their own applications, bring to
-        life whatever they want. Everyone learns in a certain way and I struggle with
-        the YouTube video way of learning. I have curated a set of articles that I
-        wish I could have accessed years ago when starting out. Hopefully they will
-        help someone, somewhere learn faster as a result.
-      </li>
-      <li>
-        <strong>Life in general</strong> - a set of thoughts on the world in which
-        we live.
-      </li>
-      <li>
-        <strong>Miscellany</strong> - stuff that I found interesting that I have picked
-        up along the way, don't fit in the other three categories but I wanted to
-        share anyway.
-      </li>
-    </ol>
-  </aside>
+  <PageAside area="aside-blog" class="aside-first" />
   <main>
     <section class="blog-list wide">
       {posts.map((post) => <BlogCard post={post} />)}

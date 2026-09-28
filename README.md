@@ -23,15 +23,25 @@ Not everything on the site is EmDash-managed. Two different content sources coex
 
 ## Local development
 
-**Prerequisites:** Node ≥22.19, and `wrangler` logged in to the Cloudflare account (`npx wrangler login`) — local dev runs through `wrangler dev`, which uses the real `workerd` runtime with local simulations of the D1 database and R2 bucket (backed by `.wrangler/state`, gitignored). This means dev behavior matches production closely, including bindings — there's no separate SQLite/local-filesystem fallback.
+**Prerequisites:** Node ≥22.19, and `wrangler` logged in to the Cloudflare account (`npx wrangler login`). Local dev runs through the Cloudflare Vite plugin, which uses the real `workerd` runtime, so dev behavior matches production closely, including bindings — there's no separate SQLite/local-filesystem fallback.
+
+There are two dev modes, differing only in where the D1 database and R2 bucket live:
 
 ```sh
 npm install
-npm run dev          # starts at localhost:4321 via wrangler dev
-npm run dev:clean    # same, but clears .astro/.vite/dist caches first — use this after
-                      # config changes; stale Vite dep-optimizer caches have caused
-                      # confusing errors more than once on this project
+npm run dev              # REMOTE: binds to the deployed D1/R2 ("remote": true in
+                          # wrangler.jsonc) — dev reads and writes PRODUCTION data.
+                          # Use on a fresh clone, which otherwise has no content.
+npm run dev:local        # LOCAL: Miniflare simulation in .wrangler/state (gitignored).
+                          # Changes stay on this machine — use for experiments.
+npm run dev:clean        # either of the above, but clears .astro/.vite/dist caches
+npm run dev:local:clean  # first — use after config changes; stale Vite dep-optimizer
+                          # caches have caused confusing errors more than once here
 ```
+
+Local and production data drift apart over time — local mode is a sandbox, not a mirror. `wrangler d1 export` can't be used to copy production down: it refuses databases containing EmDash's FTS5 search tables (and briefly blocks queries while it runs).
+
+**Logging in on `dev:local`:** the local database has no passkeys (yours live in production), so sign in via EmDash's dev-only bypass instead: `http://localhost:4321/_emdash/api/auth/dev-bypass?redirect=/_emdash/admin`. Use the `auth` bypass, not `setup/dev-bypass` (that one re-runs setup and can apply demo content / overwrite the site title). **Never use it in remote mode** (`npm run dev`) — it would create a `dev@emdash.local` admin in production.
 
 Once running, visit `http://localhost:4321/_emdash/admin` to manage EmDash content. First run walks you through a setup wizard to create an admin account (passkey-based).
 
