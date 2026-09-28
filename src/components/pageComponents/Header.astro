@@ -3,7 +3,15 @@ import { getSiteSetting } from "emdash";
 import HeaderLink from "./HeaderLink.astro";
 import { NAV_PRIMARY, NAV_SECONDARY } from "../../consts";
 
-const NAV_ALL = [...NAV_PRIMARY, ...NAV_SECONDARY];
+// Moved about and glossary to the end of NAV_ALL
+const NAV_ALL = [
+  NAV_PRIMARY[0],
+  NAV_PRIMARY[1],
+  NAV_SECONDARY[1],
+  NAV_SECONDARY[0],
+  NAV_PRIMARY[2],
+  NAV_SECONDARY[2],
+];
 const siteTitle = await getSiteSetting("title");
 ---
 
