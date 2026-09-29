@@ -1,11 +1,8 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import { unified } from "@astrojs/markdown-remark";
-import mdx from "@astrojs/mdx";
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import rehypeExternalLinks from "rehype-external-links";
 import browserslist from "browserslist";
 import { browserslistToTargets } from "lightningcss";
 import emdash from "emdash/astro";
@@ -44,7 +41,6 @@ export default defineConfig({
   },
   adapter: cloudflare(),
   integrations: [
-    mdx(),
     sitemap(),
     react(),
     emdash({
@@ -58,20 +54,6 @@ export default defineConfig({
   server: {
     host: true,
     port: 4321,
-  },
-  markdown: {
-    processor: unified({
-      rehypePlugins: [
-        [
-          rehypeExternalLinks,
-          {
-            content: { type: "text", value: " 🔗" },
-            target: "_blank",
-            rel: "noopener noreferrer",
-          },
-        ],
-      ],
-    }),
   },
   vite: {
     css: {

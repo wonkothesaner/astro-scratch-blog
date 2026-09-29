@@ -1,7 +1,6 @@
 ---
 export const prerender = false;
 
-import { type CollectionEntry, getEntry, render } from "astro:content";
 import { getEmDashEntry, getEntryTerms } from "emdash";
 import { PortableText } from "emdash/ui";
 import BlogPost from "../../../layouts/BlogPost.astro";
@@ -13,67 +12,31 @@ if (!slug || !category) {
   return Astro.redirect("/404");
 }
 
-const { entry: emdashPost } = await getEmDashEntry("posts", slug);
-let useEmdash = false;
-if (emdashPost) {
-  // emdashPost.id is the slug (getEmDashEntry's live-collection shape) —
-  // the real ULID content_taxonomies keys on is at .data.id.
-  const categoryTerms = await getEntryTerms("posts", emdashPost.data.id, "category");
-  useEmdash = categoryTerms.some((term) => term.slug === category);
+const { entry: post } = await getEmDashEntry("posts", slug);
+if (!post) {
+  return Astro.redirect("/404");
 }
-
-let filePost: CollectionEntry<"blog"> | undefined;
-let FileContent: Awaited<ReturnType<typeof render>>["Content"] | undefined;
-
-if (!useEmdash) {
-  filePost = await getEntry("blog", slug);
-  if (!filePost || filePost.data.category !== category) {
-    return Astro.redirect("/404");
-  }
-  ({ Content: FileContent } = await render(filePost));
+// The URL's category must be the post's own. post.id is the slug
+// (getEmDashEntry's live-collection shape); the ULID content_taxonomies
+// keys on is at .data.id.
+const categoryTerms = await getEntryTerms("posts", post.data.id, "category");
+if (!categoryTerms.some((term) => term.slug === category)) {
+  return Astro.redirect("/404");
 }
 
 const allPosts = await getAllPostCards();
 const { prev, next } = getAdjacentPosts(allPosts, Astro.url.pathname);
 ---
 
-{
-  useEmdash && emdashPost ? (
-    <BlogPost
-      title={emdashPost.data.title}
-      description={emdashPost.data.excerpt}
-      pubDate={new Date(emdashPost.data.pub_date)}
-      updatedDate={
-        emdashPost.data.updated_date
-          ? new Date(emdashPost.data.updated_date)
-          : undefined
-      }
-      heroImage={
-        emdashPost.data.featured_image
-          ? { kind: "emdash", value: emdashPost.data.featured_image }
-          : undefined
-      }
-      heroImageAlt={emdashPost.data.hero_image_alt}
-      prev={prev}
-      next={next}
-    >
-      <PortableText value={emdashPost.data.content} />
-    </BlogPost>
-  ) : (
-    filePost &&
-    FileContent && (
-      <BlogPost
-        {...filePost.data}
-        heroImage={
-          filePost.data.heroImage
-            ? { kind: "file", asset: filePost.data.heroImage }
-            : undefined
-        }
-        prev={prev}
-        next={next}
-      >
-        <FileContent />
-      </BlogPost>
-    )
-  )
-}
+<BlogPost
+  title={post.data.title}
+  description={post.data.excerpt}
+  pubDate={new Date(post.data.pub_date)}
+  updatedDate={post.data.updated_date ? new Date(post.data.updated_date) : undefined}
+  heroImage={post.data.featured_image ?? undefined}
+  heroImageAlt={post.data.hero_image_alt}
+  prev={prev}
+  next={next}
+>
+  <PortableText value={post.data.content} />
+</BlogPost>

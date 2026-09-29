@@ -1,12 +1,11 @@
 ---
 export const prerender = false;
 
-import { getCollection } from "astro:content";
 import { getEntriesByTerm, getTerm } from "emdash";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import BlogCard from "../../../components/contentComponents/BlogCard.astro";
 import PageAside from "../../../components/pageComponents/PageAside.astro";
-import { postCardFromFile, postCardFromEmdash, type EmdashPostRef } from "../../../utils/blog";
+import { postCardFromEmdash, type EmdashPostRef } from "../../../utils/blog";
 
 const { category } = Astro.params;
 
@@ -23,15 +22,10 @@ if (!term) {
 
 // Every entry getEntriesByTerm returns is already known to carry this
 // category term, so no extra taxonomy lookup is needed per post here.
-const emdashEntries = await getEntriesByTerm("posts", "category", category);
-const filePosts = (await getCollection("blog")).filter((p) => p.data.category === category);
-
-const posts = [
-  ...filePosts.map(postCardFromFile),
-  ...emdashEntries.map((entry) =>
-    postCardFromEmdash(entry as unknown as EmdashPostRef, category),
-  ),
-].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+const entries = await getEntriesByTerm("posts", "category", category);
+const posts = entries
+  .map((entry) => postCardFromEmdash(entry as unknown as EmdashPostRef, category))
+  .sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 
 const title = term.label;
 const description = `Sane Musings posts in the "${title}" category`;

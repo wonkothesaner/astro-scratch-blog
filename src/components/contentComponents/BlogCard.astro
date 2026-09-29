@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { getTerm } from "emdash";
 import { Image as EmdashImage } from "emdash/ui";
 import PublishedDates from "../utilityComponents/PublishedDates.astro";
@@ -20,23 +19,12 @@ const categoryLabel = categoryTerm?.label ?? post.category;
 <article class="blog-card">
   <a href={post.url}>
     {
-      post.heroImage?.kind === "emdash" && (
+      post.heroImage && (
         <EmdashImage
-          image={post.heroImage.value}
+          image={post.heroImage}
           alt={post.heroImageAlt || post.title}
           width={800}
           height={600}
-          sizes="(min-width: 600px) 33vw, 100vw"
-          loading="lazy"
-        />
-      )
-    }
-    {
-      post.heroImage?.kind === "file" && (
-        <Image
-          src={post.heroImage.asset}
-          alt={post.heroImageAlt || post.title}
-          widths={[200, 400, 600, 800]}
           sizes="(min-width: 600px) 33vw, 100vw"
           loading="lazy"
         />

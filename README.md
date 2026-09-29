@@ -12,14 +12,11 @@ Martin Driscoll's personal site and blog — built with [Astro](https://astro.bu
 
 ## Content model
 
-Not everything on the site is EmDash-managed. Two different content sources coexist by design:
+All content is EmDash-managed (database, editable via `/_emdash/admin`, no code change or rebuild needed): blog posts, `/wisdom`, `/glossary`, `/projects`, `/about` (body text, images and CV aside), the home page body copy, and every page aside (widget areas `aside-<page>`). The only content still in code is page chrome — e.g. the About page's SVG hero banner.
 
-| Source | What lives there | Why |
-| --- | --- | --- |
-| **EmDash** (database, editable via `/_emdash/admin`) | `/wisdom`, `/glossary`, `/projects`, `/about` (body text, images and CV aside), most blog posts, the home page body copy, and every page aside (widget areas `aside-<page>`) | Editor-managed content — add/edit without a code change or rebuild |
-| **File-based** (`src/content/blog/*.mdx`) | Two blog posts (`markdown-style-guide`, `using-mdx`) that are themselves documentation about Astro/Markdown/MDX with embedded components (e.g. `MediaObject`) | Developer-authored content with embedded Astro components — needs a rebuild to change, which is the right tradeoff for content that's really "docs about the codebase" rather than editorial writing |
+Posts render at `/blog/<category>/<slug>` (`src/pages/blog/[category]/[slug].astro`, which 404s if the URL's category isn't the post's own). `src/utils/blog.ts` builds the card data shared by the blog listing, the homepage's recent-posts list, category/tag pages, prev/next navigation and `rss.xml.js`.
 
-`src/pages/blog/[category]/[slug].astro` looks up EmDash first, then falls back to the file-based collection, so both sources render under the same `/blog/<category>/<slug>` URL shape. `src/utils/blog.ts` has the shared normalization helpers (`postCardFromFile`/`postCardFromEmdash`) used by the blog listing, the homepage's recent-posts list, and `rss.xml.js` to merge and sort both sources together.
+Site-specific editor blocks (Group break, Styled heading) come from a local EmDash plugin in `src/emdash-plugins/site-blocks/`.
 
 ## Local development
 
@@ -69,21 +66,19 @@ Key points if touching deployment config:
 
 - `wrangler.jsonc` defines the D1 (`DB`) and R2 (`MEDIA`) bindings, plus static asset serving. The `SESSION` (KV) and `IMAGES` bindings auto-provision on first deploy.
 - Because Workers (unlike Pages) don't support separate bindings per branch, **every branch build shares the same D1 database and R2 bucket** — there's one live dataset, not per-branch isolation.
-- The Cloudflare Images binding used for `astro:assets` processing in production doesn't support SVG as an output format — see `src/layouts/BlogPost.astro` for how file-based SVG hero images are routed around it (plain `<img>` tag, no optimization needed for vector images anyway).
+- The Cloudflare Images binding (the adapter's default image service) resizes both `astro:assets` images and EmDash media — the latter because `image.remotePatterns` in `astro.config.mjs` allows the site's own `/_emdash/api/media/file/**` route. It doesn't support SVG as an output format, which is why the About hero SVG is a plain `<img>`.
 - `/_emdash/admin` should be gated with **Cloudflare Access** (using the account's Zero Trust subscription) before the site is live on its real domain — passkey auth alone is fine for a `workers.dev` preview but the admin route is otherwise a normal public endpoint.
 
 ## Project structure
 
 ```text
 ├── src/
-│   ├── components/       # Astro components, incl. EmDash render helpers (ImpactBlock, etc.)
-│   ├── content/blog/      # File-based posts (see Content model above)
-│   ├── content.config.ts  # File-based collection schema (blog only — wisdom/glossary/
-│   │                       # projects moved to EmDash, this file just keeps shared types)
-│   ├── layouts/           # BaseLayout, BlogPost (shared between EmDash + file-based posts)
+│   ├── components/       # Astro components, incl. EmDash render helpers (ImpactBlock, PageAside, etc.)
+│   ├── emdash-plugins/    # Local EmDash plugin: site-specific editor blocks
+│   ├── layouts/           # BaseLayout, BlogPost
 │   ├── live.config.ts     # EmDash's live-collections loader registration
-│   ├── pages/              # Routes — several query EmDash + astro:content together
-│   └── utils/blog.ts       # Shared normalization between EmDash and file-based posts
+│   ├── pages/              # Routes — content comes from EmDash
+│   └── utils/              # blog.ts (post card data, categories, prev/next), table.ts (table types)
 ├── astro.config.mjs
 ├── wrangler.jsonc          # Cloudflare bindings (D1, R2, assets)
 ├── .oxlintrc.json / .oxfmtrc.json / .prettierrc.json

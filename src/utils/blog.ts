@@ -1,9 +1,7 @@
-// Shared helpers for blog post URL construction.
-// Single source of truth: change the URL shape here and BlogCard, the
-// dynamic route page, and the RSS feed will all stay in sync.
+// Shared helpers for EmDash blog posts: URL shape, card data, category
+// lookup and prev/next. Single source of truth for BlogCard, the listing
+// pages, the post route and the RSS feed.
 
-import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
 import { getEmDashCollection, getTermsForEntries } from "emdash";
 import type { Post as EmdashPost } from "../../.emdash/types";
 
@@ -14,45 +12,12 @@ import type { Post as EmdashPost } from "../../.emdash/types";
 // getEmDashCollection/getEmDashEntry results satisfy.
 export type EmdashPostRef = { id: string; data: EmdashPost };
 
-/**
- * Compute the category/slug params for a blog post.
- * Keys here MUST match the [bracket] names in the page filename
- * (src/pages/blog/[category]/[slug].astro).
- *
- * - `category` comes from the post's required frontmatter enum.
- * - `slug` is the final path segment of post.id, which handles both
- *   flat content (`opinions` -> `opinions`) and nested content
- *   (`2025/07/opinions` -> `opinions`).
- */
-export function postParams(post: CollectionEntry<"blog">) {
-  return {
-    category: post.data.category,
-    slug: post.id.split("/").pop()!,
-  };
-}
+// EmDash's stored media value (rendered by <Image> from "emdash/ui").
+export type PostCardImage = NonNullable<EmdashPost["featured_image"]>;
 
 /**
- * Construct the canonical URL path for a blog post.
- * Used by BlogCard links and the RSS feed.
- */
-export function postUrl(post: CollectionEntry<"blog">) {
-  const { category, slug } = postParams(post);
-  return `/blog/${category}/${slug}`;
-}
-
-// Astro's <Image> (file-based assets) and EmDash's <Image> from "emdash/ui"
-// (MediaValue references) need different, incompatible prop shapes, and
-// EmDash's stored media value has no reliable top-level `src`/`url` — it
-// must be resolved by EmDash's own component. Tag which renderer applies
-// rather than duck-typing the shape at render time.
-export type PostCardImage =
-  | { kind: "file"; asset: NonNullable<CollectionEntry<"blog">["data"]["heroImage"]> }
-  | { kind: "emdash"; value: NonNullable<EmdashPost["featured_image"]> };
-
-/**
- * Normalized shape both file-based and EmDash-sourced posts map onto, so
- * BlogCard and the listing pages don't need to know which source a post
- * came from.
+ * The card-sized view of a post shared by BlogCard, the listing pages,
+ * the RSS feed and prev/next navigation.
  */
 export interface PostCard {
   title: string;
@@ -63,19 +28,6 @@ export interface PostCard {
   url: string;
   heroImage?: PostCardImage;
   heroImageAlt?: string;
-}
-
-export function postCardFromFile(post: CollectionEntry<"blog">): PostCard {
-  return {
-    title: post.data.title,
-    description: post.data.description,
-    pubDate: post.data.pubDate,
-    updatedDate: post.data.updatedDate,
-    category: post.data.category,
-    url: postUrl(post),
-    heroImage: post.data.heroImage ? { kind: "file", asset: post.data.heroImage } : undefined,
-    heroImageAlt: post.data.heroImageAlt,
-  };
 }
 
 // Category is a taxonomy relationship, not a schema field on the post
@@ -89,9 +41,7 @@ export function postCardFromEmdash(entry: EmdashPostRef, categorySlug: string): 
     updatedDate: entry.data.updated_date ? new Date(entry.data.updated_date) : undefined,
     category: categorySlug,
     url: `/blog/${categorySlug}/${entry.data.slug}`,
-    heroImage: entry.data.featured_image
-      ? { kind: "emdash", value: entry.data.featured_image }
-      : undefined,
+    heroImage: entry.data.featured_image ?? undefined,
     heroImageAlt: entry.data.hero_image_alt,
   };
 }
@@ -128,20 +78,16 @@ export async function resolvePostCategories(
 }
 
 /**
- * The merged, sorted, all-sources post list — single implementation shared
+ * All published posts, newest first — single implementation shared
  * by the blog listing, the homepage's recent-posts section, the RSS feed,
  * and prev/next neighbor lookups, so they can't drift out of sync.
  */
 export async function getAllPostCards(): Promise<PostCard[]> {
-  const [filePosts, { entries: emdashPosts }] = await Promise.all([
-    getCollection("blog"),
-    getEmDashCollection("posts", { status: "published" }),
-  ]);
-  const categories = await resolvePostCategories(emdashPosts);
-  return [
-    ...filePosts.map(postCardFromFile),
-    ...emdashPosts.map((entry) => postCardFromEmdash(entry, categories.get(entry.data.id)!)),
-  ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+  const { entries } = await getEmDashCollection("posts", { status: "published" });
+  const categories = await resolvePostCategories(entries);
+  return entries
+    .map((entry) => postCardFromEmdash(entry, categories.get(entry.data.id)!))
+    .sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 }
 
 /**
