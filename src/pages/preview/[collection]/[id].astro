@@ -1,0 +1,33 @@
+---
+// Draft-preview dispatcher. The admin's Preview button links here (see
+// EMDASH_PREVIEW_PATH_PATTERN in wrangler.jsonc): EmDash can only build one
+// site-wide link shape, but each collection's real route differs, so this
+// forwards to the right one, carrying the signed ?_preview= token through.
+//
+// No access check needed here: the token is the access control. It's
+// verified on the destination route, where an invalid or missing token
+// just gets the published page (or a 404) like any anonymous visitor.
+// Preview links are meant to be shareable with reviewers.
+export const prerender = false;
+
+import { getEmDashEntry } from "emdash";
+
+const { collection, id } = Astro.params;
+const token = Astro.url.search; // ?_preview=…
+
+const destinations: Record<string, (id: string) => Promise<string | null>> = {
+  posts: async (id) => `/blog/preview/${id}`,
+  // Pages have their own routes (/ and /about); map by slug.
+  pages: async (id) => {
+    const { entry } = await getEmDashEntry("pages", id);
+    if (!entry) return null;
+    return entry.data.slug === "home" ? "/" : `/${entry.data.slug}`;
+  },
+};
+
+const target = collection && id ? await destinations[collection]?.(id) : null;
+if (!target) {
+  return new Response(null, { status: 404 });
+}
+return Astro.redirect(`${target}${token}`, 302);
+---

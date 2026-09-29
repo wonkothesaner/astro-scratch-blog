@@ -4,6 +4,14 @@
   "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2026-08-27",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Shape of the admin's draft-preview links. EmDash uses ONE site-wide
+  // pattern for every collection (not each collection's URL pattern) and
+  // only fills in {collection}/{id}/{locale} — so links land on
+  // src/pages/preview/[collection]/[id].astro, which forwards each
+  // collection to its real route with the signed ?_preview= token intact.
+  "vars": {
+    "EMDASH_PREVIEW_PATH_PATTERN": "/preview/{collection}/{id}",
+  },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

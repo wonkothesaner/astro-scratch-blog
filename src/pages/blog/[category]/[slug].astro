@@ -12,16 +12,32 @@ if (!slug || !category) {
   return Astro.redirect("/404");
 }
 
-const { entry: post } = await getEmDashEntry("posts", slug);
+const { entry: post, isPreview } = await getEmDashEntry("posts", slug);
 if (!post) {
   return Astro.redirect("/404");
 }
-// The URL's category must be the post's own. post.id is the slug
+
+// Draft previews arrive at /blog/preview/<id> (forwarded from
+// /preview/posts/<id>, see src/pages/preview/). `isPreview` is true only
+// with a valid signed ?_preview= token, so without one this path 404s like
+// any other wrong category.
+const isDraftPreview = category === "preview" && isPreview;
+
+// Otherwise the URL's category must be the post's own. post.id is the slug
 // (getEmDashEntry's live-collection shape); the ULID content_taxonomies
 // keys on is at .data.id.
-const categoryTerms = await getEntryTerms("posts", post.data.id, "category");
-if (!categoryTerms.some((term) => term.slug === category)) {
-  return Astro.redirect("/404");
+if (!isDraftPreview) {
+  const categoryTerms = await getEntryTerms("posts", post.data.id, "category");
+  if (!categoryTerms.some((term) => term.slug === category)) {
+    return Astro.redirect("/404");
+  }
+}
+
+// getEmDashEntry also resolves a post by its database id; once the category
+// is known to be right, send id addresses to the canonical slug address so
+// a published post has exactly one URL.
+if (!isDraftPreview && slug !== post.data.slug) {
+  return Astro.redirect(`/blog/${category}/${post.data.slug}`, 301);
 }
 
 const allPosts = await getAllPostCards();
