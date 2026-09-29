@@ -1,0 +1,6 @@
+---
+// Live View target for a glossary entry: the admin requires {slug} in a URL
+// pattern ("/glossary/{slug}"), but entries live on the single /glossary page.
+export const prerender = false;
+return Astro.redirect("/glossary", 301);
+---

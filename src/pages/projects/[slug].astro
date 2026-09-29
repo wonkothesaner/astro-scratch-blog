@@ -1,0 +1,6 @@
+---
+// Live View target for a projects entry: the admin requires {slug} in a URL
+// pattern ("/projects/{slug}"), but entries live on the single /projects page.
+export const prerender = false;
+return Astro.redirect("/projects", 301);
+---

@@ -1,0 +1,6 @@
+---
+// Live View target for a wisdom entry: the admin requires {slug} in a URL
+// pattern ("/wisdom/{slug}"), but entries live on the single /wisdom page.
+export const prerender = false;
+return Astro.redirect("/wisdom", 301);
+---
