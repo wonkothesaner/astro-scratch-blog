@@ -13,10 +13,13 @@ export const prerender = false;
 import { getEmDashEntry } from "emdash";
 
 const { collection, id } = Astro.params;
-const token = Astro.url.search; // ?_preview=…
 
 const destinations: Record<string, (id: string) => Promise<string | null>> = {
   posts: async (id) => `/blog/preview/${id}`,
+  // Listing pages show the draft in place (see src/utils/preview.ts).
+  wisdom: async (id) => `/wisdom?entry=${id}`,
+  glossary: async (id) => `/glossary?entry=${id}`,
+  projects: async (id) => `/projects?entry=${id}`,
   // Pages have their own routes (/ and /about); map by slug.
   pages: async (id) => {
     const { entry } = await getEmDashEntry("pages", id);
@@ -29,5 +32,8 @@ const target = collection && id ? await destinations[collection]?.(id) : null;
 if (!target) {
   return new Response(null, { status: 404 });
 }
-return Astro.redirect(`${target}${token}`, 302);
+// Carry the signed ?_preview= token (and anything else) through.
+const destination = new URL(target, Astro.url);
+Astro.url.searchParams.forEach((value, key) => destination.searchParams.set(key, value));
+return Astro.redirect(`${destination.pathname}${destination.search}`, 302);
 ---

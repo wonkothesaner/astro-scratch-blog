@@ -1,0 +1,6 @@
+---
+// The home page is EmDash page "home", so the admin's Live View (pages URL
+// pattern "/{slug}") opens /home — send it to the real address.
+export const prerender = false;
+return Astro.redirect("/", 301);
+---

@@ -2,7 +2,8 @@
 export const prerender = false;
 
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getEmDashCollection, getSiteSetting } from "emdash";
+import { getSiteSetting } from "emdash";
+import { getEntriesWithPreview } from "../utils/preview";
 import SortableTable from "../components/contentComponents/SortableTable.astro";
 import PageAside from "../components/pageComponents/PageAside.astro";
 
@@ -33,9 +34,8 @@ function portableTextToHtml(blocks: unknown[]): string {
     .join(" ");
 }
 
-const { entries } = await getEmDashCollection("glossary", {
-  status: "published",
-});
+// Published entries, plus the draft being previewed (admin Preview).
+const entries = await getEntriesWithPreview("glossary", Astro.url);
 
 const columns = [
   { key: "tla", label: "Acronym" },

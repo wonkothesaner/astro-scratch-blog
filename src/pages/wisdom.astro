@@ -2,14 +2,14 @@
 export const prerender = false;
 
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getEmDashCollection, getSiteSetting } from "emdash";
+import { getSiteSetting } from "emdash";
+import { getEntriesWithPreview } from "../utils/preview";
 
 import SortableTable from "../components/contentComponents/SortableTable.astro";
 import PageAside from "../components/pageComponents/PageAside.astro";
 const siteTitle = await getSiteSetting("title");
-const { entries } = await getEmDashCollection("wisdom", {
-  status: "published",
-});
+// Published entries, plus the draft being previewed (admin Preview).
+const entries = await getEntriesWithPreview("wisdom", Astro.url);
 
 const columns = [
   { key: "saying", label: "Saying" },

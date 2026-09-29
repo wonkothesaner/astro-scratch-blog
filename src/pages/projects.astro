@@ -4,7 +4,8 @@ export const prerender = false;
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/contentComponents/ProjectCard.astro";
 import PageAside from "../components/pageComponents/PageAside.astro";
-import { getEmDashCollection, getSiteSetting } from "emdash";
+import { getSiteSetting } from "emdash";
+import { getEntriesWithPreview } from "../utils/preview";
 
 const siteTitle = await getSiteSetting("title");
 
@@ -20,9 +21,8 @@ interface TechStack {
   auth: string;
 }
 
-const { entries } = await getEmDashCollection("projects", {
-  status: "published",
-});
+// Published entries, plus the draft being previewed (admin Preview).
+const entries = await getEntriesWithPreview("projects", Astro.url);
 
 const projects = entries.map((entry) => {
   const {

@@ -17,17 +17,24 @@ if (!post) {
   return Astro.redirect("/404");
 }
 
-// Draft previews arrive at /blog/preview/<id> (forwarded from
-// /preview/posts/<id>, see src/pages/preview/). `isPreview` is true only
-// with a valid signed ?_preview= token, so without one this path 404s like
-// any other wrong category.
+// /blog/preview/… is the one address EmDash can build for a post (its URL
+// patterns can't fill in a category), so it serves two admin buttons:
+// - Preview: /blog/preview/<id>?_preview=<signed token> (forwarded from
+//   /preview/posts/<id>, see src/pages/preview/) — show the draft;
+// - Live View: /blog/preview/<slug>, no token (the posts URL pattern) —
+//   301 to the post's real address below.
+// `isPreview` is true only with a valid token.
 const isDraftPreview = category === "preview" && isPreview;
 
-// Otherwise the URL's category must be the post's own. post.id is the slug
-// (getEmDashEntry's live-collection shape); the ULID content_taxonomies
-// keys on is at .data.id.
+// post.id is the slug (getEmDashEntry's live-collection shape); the ULID
+// content_taxonomies keys on is at .data.id.
 if (!isDraftPreview) {
   const categoryTerms = await getEntryTerms("posts", post.data.id, "category");
+  const realCategory = categoryTerms[0]?.slug;
+  if (category === "preview" && realCategory) {
+    return Astro.redirect(`/blog/${realCategory}/${post.data.slug}`, 301);
+  }
+  // Otherwise the URL's category must be the post's own.
   if (!categoryTerms.some((term) => term.slug === category)) {
     return Astro.redirect("/404");
   }
