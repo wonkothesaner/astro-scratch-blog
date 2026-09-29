@@ -48,10 +48,10 @@ export function postCardFromEmdash(entry: EmdashPostRef, categorySlug: string): 
 
 /**
  * Resolve the "category" taxonomy term slug for a batch of EmDash post
- * entries in one round trip. Every post is required to have exactly one
- * category term (enforced by editorial convention, not a DB constraint) —
- * throws loudly on a missing term rather than silently mis-categorizing,
- * since that would otherwise produce a broken /blog/undefined/<slug> URL.
+ * entries in one round trip. A post's URL needs its category, and the
+ * editor can't make one mandatory (categories are saved separately from the
+ * post, after its first save) — so a post without one is simply absent
+ * from the map.
  */
 export async function resolvePostCategories(
   entries: EmdashPostRef[],
@@ -69,12 +69,31 @@ export async function resolvePostCategories(
   const result = new Map<string, string>();
   for (const entry of entries) {
     const term = termsByEntry.get(entry.data.id)?.[0];
-    if (!term) {
-      throw new Error(`Post "${entry.data.id}" (${entry.data.slug}) has no category taxonomy term assigned`);
-    }
-    result.set(entry.data.id, term.slug);
+    if (term) result.set(entry.data.id, term.slug);
   }
   return result;
+}
+
+/**
+ * Cards for posts that have a category, newest first. A published post
+ * without one is left out (listings, sitemap, RSS) with a warning in the
+ * Workers Logs, rather than failing every page that lists posts — its own
+ * page 404s until it's given a category.
+ */
+export async function postCardsWithCategory(entries: EmdashPostRef[]): Promise<PostCard[]> {
+  const categories = await resolvePostCategories(entries);
+  const cards: PostCard[] = [];
+  for (const entry of entries) {
+    const category = categories.get(entry.data.id);
+    if (category) {
+      cards.push(postCardFromEmdash(entry, category));
+    } else {
+      console.warn(
+        `[blog] Post "${entry.data.slug}" (${entry.data.id}) is published without a category; left out of listings until it has one.`,
+      );
+    }
+  }
+  return cards.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 }
 
 /**
@@ -84,10 +103,7 @@ export async function resolvePostCategories(
  */
 export async function getAllPostCards(): Promise<PostCard[]> {
   const { entries } = await getEmDashCollection("posts", { status: "published" });
-  const categories = await resolvePostCategories(entries);
-  return entries
-    .map((entry) => postCardFromEmdash(entry, categories.get(entry.data.id)!))
-    .sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+  return postCardsWithCategory(entries);
 }
 
 /**
