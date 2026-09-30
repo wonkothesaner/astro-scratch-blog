@@ -19,7 +19,6 @@ const description =
 ---
 
 <BaseLayout title={`${title} - ${siteTitle}`} description={description}>
-  <PageAside area="aside-about" />
   <main>
     <h1 class="text-centered">{title}</h1>
     <div class="about-hero wide">
@@ -34,6 +33,10 @@ const description =
       {aboutPage?.data.content && <PortableText value={aboutPage.data.content} />}
     </div>
   </main>
+  {/* After <main> in the HTML so the story reads before the CV (screen
+      readers, search engines); the grid places the columns by area, so the
+      visual layout is unchanged. */}
+  <PageAside area="aside-about" />
 </BaseLayout>
 
 <style>

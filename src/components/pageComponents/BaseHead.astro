@@ -12,6 +12,8 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  /** Alt text for `image`, emitted as og:image:alt / twitter:image:alt. */
+  imageAlt?: string;
   pageType?: "website" | "article";
   pubDate?: Date;
   updatedDate?: Date;
@@ -22,6 +24,7 @@ const {
   title,
   description,
   image = "/ogimage.png",
+  imageAlt,
   pageType = "website",
   pubDate,
   updatedDate,
@@ -108,6 +111,9 @@ const page = createPublicPageContext({
     (from site settings) are all generated here — see the SEO plugin
     (@jdevalk/emdash-plugin-seo) and page context built above. */}
 <EmDashHead page={page} />
+{/* EmDashHead emits og:image / twitter:image but no alt text for them. */}
+{imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+{imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
 
 {/* Cloudflare Web Analytics */}
 {

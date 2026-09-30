@@ -11,6 +11,10 @@ type Props = {
   updatedDate?: Date;
   heroImage?: PostCardImage;
   heroImageAlt?: string;
+  /** Image credit — the hero's media-library caption, when it has one. */
+  heroCredit?: string;
+  /** Absolute share-image URL (og:image / twitter:image). */
+  ogImage?: string;
   pageType?: "website" | "article";
   prev?: PostCard;
   next?: PostCard;
@@ -23,6 +27,8 @@ const {
   updatedDate,
   heroImage,
   heroImageAlt,
+  heroCredit,
+  ogImage,
   pageType = "article",
   prev,
   next,
@@ -36,6 +42,8 @@ const {
   pageType={pageType}
   pubDate={pubDate}
   updatedDate={updatedDate}
+  image={ogImage}
+  imageAlt={ogImage ? heroImageAlt : undefined}
   author="Martin Driscoll"
 >
   <main>
@@ -47,6 +55,7 @@ const {
             alt={heroImageAlt ?? `Featured image for ${title}`}
             priority
           />
+          {heroCredit && <p class="hero-credit">{heroCredit}</p>}
         </div>
       )
     }
@@ -90,6 +99,13 @@ const {
 <style>
   .hero-image {
     width: 100%;
+  }
+  .hero-credit {
+    max-width: 900px;
+    margin: var(--space-1) auto 0;
+    text-align: end;
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-light);
   }
   .hero-image img {
     display: block;

@@ -1,10 +1,12 @@
 ---
 export const prerender = false;
 
+import { getImage } from "astro:assets";
 import { getEmDashEntry, getEntryTerms } from "emdash";
 import { PortableText } from "emdash/ui";
 import BlogPost from "../../../layouts/BlogPost.astro";
 import { getAllPostCards, getAdjacentPosts } from "../../../utils/blog";
+import { getMediaItem } from "../../../utils/media";
 
 const { category, slug } = Astro.params;
 
@@ -47,6 +49,17 @@ if (!isDraftPreview && slug !== post.data.slug) {
   return Astro.redirect(`/blog/${category}/${post.data.slug}`, 301);
 }
 
+// Hero image: its media-library caption is the credit, and a 1200×630 crop
+// (through the Cloudflare Images binding) is the post's share image.
+const hero = post.data.featured_image ?? undefined;
+const heroMedia = await getMediaItem(hero?.id);
+let ogImage: string | undefined;
+if (heroMedia?.storageKey) {
+  const src = new URL(`/_emdash/api/media/file/${heroMedia.storageKey}`, Astro.url).href;
+  const shareImage = await getImage({ src, width: 1200, height: 630, fit: "cover", format: "jpg" });
+  ogImage = new URL(shareImage.src, Astro.site).href;
+}
+
 const allPosts = await getAllPostCards();
 const { prev, next } = getAdjacentPosts(allPosts, Astro.url.pathname);
 ---
@@ -56,8 +69,10 @@ const { prev, next } = getAdjacentPosts(allPosts, Astro.url.pathname);
   description={post.data.excerpt}
   pubDate={new Date(post.data.pub_date)}
   updatedDate={post.data.updated_date ? new Date(post.data.updated_date) : undefined}
-  heroImage={post.data.featured_image ?? undefined}
+  heroImage={hero}
   heroImageAlt={post.data.hero_image_alt}
+  heroCredit={heroMedia?.caption}
+  ogImage={ogImage}
   prev={prev}
   next={next}
 >
