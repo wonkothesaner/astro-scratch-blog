@@ -9,4 +9,6 @@ export interface TableData {
   columns?: Column[];
   rows: Record<string, unknown>[];
   caption?: string;
+  /** Bold lead-in before the caption, e.g. "Table of Glossary entries" (colon added). */
+  captionTitle?: string;
 }

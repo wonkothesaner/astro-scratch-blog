@@ -30,6 +30,7 @@ const shaped = entries.map((entry) => {
 const description =
   "A living collection of sayings, phrases, thoughts and other snippets of 'wisdom' that Martin Driscoll has collected over the years";
 const title = "Wisdom";
+const captionTitle = "Table of collected Wisdoms";
 ---
 
 <BaseLayout title={`${title} - ${siteTitle}`} description={description}>
@@ -41,6 +42,7 @@ const title = "Wisdom";
       caption={caption}
       columns={columns}
       tableClass="page-table"
+      captionTitle={captionTitle}
     />
   </main>
 </BaseLayout>

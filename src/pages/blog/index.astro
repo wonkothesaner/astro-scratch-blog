@@ -4,10 +4,13 @@ export const prerender = false;
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import BlogCard from "../../components/contentComponents/BlogCard.astro";
 import { getSiteSetting } from "emdash";
-import { getAllPostCards } from "../../utils/blog";
+import { getPostsByCategory } from "../../utils/blog";
+import { BLOG_CATEGORIES_OPEN_BY_DEFAULT } from "../../consts";
 import PageAside from "../../components/pageComponents/PageAside.astro";
 
-const posts = await getAllPostCards();
+// One collapsible section per category (term order from the admin),
+// pinned posts first within each.
+const groups = await getPostsByCategory();
 const siteTitle = await getSiteSetting("title");
 const description =
   "Home page for all Sane Musing blog posts as written by Martin Driscoll";
@@ -17,9 +20,25 @@ const title = "Blog";
 <BaseLayout title={`${title} - ${siteTitle}`} description={description}>
   <PageAside area="aside-blog" class="aside-first" />
   <main>
-    <section class="blog-list wide">
-      {posts.map((post) => <BlogCard post={post} />)}
-    </section>
+    {
+      groups.map(({ term, posts }) => (
+        <details
+          class="category-group wide"
+          open={BLOG_CATEGORIES_OPEN_BY_DEFAULT.includes(term.slug)}
+        >
+          <summary>
+            {term.label} <span class="category-count">({posts.length})</span>
+          </summary>
+          {posts.length > 0 ? (
+            <section class="blog-list">
+              {posts.map((post) => <BlogCard post={post} />)}
+            </section>
+          ) : (
+            <p class="category-empty">No posts yet.</p>
+          )}
+        </details>
+      ))
+    }
   </main>
 </BaseLayout>
 
@@ -27,6 +46,31 @@ const title = "Blog";
   .blog-list {
     display: grid;
     gap: var(--space-4);
+  }
+
+  .category-group {
+    border-block-end: var(--border-thin);
+    padding-block: var(--space-2);
+  }
+
+  .category-group summary {
+    cursor: pointer;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .category-group[open] summary {
+    margin-block-end: var(--space-3);
+  }
+
+  .category-empty {
+    color: var(--color-meta);
+  }
+
+  .category-count {
+    font-size: var(--font-size-base);
+    font-weight: normal;
+    color: var(--color-meta);
   }
 
   .aside {

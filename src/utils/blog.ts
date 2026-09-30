@@ -2,7 +2,8 @@
 // lookup and prev/next. Single source of truth for BlogCard, the listing
 // pages, the post route and the RSS feed.
 
-import { getEmDashCollection, getTermsForEntries } from "emdash";
+import { getEmDashCollection, getTaxonomyTerms, getTermsForEntries, type TaxonomyTerm } from "emdash";
+import { HOME_PINNED_LIMIT, HOME_RECENT_LIMIT } from "../consts";
 import type { Post as EmdashPost } from "../../.emdash/types";
 
 // Narrower than ContentEntry<EmdashPost> deliberately: getEntriesByTerm
@@ -24,6 +25,8 @@ export interface PostCard {
   description?: string;
   pubDate: Date;
   updatedDate?: Date;
+  /** "Pin order" (1–3): pinned posts come first, lowest number first. */
+  pinOrder?: number;
   category: string;
   url: string;
   heroImage?: PostCardImage;
@@ -39,6 +42,7 @@ export function postCardFromEmdash(entry: EmdashPostRef, categorySlug: string): 
     description: entry.data.excerpt,
     pubDate: new Date(entry.data.pub_date),
     updatedDate: entry.data.updated_date ? new Date(entry.data.updated_date) : undefined,
+    pinOrder: entry.data.pin_order ?? undefined,
     category: categorySlug,
     url: `/blog/${categorySlug}/${entry.data.slug}`,
     heroImage: entry.data.featured_image ?? undefined,
@@ -121,4 +125,33 @@ export function getAdjacentPosts(
   // posts are sorted newest-first: the next *array* entry is the older
   // (chronologically previous) post, and vice versa.
   return { prev: posts[index + 1], next: posts[index - 1] };
+}
+
+/** Pinned posts first (by pin order), then the rest newest first. */
+export function pinnedFirst(posts: PostCard[]): PostCard[] {
+  const pinned = posts.filter((p) => p.pinOrder != null).sort((a, b) => a.pinOrder! - b.pinOrder!);
+  return [...pinned, ...posts.filter((p) => p.pinOrder == null)];
+}
+
+/**
+ * The home page's two lists: up to HOME_PINNED_LIMIT pinned posts, then
+ * HOME_RECENT_LIMIT recent posts that aren't already shown as pinned.
+ */
+export async function getHomePostLists() {
+  const posts = await getAllPostCards(); // newest first
+  const pinned = pinnedFirst(posts).filter((p) => p.pinOrder != null).slice(0, HOME_PINNED_LIMIT);
+  const recent = posts.filter((p) => !pinned.includes(p)).slice(0, HOME_RECENT_LIMIT);
+  return { pinned, recent };
+}
+
+/**
+ * Posts grouped by category for /blog, in the category term order set in
+ * the admin; within each, pinned posts first. Every category is included,
+ * even with no posts yet.
+ */
+export async function getPostsByCategory(): Promise<{ term: TaxonomyTerm; posts: PostCard[] }[]> {
+  const [posts, terms] = await Promise.all([getAllPostCards(), getTaxonomyTerms("category")]);
+  const flatten = (ts: TaxonomyTerm[]): TaxonomyTerm[] => ts.flatMap((t) => [t, ...flatten(t.children ?? [])]);
+  return flatten(terms)
+    .map((term) => ({ term, posts: pinnedFirst(posts.filter((p) => p.category === term.slug)) }));
 }

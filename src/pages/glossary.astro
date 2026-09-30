@@ -42,7 +42,7 @@ const columns = [
   { key: "description", label: "Description" },
 ];
 const caption =
-  "Some three and four letter acroynms that you may want to understand better";
+  "Some three and four letter acronyms that you may want to understand better";
 
 const rows = entries.map((entry) => {
   const { term, description } = entry.data;
@@ -52,6 +52,7 @@ const rows = entries.map((entry) => {
 const description =
   "Glossary of terms that may help navigate the writings on the site as well as real life.";
 const title = "Glossary";
+const captionTitle = "Table of Glossary entries";
 ---
 
 <BaseLayout title={`${title} - ${siteTitle}`} description={description}>
@@ -65,6 +66,7 @@ const title = "Glossary";
       columns={columns}
       caption={caption}
       tableClass="page-table"
+      captionTitle={captionTitle}
     />
   </main>
 </BaseLayout>

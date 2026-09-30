@@ -372,6 +372,8 @@
       minmax(var(--space-2), 1fr) [full-end];
     row-gap: var(--space-3);
     padding-block: var(--space-4);
+    /* lets rich-text tables measure the space around the reading column */
+    container-type: inline-size;
   }
 
   @media (max-width: 640px) {
@@ -440,6 +442,19 @@
     & :is(.emdash-image--align-left, .emdash-image--align-right) + :is(p, h2, h3, h4) {
       margin-block-start: 0;
     }
+  }
+
+  /* Tables in rich text (posts, pages) step out of the reading column into
+     the wide margins on each side (up to --space-8, never past the page
+     gutter; nothing on phones). Done with width + a relative shift rather
+     than grid or margins: the text keeps its normal flow, so floated images
+     still work, and EmDash's own (unlayered) table CSS sets `margin` on the
+     wrapper, which a layered rule couldn't override. */
+  .prose .emdash-table-wrapper {
+    --breakout: max(0px, min(var(--space-8), (100cqi - 100%) / 2 - var(--space-2)));
+    position: relative;
+    inset-inline-start: calc(-1 * var(--breakout));
+    width: calc(100% + 2 * var(--breakout));
   }
 
   /* Task lists pasted as an HTML block (the editor has none, and the HTML

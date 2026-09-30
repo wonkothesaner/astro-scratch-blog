@@ -21,4 +21,13 @@ export const NAV_SECONDARY = [
 ] as const;
 
 // Blog categories live in EmDash (Admin → Taxonomies → Category), not here —
-// look them up with `await getTerm("category", slug)` from "emdash".
+// look them up with `await getTerm("category", slug)` from "emdash". Their
+// order on /blog follows the term order you set in the admin.
+
+// /blog shows one collapsible section per category; these start open.
+export const BLOG_CATEGORIES_OPEN_BY_DEFAULT: readonly string[] = ["sap", "web-dev-for-sapians"];
+
+// Home page: at most this many pinned posts (a post's "Pin order", 1–3),
+// then this many recent posts not already shown as pinned.
+export const HOME_PINNED_LIMIT = 3;
+export const HOME_RECENT_LIMIT = 5;

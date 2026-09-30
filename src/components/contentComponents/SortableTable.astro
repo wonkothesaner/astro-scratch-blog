@@ -2,7 +2,13 @@
 import type { TableData, Column } from "../../utils/table";
 type Props = TableData & { tableClass?: string };
 
-const { rows: rawRows, columns, caption, tableClass } = Astro.props;
+const {
+  rows: rawRows,
+  columns,
+  caption,
+  tableClass,
+  captionTitle,
+} = Astro.props;
 const rows = (rawRows ?? []) as Record<string, unknown>[];
 
 const prettify = (k: string) =>
@@ -22,7 +28,7 @@ const resolvedColumns: Column[] =
     <table class={`${tableClass ?? ""}`}>
       {caption && (
         <caption>
-          <strong>Table of collected Wisdoms: </strong>
+          {captionTitle && <strong>{captionTitle}: </strong>}
           {caption}
         </caption>
       )}
